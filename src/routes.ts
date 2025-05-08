@@ -14,6 +14,13 @@ const routes: RouteObject[] = [
                 }),
             }
         ]
+    },
+    {
+        path: "/login",
+        ErrorBoundary: Error,
+        lazy: async () => ({
+            Component: (await import("./features/Auth")).default,
+        }),
     }
 ];
 export default routes;
