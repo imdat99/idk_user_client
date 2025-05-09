@@ -2,10 +2,11 @@ import { Outlet } from "react-router";
 
 const index = () => {
   return (
-    <div className="bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center min-h-screen">
-      <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
-        <Outlet />
-        {/* <!-- SIGN IN PAGE -->
+    <div className="from-blue-50 to-blue-100 flex items-center min-h-screen flex-col">
+      <div className="flex-1 items-center flex">
+        <div className="bg-white w-full max-w-md rounded-2xl shadow-xl p-8 space-y-6 border border-gray-100">
+          <Outlet />
+          {/* <!-- SIGN IN PAGE -->
       
 
       <!-- SIGN UP PAGE -->
@@ -26,6 +27,13 @@ const index = () => {
           <button onclick="showPage('signin')" className="text-blue-600 hover:underline">Back to Sign In</button>
         </div>
       </div> */}
+      </div>
+      </div>
+
+      <div className="flex justify-between">
+          <div>
+            language
+          </div>
       </div>
     </div>
   );
