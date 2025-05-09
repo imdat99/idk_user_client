@@ -3,6 +3,7 @@ import { createBrowserRouter, RouterProvider } from 'react-router';
 import { HelmetProvider } from 'react-helmet-async';
 
 import { startTransition } from 'react';
+import '@unocss/reset/tailwind.css'
 import 'uno.css';
 import { SWRConfig } from 'swr';
 import { useEnhancedFetch } from 'lib/fetcher';
