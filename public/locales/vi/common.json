@@ -1,0 +1,19 @@
+{
+  "error": {
+    "title": "Ối! Đã có lỗi xảy ra.",
+    "message": "Chúng tôi đang gặp sự cố khi tải trang này. Vui lòng thử lại sau.",
+    "reloadButton": "Tải lại trang"
+  },
+  "select": {
+    "placeholder": "Chọn một tùy chọn",
+    "clearSelection": "Xóa lựa chọn",
+    "searchPlaceholder": "Tìm kiếm tùy chọn...",
+    "noOptions": "Không tìm thấy tùy chọn nào"
+  },
+  "app": {
+    "title": "Rsbuild với React",
+    "description": "Bắt đầu xây dựng những điều tuyệt vời với Rsbuild.",
+    "language": "Ngôn ngữ",
+    "theme": "Chủ đề"
+  }
+}

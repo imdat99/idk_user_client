@@ -1,18 +1,19 @@
 import { cn } from 'lib/utils';
 import { Check, ChevronDown, Search, X } from 'lucide-react';
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react';
+import React, { useState, useRef, useEffect, useLayoutEffect, useMemo, useCallback } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 // Define a safe layout effect for SSR
 const useIsomorphicLayoutEffect =
   typeof window !== 'undefined' ? useLayoutEffect : useEffect;
 
-interface SelectOption {
+export interface SelectOption {
   value: string;
   label: string;
 }
 
-interface CustomSelectProps {
+export interface CustomSelectProps {
   options?: SelectOption[];
   placeholder?: string;
   onChange?: (option: SelectOption | null) => void;
@@ -20,17 +21,18 @@ interface CustomSelectProps {
   scrollHeight?: string;
 }
 
-const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
+const Select = React.forwardRef<HTMLDivElement, CustomSelectProps>(
   (
     {
       options = [],
-      placeholder = 'Select an option',
+      placeholder,
       onChange,
       autocomplete = false,
       scrollHeight,
     },
     ref,
   ) => {
+    const { t } = useTranslation('common');
     const [isOpen, setIsOpen] = useState(false);
     const [selectedOption, setSelectedOption] = useState<SelectOption | null>(null);
     const [searchValue, setSearchValue] = useState('');
@@ -44,15 +46,16 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
     const portalRef = useRef<HTMLDivElement>(null);
 
     // Filter options based on search value
-    const filteredOptions =
-      searchValue.trim() === ''
+    const filteredOptions = useMemo(() => {
+      return searchValue.trim() === ''
         ? options
         : options.filter((option) =>
             option.label.toLowerCase().includes(searchValue.toLowerCase()),
           );
+    }, [options, searchValue]);
 
     // Helper function to recalculate dropdown position
-    function recalcPosition() {
+    const recalcPosition = useCallback(() => {
       if (
         buttonRef.current &&
         portalRef.current &&
@@ -67,20 +70,44 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
 
         const rect = buttonRef.current.getBoundingClientRect();
         const viewportHeight = window.innerHeight;
-        const spaceBelow = viewportHeight - rect.bottom;
-        const isAboveDropdown = spaceBelow < dropdownHeight;
-        setIsAbove(isAboveDropdown);
-        const topPosition = isAboveDropdown
-          ? rect.top + window.scrollY - dropdownHeight - 10
-          : rect.bottom + window.scrollY;
+        const DROPDOWN_OFFSET = 5; // Define a consistent offset for spacing
+
+        const canPlaceAbove = rect.top > dropdownHeight + DROPDOWN_OFFSET;
+        const notEnoughSpaceBelow = (viewportHeight - rect.bottom) < dropdownHeight + DROPDOWN_OFFSET;
+        
+        const shouldDisplayAbove = canPlaceAbove && notEnoughSpaceBelow;
+        setIsAbove(shouldDisplayAbove);
+
+        let calculatedTop;
+        if (shouldDisplayAbove) {
+          calculatedTop = rect.top - dropdownHeight - DROPDOWN_OFFSET;
+        } else {
+          calculatedTop = rect.bottom + DROPDOWN_OFFSET;
+          // If placing below makes it go off-screen, and it couldn't be placed above initially,
+          // attempt to place above if possible, or stick to viewport bottom.
+          if (calculatedTop + dropdownHeight > viewportHeight) {
+            if (canPlaceAbove) { // If there was actually space above
+                 calculatedTop = rect.top - dropdownHeight - DROPDOWN_OFFSET;
+                 setIsAbove(true); // Update state
+            } else {
+                 // Stick to bottom of viewport if no other choice, ensuring a small gap
+                 calculatedTop = Math.max(DROPDOWN_OFFSET, viewportHeight - dropdownHeight - DROPDOWN_OFFSET);
+            }
+          }
+        }
+        
+        // Final check to ensure it doesn't go above the viewport top
+        if (calculatedTop < 0) {
+            calculatedTop = DROPDOWN_OFFSET; // Ensure a small gap from the top
+        }
 
         setPosition({
-          top: topPosition,
-          left: rect.left + window.scrollX,
+          top: calculatedTop,
+          left: rect.left, 
           width: rect.width,
         });
       }
-    }
+    }, [])
 
     // Update position of dropdown when it opens or search value changes
     useIsomorphicLayoutEffect(() => {
@@ -99,16 +126,48 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
         // Reset highlighted index when opening
         setHighlightedIndex(-1);
       }
-    }, [isOpen, autocomplete, searchValue]);
+    }, [isOpen, autocomplete, searchValue, filteredOptions.length]); // Added filteredOptions.length as recalc might be needed if list presence changes
 
-    // Reset search when closing dropdown
+    // Handle body scroll and reset search on open/close
     useEffect(() => {
-      if (!isOpen) {
-        setSearchValue('');
-        document.body.classList.remove('overflow-hidden');
+      if (isOpen) {
+        // document.body.classList.add('overflow-hidden');
       } else {
-        document.body.classList.add('overflow-hidden');
+        // document.body.classList.remove('overflow-hidden');
+        setSearchValue(''); // Reset search value when dropdown is closed
       }
+
+      // Cleanup effect
+      return () => {
+        // document.body.classList.remove('overflow-hidden');
+      };
+    }, [isOpen]);
+
+    // Recalculate position on window resize when dropdown is open
+    useEffect(() => {
+      if (!isOpen || typeof window === 'undefined') return;
+
+      const handleResize = () => {
+        recalcPosition();
+      };
+
+      window.addEventListener('resize', handleResize);
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }, [isOpen]); // Dependency on isOpen ensures listener is added/removed appropriately
+
+    // Recalculate position on window scroll when dropdown is open
+    useEffect(() => {
+      if (!isOpen || typeof window === 'undefined') return;
+
+      const handleScroll = () => {
+        recalcPosition();
+      };
+      window.onscroll = handleScroll;
+      return () => {
+        window.onscroll = null; // Cleanup scroll event
+      };
     }, [isOpen]);
 
     // Handle click outside to close dropdown
@@ -142,27 +201,29 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
             break;
           case 'ArrowDown':
             event.preventDefault();
-            setHighlightedIndex((prev) =>
-              prev < filteredOptions.length - 1 ? prev + 1 : prev,
-            );
-            // Scroll item into view if needed
-            if (listRef.current && highlightedIndex >= 0) {
-              const items = listRef.current.querySelectorAll('li');
-              if (items[highlightedIndex + 1]) {
-                items[highlightedIndex + 1].scrollIntoView({ block: 'nearest' });
+            setHighlightedIndex((prev) => {
+              const nextIndex = prev < filteredOptions.length - 1 ? prev + 1 : prev;
+              if (listRef.current && nextIndex !== prev) {
+                const items = listRef.current.querySelectorAll('li');
+                if (items[nextIndex]) {
+                  items[nextIndex].scrollIntoView({ block: 'nearest' });
+                }
               }
-            }
+              return nextIndex;
+            });
             break;
           case 'ArrowUp':
             event.preventDefault();
-            setHighlightedIndex((prev) => (prev > 0 ? prev - 1 : 0));
-            // Scroll item into view if needed
-            if (listRef.current && highlightedIndex > 0) {
-              const items = listRef.current.querySelectorAll('li');
-              if (items[highlightedIndex - 1]) {
-                items[highlightedIndex - 1].scrollIntoView({ block: 'nearest' });
+            setHighlightedIndex((prev) => {
+              const nextIndex = prev > 0 ? prev - 1 : 0;
+              if (listRef.current && nextIndex !== prev) {
+                const items = listRef.current.querySelectorAll('li');
+                if (items[nextIndex]) {
+                  items[nextIndex].scrollIntoView({ block: 'nearest' });
+                }
               }
-            }
+              return nextIndex;
+            });
             break;
           case 'Enter':
             if (highlightedIndex >= 0 && filteredOptions[highlightedIndex]) {
@@ -223,29 +284,27 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
           role="button"
           tabIndex={0}
           ref={buttonRef}
-          className="flex h-10 items-center justify-between w-full px-3 py-2 text-sm text-left bg-white border border-gray-200 rounded-md shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-1 focus:ring-blue-500 transition-colors"
+          className="flex h-10 items-center justify-between w-full px-3 py-2 text-sm text-left bg-white border border-gray-200 rounded-md hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-offset-1 focus:ring-blue-500 transition-colors"
           onClick={() => setIsOpen(!isOpen)}
           aria-haspopup="listbox"
           aria-expanded={isOpen}
         >
           <span className={cn("block truncate", selectedOption ? 'font-medium text-gray-900' : 'text-gray-500')}>
-            {selectedOption ? selectedOption.label : placeholder}
+            {selectedOption ? selectedOption.label : placeholder || t('select.placeholder')}
           </span>
           <div className="flex items-center">
             {selectedOption && (
               <button
                 type="button"
                 onClick={handleClearSelection}
-                className="mr-1 p-1 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-501"
-                aria-label="Clear selection"
+                className="mr-1 p-1 rounded-full hover:bg-gray-200 text-gray-400 hover:text-gray-600 focus:outline-none focus:ring-1 focus:ring-blue-501"
+                aria-label={t('select.clearSelection')}
               >
                 <X className="h-3 w-3" />
               </button>
             )}
             <ChevronDown
-              className={`w-4 h-4 text-gray-500 transition-transform duration-200 ${
-                isOpen ? 'transform rotate-180' : ''
-              }`}
+              className={cn("w-4 h-4 text-gray-500 transition-transform duration-200", isOpen && 'transform rotate-180')}
             />
           </div>
         </div>
@@ -257,7 +316,7 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
                 ref={portalRef}
                 className={cn("fixed z-50 overflow-hidden bg-white border border-gray-200 rounded-md shadow-md flex", isAbove ? "flex-col-reverse" : "flex-col")}
                 style={{
-                  top: `${position.top + 5}px`,
+                  top: `${position.top}px`, // Use calculated position directly
                   left: `${position.left}px`,
                   width: `${position.width}px`,
                 }}
@@ -271,7 +330,7 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
                         ref={inputRef}
                         type="text"
                         className="w-full pl-8 pr-2 py-1.5 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Search options..."
+                        placeholder={t('select.searchPlaceholder')}
                         value={searchValue}
                         onChange={handleSearchChange}
                         onClick={(e) => e.stopPropagation()}
@@ -319,26 +378,9 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
                       </li>
                     ))
                   ) : (
-                    <li className="px-2 py-2 text-sm text-gray-500">No options found</li>
+                    <li className="px-2 py-2 text-sm text-gray-500">{t('select.noOptions')}</li>
                   )}
                 </ul>
-                {/* {isAbove && autocomplete && (
-                  <div className="p-2 border-t border-gray-200">
-                    <div className="relative">
-                      <Search className="h-4 w-4 absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-400" />
-                      <input
-                        ref={inputRef}
-                        type="text"
-                        className="w-full pl-8 pr-2 py-1.5 text-sm border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 focus:border-transparent"
-                        placeholder="Search options..."
-                        value={searchValue}
-                        onChange={handleSearchChange}
-                        onClick={(e) => e.stopPropagation()}
-                        autoComplete="off"
-                      />
-                    </div>
-                  </div>
-                )} */}
               </div>,
               document.body,
             )
@@ -347,93 +389,6 @@ const CustomSelect = React.forwardRef<HTMLDivElement, CustomSelectProps>(
     );
   },
 );
-
+Select.displayName = 'Select';
+export default Select;
 // Demo component to showcase the CustomSelect
-export default function SelectDemo() {
-  const [selectedValue, setSelectedValue] = useState<SelectOption | null>(null);
-  const [selectedAutoValue, setSelectedAutoValue] = useState<SelectOption | null>(
-    null,
-  );
-
-  const options: SelectOption[] = [
-    { value: 'react', label: 'React' },
-    { value: 'vue', label: 'Vue' },
-    { value: 'angular', label: 'Angular' },
-    { value: 'svelte', label: 'Svelte' },
-    { value: 'ember', label: 'Ember' },
-    { value: 'backbone', label: 'Backbone.js' },
-    { value: 'preact', label: 'Preact' },
-    { value: 'jquery', label: 'jQuery' },
-    { value: 'solid', label: 'Solid.js' },
-    { value: 'lit', label: 'Lit' },
-    { value: 'polymer', label: 'Polymer' },
-    { value: 'alpine', label: 'Alpine.js' },
-    { value: 'mithril', label: 'Mithril' },
-    { value: 'aurelia', label: 'Aurelia' },
-    { value: 'meteor', label: 'Meteor' },
-  ];
-
-  const handleChange = (option: SelectOption | null) => {
-    setSelectedValue(option);
-  };
-
-  const handleAutoChange = (option: SelectOption | null) => {
-    setSelectedAutoValue(option);
-  };
-
-  return (
-    <div className="flex flex-col items-center justify-center space-y-8 p-8 bg-gray-50 rounded-lg min-h-screen">
-      <div className="text-center space-y-2">
-        <h2 className="text-2xl font-semibold text-gray-900">Custom Select Component</h2>
-        <p className="text-gray-500 text-sm">A select component with shadcn/ui styling</p>
-      </div>
-
-      <div className="w-full max-w-md grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Standard Select
-          </label>
-          <CustomSelect
-            options={options}
-            placeholder="Select a framework"
-            onChange={handleChange}
-          />
-          {selectedValue && (
-            <div className="mt-2 p-2 bg-gray-100 border border-gray-200 text-gray-800 rounded-md text-sm">
-              Selected: <span className="font-medium">{selectedValue.label}</span>
-            </div>
-          )}
-        </div>
-
-        <div className="space-y-2">
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Autocomplete Select
-          </label>
-          
-          {selectedAutoValue && (
-            <div className="mt-2 p-2 bg-gray-100 border border-gray-200 text-gray-800 rounded-md text-sm">
-              Selected: <span className="font-medium">{selectedAutoValue.label}</span>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <div className="w-full max-w-md bg-white rounded-md shadow-sm border border-gray-200 p-4 text-sm space-y-2 flex-1">
-        <h3 className="font-medium text-gray-900">Features</h3>
-        <ul className="space-y-1 text-gray-700">
-          <li>• Keyboard navigation (↑/↓ arrows, Enter, Esc)</li>
-          <li>• Autocomplete search filtering</li>
-          <li>• Clear selection option</li>
-          <li>• Custom styling based on shadcn/ui</li>
-          <li>• Accessibility support</li>
-        </ul>
-      </div>
-      <CustomSelect
-            options={options}
-            placeholder="Search frameworks"
-            onChange={handleAutoChange}
-            autocomplete={true}
-          />
-    </div>
-  );
-}

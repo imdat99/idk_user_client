@@ -1,0 +1,19 @@
+{
+  "error": {
+    "title": "Oops! Something went wrong.",
+    "message": "We're having trouble loading this page. Please try again later.",
+    "reloadButton": "Reload Page"
+  },
+  "select": {
+    "placeholder": "Select an option",
+    "clearSelection": "Clear selection",
+    "searchPlaceholder": "Search options...",
+    "noOptions": "No options found"
+  },
+  "app": {
+    "title": "Rsbuild with React",
+    "description": "Start building amazing things with Rsbuild.",
+    "language": "Language",
+    "theme": "Theme"
+  }
+}

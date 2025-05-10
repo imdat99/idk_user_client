@@ -33,6 +33,12 @@ const routes: RouteObject[] = [
           Component: (await import("./features/Auth/Register")).default,
         }),
       },
+      {
+        path: "/forgot",
+        lazy: async () => ({
+          Component: (await import("./features/Auth/Forgot")).default,
+        }),
+      },
     ],
   },
 ];
