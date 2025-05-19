@@ -21,8 +21,8 @@ interface ToastAction {
 
 interface Toast {
   id: number;
-  title?: string;
-  description?: string;
+  title?: React.ReactNode; // Changed from string
+  description?: React.ReactNode; // Changed from string
   variant: ToastVariant;
   action?: ToastAction;
   status: 'entering' | 'active' | 'exiting';
@@ -35,8 +35,8 @@ interface Toast {
 }
 
 interface ShowToastParams {
-  title?: string;
-  description?: string;
+  title?: React.ReactNode; // Changed from string
+  description?: React.ReactNode; // Changed from string
   variant?: ToastVariant;
   duration?: number | typeof Infinity;
   action?: ToastAction;
@@ -218,8 +218,14 @@ class ToastService {
 }
 
 // Initialize the service
-const toastService = new ToastService();
-
+// const toastService = new ToastService();
+const toastService = (() => {
+    let instance: ToastService | null = null;
+    if (!instance) {
+      instance = new ToastService();
+    }
+    return instance;
+})();
 // Exported functions for components to use
 export const showToast = toastService.show;
 export const hideToast = toastService.hide;
@@ -506,7 +512,7 @@ const ToastDemo = () => {
         </button>
         <button
           onClick={() => showToast({
-            title: "Success!",
+            title: <span style={{ color: 'purple' }}>Success! (Component Title)</span>,
             description: "Your changes have been saved successfully",
             variant: "success",
             duration: 5000
@@ -552,6 +558,17 @@ const ToastDemo = () => {
           className="px-4 py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600"
         >
           Custom Position Toast
+        </button>
+        <button
+          onClick={() => showToast({
+            // title: <span style={{ color: 'orange', fontWeight: 'bold' }}>Custom Title Component</span>,
+            description: <p>This toast uses a <em>React component</em> for its description!</p>,
+            variant: "default",
+            duration: 7000
+          })}
+          className="px-4 py-2 bg-teal-500 text-white rounded-lg hover:bg-teal-600"
+        >
+          Show Toast with Custom Component Content
         </button>
       </div>
       <div className="mt-8 p-4 border rounded-lg">
