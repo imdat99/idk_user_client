@@ -1,10 +1,12 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { authPath } from 'lib/constants';
+import { Button } from 'components/Button';
 
 const Login = () => {
   const { t } = useTranslation('auth');
   return (
-    <div id="signin">
+    <>
       <div className="text-center">
         <h2 className="mt-4 text-xl font-semibold text-gray-800">
           {t('login.title')}
@@ -37,25 +39,25 @@ const Login = () => {
           placeholder={t('login.passwordPlaceholder')}
           className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <button
+        <Button
           type="submit"
           className="w-full bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 transition"
         >
           {t('login.signIn')}
-        </button>
+        </Button>
       </form>
       <div className="mt-6 mb-3 text-center text-sm">
-        <Link to="/forgot" className="text-blue-600 hover:underline">
+        <Link to={authPath.forgotPassword} className="text-blue-600 hover:underline">
           {t('login.forgotPassword')}
         </Link>
       </div>
       <div className="text-center text-sm text-gray-600">
         {t('login.noAccount')}&nbsp;
-        <Link to="/signup" className="text-blue-600 hover:underline">
+        <Link to={authPath.register} className="text-blue-600 hover:underline">
           {t('login.signUp')}
         </Link>
       </div>
-    </div>
+    </>
   );
 };
 

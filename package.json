@@ -11,6 +11,9 @@
     "preview": "rsbuild preview"
   },
   "dependencies": {
+    "@microui-kit/magic-worker": "^0.0.7",
+    "@radix-ui/react-slot": "^1.2.2",
+    "birpc": "^2.3.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "i18next": "^25.1.2",

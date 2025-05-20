@@ -1,10 +1,12 @@
 import { Outlet, RouteObject } from "react-router";
 import { createElement as _c } from "react";
 import Error from "./components/Error";
+import { authPath } from "lib/constants";
 const routes: RouteObject[] = [
   {
     path: "/",
     ErrorBoundary: Error,
+    HydrateFallback: () => _c("div", { className: "h-screen" }, "Loading..."),
     element: _c(Outlet),
     children: [
       {
@@ -22,19 +24,19 @@ const routes: RouteObject[] = [
     }),
     children: [
       {
-        path: "/login",
+        path: authPath.login,
         lazy: async () => ({
           Component: (await import("./features/Auth/Login")).default,
         }),
       },
       {
-        path: "/signup",
+        path: authPath.register,
         lazy: async () => ({
           Component: (await import("./features/Auth/Register")).default,
         }),
       },
       {
-        path: "/forgot",
+        path: authPath.forgotPassword,
         lazy: async () => ({
           Component: (await import("./features/Auth/Forgot")).default,
         }),

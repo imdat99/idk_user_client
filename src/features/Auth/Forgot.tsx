@@ -1,10 +1,11 @@
 import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
+import { authPath } from 'lib/constants';
 
 const Forgot = () => {
   const { t } = useTranslation('auth');
   return (
-    <div id="forgot">
+    <>
       <div className="text-center">
         <h2 className="text-xl font-semibold text-gray-800">{t('forgot.title')}</h2>
       </div>
@@ -25,11 +26,11 @@ const Forgot = () => {
 
       <div className="mt-6 text-center text-sm text-gray-600">
         {t('forgot.rememberPassword')}&nbsp;
-        <Link to="/login" className="text-blue-600 hover:underline">
+        <Link to={authPath.login} className="text-blue-600 hover:underline">
           {t('forgot.backToSignIn')}
         </Link>
       </div>
-    </div>
+    </>
   );
 };
 
