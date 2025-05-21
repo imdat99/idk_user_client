@@ -5,7 +5,7 @@ import i18n, { languages } from "Translation";
 
 const LanguageBtn = () => {
   const { t } = useTranslation("common");
-  const [lang, setLang] = useState(false);
+  const [lang, setLang] = useState("0");
   React.useLayoutEffect(() => {
     i18n.changeLanguage(languages[Number(lang)]);
   }, [lang]);
@@ -18,7 +18,7 @@ const LanguageBtn = () => {
         <select
           id="language-select"
           className="bg-transparent border-none focus:outline-none outline-none text-black  cursor-pointer"
-          value={lang ? 1 : 0}
+          value={lang}
           onChange={(e) => {
             setLang(e.target.value);
           }}
