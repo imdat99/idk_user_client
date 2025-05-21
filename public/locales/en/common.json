@@ -13,7 +13,12 @@
   "app": {
     "title": "Rsbuild with React",
     "description": "Start building amazing things with Rsbuild.",
-    "language": "Language",
+    "language": {
+      "title": "Language",
+      "description": "Select your preferred language.",
+      "vi": "Vietnamese",
+      "en": "English"
+    },
     "theme": "Theme"
   }
 }

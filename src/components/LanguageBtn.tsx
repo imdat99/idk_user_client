@@ -1,3 +1,4 @@
+import { Languages } from "lucide-react";
 import React, { useState } from "react";
 import { useTranslation } from "react-i18next";
 import i18n, { languages } from "Translation";
@@ -9,14 +10,24 @@ const LanguageBtn = () => {
     i18n.changeLanguage(languages[Number(lang)]);
   }, [lang]);
   return (
-    <div>
-      <button
-        onClick={() => {
-          setLang((prev) => !prev);
-        }}
+    <div className="fixed bottom-4 left-4 flex items-center space-x-2">
+
+      <div
+        className="flex w-full rounded-lg p-2 transition bg-gray/20"
       >
-        {t("app.language")}: {i18n.language}
-      </button>
+        <select
+          id="language-select"
+          className="bg-transparent border-none focus:outline-none outline-none text-black  cursor-pointer"
+          value={lang ? 1 : 0}
+          onChange={(e) => {
+            setLang(e.target.value);
+          }}
+        >
+          <option value={0}>{t("app.language."+languages[0])}</option>
+          <option value={1}>{t("app.language."+languages[1])}</option>
+        </select>
+      </div>
+      {/*  */}
     </div>
   );
 };

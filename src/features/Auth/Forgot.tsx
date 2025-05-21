@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { authPath } from 'lib/constants';
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
+import { SendHorizontal } from 'lucide-react';
 
 const Forgot = () => {
   const { t } = useTranslation('auth');
@@ -10,9 +11,14 @@ const Forgot = () => {
     <>
       <div className="text-center">
         <h2 className="text-xl font-semibold text-gray-800">{t('forgot.title')}</h2>
+        <p className="text-sm text-gray-600">{t('forgot.subtitle')}</p>
       </div>
+      <div className="flex w-full max-w-sm items-center space-x-2">
+      <Input type="email" placeholder={t('login.emailPlaceholder')} />
+      <Button type="submit" title={t('forgot.sendResetLink')}><SendHorizontal /></Button>
+    </div>
       <form className="mt-6 space-y-4">
-        <Input
+        {/* <Input
           type="email"
           placeholder={t('login.emailPlaceholder')}
         />
@@ -21,7 +27,7 @@ const Forgot = () => {
           className="w-full"
         >
           {t('forgot.sendResetLink')}
-        </Button>
+        </Button> */}
       </form>
 
       <div className="mt-6 text-center text-sm text-gray-600">

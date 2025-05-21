@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { authPath } from 'lib/constants';
 import { Button } from 'components/Button';
 import { Input } from 'components/Input';
+import { LoaderCircle } from 'lucide-react';
 
 const Login = () => {
   const { t } = useTranslation('auth');
@@ -15,7 +16,7 @@ const Login = () => {
         <p className="text-sm text-gray-600">{t('login.subtitle')}</p>
       </div>
 
-      <Button variant="outline" className="shadow-none w-full mt-6 py-2 hover:bg-gray-50">
+      <Button variant="outline" className="shadow-none w-full mt-6 py-2 hover:bg-gray-50 bg-transparent">
         <img src="/assets/images/google.svg" alt="Google" className="w-5 h-5" />
         {t('login.signInWithGoogle')}
       </Button>
@@ -41,6 +42,7 @@ const Login = () => {
         <Button
           type="submit"
           className="w-full py-2 font-medium"
+          loading
         >
           {t('login.signIn')}
         </Button>

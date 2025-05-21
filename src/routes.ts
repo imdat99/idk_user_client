@@ -19,6 +19,7 @@ const routes: RouteObject[] = [
   },
   {
     ErrorBoundary: Error,
+    HydrateFallback: () => _c("div", { className: "h-screen" }, "Loading..."),
     lazy: async () => ({
       Component: (await import("./features/Auth")).default,
     }),
