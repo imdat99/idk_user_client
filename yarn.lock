@@ -367,6 +367,11 @@
   resolved "https://registry.yarnpkg.com/@unocss/core/-/core-66.1.0-beta.12.tgz#8e3ac7161dc704b29099bef63535b4878d1f2668"
   integrity sha512-8+KJAoqA7eHC5cBJtod1AqWqQbYKfhTvQEgVQzZJ2sTYNTuQz4qdzPhUgKF83wURUhznGkdDL1Jxc6YITB1KPg==
 
+"@unocss/core@^66.1.2":
+  version "66.1.2"
+  resolved "https://registry.yarnpkg.com/@unocss/core/-/core-66.1.2.tgz#b453f95c60b72e3c4c0ff4a319b3627594062228"
+  integrity sha512-mN9h1hHEuhDcdbI4z74o7UnxlBZYVsJpYcdC1YLWBKROcLYTkuyZ7hgBzpo1FBNox2Bt3JnrSinVDmc44Bxjow==
+
 "@unocss/extractor-arbitrary-variants@66.1.0-beta.12":
   version "66.1.0-beta.12"
   resolved "https://registry.yarnpkg.com/@unocss/extractor-arbitrary-variants/-/extractor-arbitrary-variants-66.1.0-beta.12.tgz#6d66c51266dead2319a11f2eba801b65acea6810"

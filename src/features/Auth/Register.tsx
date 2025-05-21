@@ -1,3 +1,5 @@
+import { Button } from "components/Button";
+import { Input } from "components/Input";
 import { authPath } from "lib/constants";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router"
@@ -12,14 +14,14 @@ const Register = () => {
       </div>
       <form className="mt-6 space-y-4">
         <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="name">Họ và tên</label>
-        <input type="text" id="name" placeholder={t("register.fullName")} className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <Input type="text" id="name" placeholder={t("register.fullName")} />
         <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="email">Email</label>
-        <input type="email" id="email" placeholder={t("login.emailPlaceholder")} className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+        <Input type="email" id="email" placeholder={t("login.emailPlaceholder")} />
         <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70" htmlFor="password">Mật khẩu</label>
-        <input type="password" id="password" placeholder={t("login.passwordPlaceholder")} className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
-        <button type="submit" className="w-full bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 transition">
+        <Input type="password" id="password" placeholder={t("login.passwordPlaceholder")} />
+        <Button type="submit" className="w-full py-2 font-medium">
           {t('register.signUp')}
-        </button>
+        </Button>
       </form>
 
       <div className="mt-6 text-center text-sm text-gray-600">

@@ -2,6 +2,7 @@ import { Link } from 'react-router';
 import { useTranslation } from 'react-i18next';
 import { authPath } from 'lib/constants';
 import { Button } from 'components/Button';
+import { Input } from 'components/Input';
 
 const Login = () => {
   const { t } = useTranslation('auth');
@@ -14,10 +15,10 @@ const Login = () => {
         <p className="text-sm text-gray-600">{t('login.subtitle')}</p>
       </div>
 
-      <button className="w-full mt-6 flex items-center justify-center gap-2 border border-gray-300 text-gray-700 py-2 rounded-lg hover:bg-gray-50 transition">
+      <Button variant="outline" className="shadow-none w-full mt-6 py-2 hover:bg-gray-50">
         <img src="/assets/images/google.svg" alt="Google" className="w-5 h-5" />
         {t('login.signInWithGoogle')}
-      </button>
+      </Button>
 
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
@@ -29,19 +30,17 @@ const Login = () => {
       </div>
 
       <form className="space-y-4">
-        <input
+        <Input
           type="email"
           placeholder={t('login.emailPlaceholder')}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
-        <input
+        <Input
           type="password"
           placeholder={t('login.passwordPlaceholder')}
-          className="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
         <Button
           type="submit"
-          className="w-full bg-blue-600 text-white rounded-lg py-2 font-medium hover:bg-blue-700 transition"
+          className="w-full py-2 font-medium"
         >
           {t('login.signIn')}
         </Button>

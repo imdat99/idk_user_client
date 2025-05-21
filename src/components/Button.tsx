@@ -5,16 +5,20 @@ import { cn } from "lib/utils"
 
 
 const buttonVariants = cva(
-  "btn",
+  ":uno: inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        default: "btn_default",
-        destructive: "btn_destructive",
-        outline: "btn_outline",
-        secondary: "btn_secondary",
-        ghost: "btn_ghost",
-        link: "btn_link",
+        default:
+          ':uno: bg-primary text-primary-foreground shadow hover:bg-primary/90',
+        destructive:
+          ':uno: bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
+        outline:
+          ':uno: border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
+        secondary:
+          ':uno: bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
+        ghost: ':uno: hover:bg-accent hover:text-accent-foreground',
+        link: ':uno: text-primary underline-offset-4 hover:underline',
       },
       size: {
         default: "h-9 px-4 py-2",
