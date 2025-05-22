@@ -1,30 +1,99 @@
 import {
-    defineConfig,
-    transformerCompileClass,
-    transformerVariantGroup
-} from 'unocss'
-import presetWind4 from '@unocss/preset-wind4'
+  defineConfig,
+  presetAttributify,
+  transformerCompileClass,
+  transformerVariantGroup,
+} from "unocss";
+import presetWind4 from "@unocss/preset-wind4";
+import presetRcSelect from "./rcSelectPreset";
 export default defineConfig({
-    // ...UnoCSS options
-    presets: [presetWind4()],
-    rules: [
-        ['outline-none', { outline: 'none' }],
-        ['leading-none', { lineHeight: '1' }],
-        [
-            'animate-loadingBar',
-            {
-                animation: 'loadingBar 1.5s linear infinite',
-            },
-        ],
+  // ...UnoCSS options
+  presets: [
+    presetWind4(),
+    presetAttributify(),
+    presetRcSelect({
+      darkMode: false,
+    }),
+  ],
+  rules: [
+    ["outline-none", { outline: "none" }],
+    ["leading-none", { lineHeight: "1" }],
+    [
+      "animate-loadingBar",
+      {
+        animation: "loadingBar 1.5s linear infinite",
+      },
     ],
-    transformers: [
-        transformerVariantGroup(),
-        transformerCompileClass({
-            classPrefix: 'xemdi_',
-        }),
-    ],
-    theme: {
-        colors: {
+  ],
+  transformers: [
+    transformerVariantGroup(),
+    transformerCompileClass({
+      classPrefix: "xemdi_",
+    }),
+  ],
+  theme: {
+    colors: {
+      border: "hsl(214.3 31.8% 91.4%)",
+      input: "hsl(214.3 31.8% 91.4%)",
+      ring: "oklch(0.6276 0.2076 264.51)",
+      background: "oklch(0.98 0 0)",
+      foreground: "oklch(0.18 0 0)",
+      primary: {
+        DEFAULT: "oklch(0.6276 0.2076 264.51)",
+        foreground: "hsl(210 40% 98%)",
+      },
+      secondary: {
+        DEFAULT: "hsl(210 40% 96%)",
+        foreground: "hsl(222.2 84% 4.9%)",
+      },
+      muted: {
+        DEFAULT: "hsl(210 40% 96%)",
+        foreground: "hsl(215.4 16.3% 46.9%)",
+      },
+      accent: {
+        DEFAULT: "hsl(210 40% 96%)",
+        foreground: "hsl(222.2 84% 4.9%)",
+      },
+
+      destructive: {
+        DEFAULT: "hsl(0 84.2% 60.2%)",
+        foreground: "hsl(210 40% 98%)",
+      },
+      card: {
+        DEFAULT: "hsl(0 0% 100%)",
+        foreground: "hsl(222.2 84% 4.9%)",
+      },
+    },
+    radius: {
+      none: "0px",
+      sm: "0.125rem", // 2px
+      DEFAULT: "0rem", // 4px (áp dụng cho .rounded)
+      md: "0.375rem", // 6px
+      lg: "0.5rem", // 8px
+      xl: "0.75rem", // 12px
+      "2xl": "1rem", // 16px
+      "3xl": "1.5rem", // 24px
+      full: "9999px",
+    },
+  },
+  shortcuts: [
+    {
+      xemdi_inp:
+        "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:(outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10) disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+    },
+  ],
+  preflights: [
+    {
+      getCSS: () => `
+        @keyframes loadingBar {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+      `,
+    },
+  ],
+});
+/*
             primary: 'oklch(0.6276 0.2076 264.51)',
             secondary: 'oklch(0.6232 0.0397 257.69)',
             success: 'oklch(0.6158 0.1611 153.57)',
@@ -52,91 +121,5 @@ export default defineConfig({
             'light-foreground': 'oklch(0.1 0 0)',
             'dark-foreground': 'oklch(1 0 0)',
             'accent-foreground': 'oklch(0.1 0 0)',
-        },
-        radius: {
-            none: '0px',
-            sm: '0.125rem', // 2px
-            DEFAULT: '0rem', // 4px (áp dụng cho .rounded)
-            md: '0.375rem', // 6px
-            lg: '0.5rem', // 8px
-            xl: '0.75rem', // 12px
-            '2xl': '1rem', // 16px
-            '3xl': '1.5rem', // 24px
-            full: '9999px',
-        },
-    },
-    shortcuts: [
-        {
-            xemdi_inp: "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:(outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10) disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-            "rc-select-selection-item": "line-height-9 px-3 text-base md:text-sm",
-            "rc-select-selection-search-input": "xemdi_inp",
-            "rc-select-arrow": "absolute inset-y-0 right-3 flex items-center pointer-events-none",
-        }
-    ],
-    preflights: [
-        {
-            getCSS: () => `
-        @keyframes loadingBar {
-          0% { transform: translateX(-100%); }
-          100% { transform: translateX(100%); }
-        }
-        @keyframes rcSelectDropdownSlideUpIn {
-        0% {
-            opacity: 0;
-            transform-origin: 0% 0%;
-            transform: scaleY(0);
-        }
-        100% {
-            opacity: 1;
-            transform-origin: 0% 0%;
-            transform: scaleY(1);
-        }
-        }
-        @keyframes rcSelectDropdownSlideUpOut {
-        0% {
-            opacity: 1;
-            transform-origin: 0% 0%;
-            transform: scaleY(1);
-        }
-        100% {
-            opacity: 0;
-            transform-origin: 0% 0%;
-            transform: scaleY(0);
-        }
-        }
-        @keyframes rcSelectDropdownSlideDownIn {
-        0% {
-            transform: scaleY(0);
-            transform-origin: 100% 100%;
-            opacity: 0;
-        }
-        100% {
-            transform: scaleY(1);
-            transform-origin: 100% 100%;
-            opacity: 1;
-        }
-        }
-        @keyframes rcSelectDropdownSlideDownOut {
-        0% {
-            transform: scaleY(1);
-            transform-origin: 100% 100%;
-            opacity: 1;
-        }
-        100% {
-            transform: scaleY(0);
-            transform-origin: 100% 100%;
-            opacity: 0;
-        }
-        }
-        @keyframes rcSelectLoadingIcon {
-        0% {
-            transform: rotate(0);
-        }
-        100% {
-            transform: rotate(360deg);
-        }
-        }
-      `,
-        },
-    ],
-})
+
+*/

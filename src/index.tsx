@@ -3,7 +3,6 @@ import { createBrowserRouter, RouterProvider } from "react-router";
 import { HelmetProvider } from "react-helmet-async";
 
 import { startTransition } from "react";
-import "./index.css";
 import "@unocss/reset/tailwind.css";
 import "uno.css";
 import { SWRConfig } from "swr";
