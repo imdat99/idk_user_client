@@ -2,6 +2,7 @@ import GoogleModalDemo from 'components/Dialog';
 import useSWR from 'swr';
 import { useTranslation } from 'react-i18next';
 import mathService from 'worker/mathService';
+import { Link } from 'react-router';
 const Home = () => {
   const { t } = useTranslation('home');
   useSWR('/todos/1');
@@ -21,6 +22,9 @@ const Home = () => {
       >
         Click me to test worker
       </button>
+      <Link to="/login">
+        Go to About Page
+      </Link>
       {/* <GoogleModalDemo /> */}
       <h1 className="text-3xl font-bold h-[300px]">{t('title')}</h1>
     </div>

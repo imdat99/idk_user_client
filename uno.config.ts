@@ -1,7 +1,7 @@
 import {
     defineConfig,
     transformerCompileClass,
-    transformerVariantGroup,
+    transformerVariantGroup
 } from 'unocss'
 import presetWind4 from '@unocss/preset-wind4'
 export default defineConfig({
@@ -9,9 +9,20 @@ export default defineConfig({
     presets: [presetWind4()],
     rules: [
         ['outline-none', { outline: 'none' }],
-        ["leading-none", { lineHeight: '1' }],
+        ['leading-none', { lineHeight: '1' }],
+        [
+            'animate-loadingBar',
+            {
+                animation: 'loadingBar 1.5s linear infinite',
+            },
+        ],
     ],
-    transformers: [transformerVariantGroup(), transformerCompileClass()],
+    transformers: [
+        transformerVariantGroup(),
+        transformerCompileClass({
+            classPrefix: 'xemdi_',
+        }),
+    ],
     theme: {
         colors: {
             primary: 'oklch(0.6276 0.2076 264.51)',
@@ -28,9 +39,9 @@ export default defineConfig({
             muted: 'oklch(0.967 0.001 286.375)',
             'muted-foreground': 'oklch(0.552 0.016 285.938)',
 
-            border: "oklch(0.92 0.004 286.32)",
-            input: "oklch(0.92 0.004 286.32)",
-            ring: "oklch(0.705 0.015 286.067)",
+            border: 'oklch(0.92 0.004 286.32)',
+            input: 'oklch(0.92 0.004 286.32)',
+            ring: 'oklch(0.705 0.015 286.067)',
 
             'primary-foreground': 'oklch(1 0 0)',
             'secondary-foreground': 'oklch(1 0 0)',
@@ -53,5 +64,79 @@ export default defineConfig({
             '3xl': '1.5rem', // 24px
             full: '9999px',
         },
-    }
+    },
+    shortcuts: [
+        {
+            xemdi_inp: "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:(outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10) disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
+            "rc-select-selection-item": "line-height-9 px-3 text-base md:text-sm",
+            "rc-select-selection-search-input": "xemdi_inp",
+            "rc-select-arrow": "absolute inset-y-0 right-3 flex items-center pointer-events-none",
+        }
+    ],
+    preflights: [
+        {
+            getCSS: () => `
+        @keyframes loadingBar {
+          0% { transform: translateX(-100%); }
+          100% { transform: translateX(100%); }
+        }
+        @keyframes rcSelectDropdownSlideUpIn {
+        0% {
+            opacity: 0;
+            transform-origin: 0% 0%;
+            transform: scaleY(0);
+        }
+        100% {
+            opacity: 1;
+            transform-origin: 0% 0%;
+            transform: scaleY(1);
+        }
+        }
+        @keyframes rcSelectDropdownSlideUpOut {
+        0% {
+            opacity: 1;
+            transform-origin: 0% 0%;
+            transform: scaleY(1);
+        }
+        100% {
+            opacity: 0;
+            transform-origin: 0% 0%;
+            transform: scaleY(0);
+        }
+        }
+        @keyframes rcSelectDropdownSlideDownIn {
+        0% {
+            transform: scaleY(0);
+            transform-origin: 100% 100%;
+            opacity: 0;
+        }
+        100% {
+            transform: scaleY(1);
+            transform-origin: 100% 100%;
+            opacity: 1;
+        }
+        }
+        @keyframes rcSelectDropdownSlideDownOut {
+        0% {
+            transform: scaleY(1);
+            transform-origin: 100% 100%;
+            opacity: 1;
+        }
+        100% {
+            transform: scaleY(0);
+            transform-origin: 100% 100%;
+            opacity: 0;
+        }
+        }
+        @keyframes rcSelectLoadingIcon {
+        0% {
+            transform: rotate(0);
+        }
+        100% {
+            transform: rotate(360deg);
+        }
+        }
+      `,
+        },
+    ],
 })
