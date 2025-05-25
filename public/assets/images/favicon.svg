@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" width="80" height="80"><svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+      <!-- <rect width="80" height="80" fill="#fff" rx="8.5" ry="8.5" /> -->
+  <!-- Góc trên trái -->
+  <rect x="-8.5" y="-8.5" width="40" height="17.5" rx="8.5" ry="8.5" stroke="#fff" fill="tomato" transform="translate(10 10) rotate(45 0 0)"></rect>
+
+  <!-- Góc trên phải -->
+  <rect x="-8.5" y="-8.5" width="40" height="17.5" rx="8.5" ry="8.5" stroke="#fff" fill="dodgerblue" transform="translate(70 10) rotate(135 0 0)"></rect>
+
+  <!-- Góc dưới phải -->
+  <rect x="-8.5" y="-8.5" width="40" height="17.5" rx="8.5" ry="8.5" stroke="#fff" fill="limegreen" transform="translate(70 70) rotate(225 0 0)"></rect>
+
+  <!-- Góc dưới trái -->
+  <rect x="-8.5" y="-8.5" width="40" height="17.5" rx="8.5" ry="8.5" stroke="#fff" fill="orange" transform="translate(10 70) rotate(315 0 0)"></rect>
+</svg><style>@media (prefers-color-scheme: light) { :root { filter: none; } }
+@media (prefers-color-scheme: dark) { :root { filter: none; } }
+</style></svg>
