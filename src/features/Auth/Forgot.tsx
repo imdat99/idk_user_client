@@ -18,8 +18,6 @@ const Forgot = () => {
       <div className="flex w-full max-w-sm items-center space-x-2 [&>div]:flex-1">
         <AuthInput
           type="email"
-          error
-          errorText="Email not found"
           startAdornment={<Mail className="text-muted-foreground" size={18} />}
           placeholder={t("login.emailPlaceholder")}
         />

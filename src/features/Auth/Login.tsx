@@ -38,13 +38,13 @@ const Login = () => {
 
       <form className="space-y-4" onSubmit={(e) => e.preventDefault()}>
         <AuthInput
-          error
+          
           type="email"
           startAdornment={<Mail className="text-muted-foreground" size={18} />}
           placeholder={t("login.emailPlaceholder")}
         />
         <AuthInput
-          error
+          
           type="password"
           className="indent-6"
           placeholder={t("login.passwordPlaceholder")}

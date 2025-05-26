@@ -318,7 +318,7 @@ export function presetRcSelect(options: RcSelectPresetOptions = {}): PresetOrFac
 }
 
 .${prefix}rc-select-single:not(.${prefix}rc-select-customize-input) .${prefix}rc-select-selector {
-  padding: 0 12px;
+  /*padding: 0 12px;*/
   border: 1px solid ${resolvedColors.border};
   border-radius: 6px;
   background-color: ${resolvedColors.background};

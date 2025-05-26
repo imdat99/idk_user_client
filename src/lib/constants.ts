@@ -10,3 +10,15 @@ export const authPath = {
     sendVerificationCode: '/send-verification-code',
     verifyPhoneNumber: '/verify-phone-number'
 }
+export const PolicyPath = {
+    privacy: '/privacy',
+    terms: '/terms',
+    cookies: '/cookies',
+    faq: '/faq',
+    policy: '/policy',
+}
+export const contactPath = {
+    contact: '/contact',
+    about: '/about',
+    help: '/help',
+}

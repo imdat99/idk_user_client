@@ -1,7 +1,7 @@
 import { Outlet, RouteObject } from 'react-router'
 import { createElement as _c } from 'react'
 import Error from './components/Error'
-import { authPath } from 'lib/constants'
+import { authPath, PolicyPath } from 'lib/constants'
 import RootLayout from 'components/RootLayout'
 const routes: RouteObject[] = [
     {
@@ -12,7 +12,6 @@ const routes: RouteObject[] = [
         children: [
             {
                 path: '/',
-                ErrorBoundary: Error,
                 element: _c(Outlet),
                 children: [
                     {
@@ -25,7 +24,6 @@ const routes: RouteObject[] = [
                 ],
             },
             {
-                ErrorBoundary: Error,
                 lazy: async () => ({
                     Component: (await import('./features/Auth')).default,
                 }),
@@ -54,6 +52,20 @@ const routes: RouteObject[] = [
                     },
                 ],
             },
+            {
+                lazy: async () => ({
+                    Component: (await import('./features/Policy')).default,
+                }),
+                children: [
+                    {
+                        path: PolicyPath.privacy,
+                        lazy: async () => ({
+                            Component: (await import('./features/Policy/Privacy')).default,
+                        }),
+                    }
+                ],
+            }
+
         ],
     },
 ]

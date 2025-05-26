@@ -20,5 +20,25 @@
       "en": "English"
     },
     "theme": "Theme"
+  },
+  "policy": {
+    "title": "Privacy Policy",
+    "description": "We are committed to protecting your privacy. Please read our privacy policy for more details.",
+    "acceptButton": "Accept",
+    "declineButton": "Decline"
+  },
+  "footer": {
+    "text": "© {{year}} Xemdi. All rights reserved."
+  },
+  "helper": {
+    "title": "Help",
+    "description": "If you need assistance, please contact us via email or visit our support page.",
+    "contactEmail": "Support Email",
+    "supportPage": "Support Page",
+    "contactButton": "Contact Us",
+    "visitButton": "Visit Support Page"
+  },
+  "loading": {
+    "message": "Loading, please wait..."
   }
 }

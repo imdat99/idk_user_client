@@ -20,5 +20,25 @@
       "en": "Tiếng Anh"
     },
     "theme": "Chủ đề"
+  },
+  "policy": {
+    "title": "Chính sách bảo mật",
+    "description": "Chúng tôi cam kết bảo vệ quyền riêng tư của bạn. Vui lòng đọc chính sách bảo mật của chúng tôi để biết thêm chi tiết.",
+    "acceptButton": "Đồng ý",
+    "declineButton": "Từ chối"
+  },
+  "footer": {
+    "text": "© {{year}} Xemdi. Bảo lưu mọi quyền."
+  },
+  "helper": {
+    "title": "Trợ giúp",
+    "description": "Nếu bạn cần trợ giúp, vui lòng liên hệ với chúng tôi qua email hoặc truy cập trang hỗ trợ của chúng tôi.",
+    "contactEmail": "Email hỗ trợ",
+    "supportPage": "Trang hỗ trợ",
+    "contactButton": "Liên hệ với chúng tôi",
+    "visitButton": "Truy cập trang hỗ trợ"
+  },
+  "loading": {
+    "message": "Đang tải, vui lòng đợi..."
   }
 }
