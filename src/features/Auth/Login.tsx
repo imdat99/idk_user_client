@@ -60,6 +60,7 @@ const Login = () => {
               description: "Something went wrong. Please try again.",
               variant: "error",
               duration: 5000,
+              position: "top-right",
             })
           }
         >

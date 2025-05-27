@@ -9,7 +9,7 @@ const index = () => {
     <div className="bg-background flex items-center min-h-svh flex-col">
       <div className="flex-1 items-center flex">
         <div className=":uno: bg-white w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6">
-          <img className="mx-auto animate-bounce-in-down duration-100" src="/assets/images/logo.svg" alt="logo" />
+          <img className="mx-auto animate-bounce-in duration-500" src="/assets/images/logo.svg" alt="logo" />
           <Outlet />
         </div>
       </div>
