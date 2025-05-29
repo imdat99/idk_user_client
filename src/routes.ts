@@ -3,11 +3,11 @@ import { createElement as _c } from 'react'
 import Error from './components/Error'
 import { authPath, PolicyPath } from 'lib/constants'
 import RootLayout from 'components/RootLayout'
+import FullyLoading from 'components/FullyLoading'
 const routes: RouteObject[] = [
     {
         ErrorBoundary: Error,
-        HydrateFallback: () =>
-            _c('div', { className: 'h-screen' }, 'Loading...'),
+        HydrateFallback: () => _c(FullyLoading),
         Component: RootLayout,
         children: [
             {

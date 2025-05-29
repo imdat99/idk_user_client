@@ -13,7 +13,7 @@ const LanguageBtn = () => {
     <select value={lang} onChange={(e) => setLang(e.target.value)} className="cursor-pointer focus:outline-none">
       {languages.map((label, index) => (
         <option key={index} value={index}>
-          <span>{t("app.language." + label)} ({label.toUpperCase()})</span>
+          {t("app.language." + label)} ({label.toUpperCase()})
         </option>
       ))}
     </select>
