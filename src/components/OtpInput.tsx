@@ -1,8 +1,12 @@
 import { cn } from "lib/utils";
 import { useState, useRef, ClipboardEvent, ChangeEvent, KeyboardEvent, useEffect } from "react";
 
-export default function OTPInput() {
-  const [otp, setOtp] = useState<string[]>(Array(6).fill(""));
+interface OTPInputProps {
+    length?: number;
+    onComplete?: (otp: string) => void;
+}
+const OTPInput: React.FC<OTPInputProps> = ({ length = 6, onComplete }) => {
+  const [otp, setOtp] = useState<string[]>(Array(length).fill(""));
   const inputsRef = useRef<(HTMLInputElement | null)[]>([]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>, index: number) => {
@@ -18,6 +22,9 @@ export default function OTPInput() {
     } else if (value === "") {
       newOtp[index] = "";
       setOtp(newOtp);
+    }
+    if (onComplete && newOtp.every(digit => digit !== "")) {
+      onComplete(newOtp.join(""));
     }
   };
 
@@ -53,6 +60,7 @@ export default function OTPInput() {
   };
   useEffect(() => {
     inputsRef.current[0]?.focus();
+    setOtp(Array(length).fill("")); // Reset OTP on mount
   }, []);
   return (
     <div className="flex justify-center gap-2" onPaste={handlePaste}>
@@ -72,3 +80,4 @@ export default function OTPInput() {
     </div>
   );
 }
+export default OTPInput;

@@ -32,7 +32,7 @@ const Home = () => {
       <Link to="/login">
         Go to About Page
       </Link>
-      <OTPInput/>
+      <OTPInput onComplete={console.log} length={4}/>
       {/* <GoogleModalDemo /> */}
       <h1 className="text-3xl font-bold h-[300px]">{t('title')}</h1>
     </div>
