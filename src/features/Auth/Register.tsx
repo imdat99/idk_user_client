@@ -31,7 +31,7 @@ const Register = () => {
           />
           <div className="flex flex-col gap-1">
             <AuthInput
-              placeholder="Enter verification code"
+              placeholder={t("register.codePlaceholder")}
               autoComplete="off"
               type="text"
               name="code"

@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import mathService from 'worker/mathService';
 import { Link } from 'react-router';
 import { Helmet } from 'react-helmet-async';
+import OTPInput from 'components/OtpInput';
 const Home = () => {
   const { t } = useTranslation('home');
   useSWR('/todos/1');
@@ -31,6 +32,7 @@ const Home = () => {
       <Link to="/login">
         Go to About Page
       </Link>
+      <OTPInput/>
       {/* <GoogleModalDemo /> */}
       <h1 className="text-3xl font-bold h-[300px]">{t('title')}</h1>
     </div>
