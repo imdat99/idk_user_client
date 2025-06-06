@@ -1,9 +1,9 @@
 import { Button } from "components/Button";
+import { Input } from "components/Input";
 import { authPath } from "lib/constants";
 import { ContactRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { AuthInput } from "./components/Input";
 
 const Register = () => {
   const { t } = useTranslation("auth");
@@ -20,25 +20,25 @@ const Register = () => {
           <p className="text-black font-bold">
             {t("register.emailVerification")}
           </p>
-          <AuthInput
+          <Input
             type="email"
             autoComplete="off"
             id="email"
-            startAdornment={
+            prefix={
               <Mail className="text-muted-foreground" size={18} />
             }
             placeholder={t("login.emailPlaceholder")}
           />
           <div className="flex flex-col gap-1">
-            <AuthInput
+            <Input
               placeholder={t("register.codePlaceholder")}
               autoComplete="off"
               type="text"
               name="code"
-              startAdornment={
+              prefix={
                 <ShieldCheck className="text-muted-foreground" size={18} />
               }
-              endAdornment={
+              suffix={
                 <Button
                   className="shadow-none h-7 px-2 bg-primary/80"
                   size={"sm"}
@@ -55,21 +55,19 @@ const Register = () => {
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-black font-bold">{t("register.accountInfo")}</p>
-            <AuthInput
+            <Input
               type="text"
               autoComplete="off"
-              id="text"
               placeholder={t("register.fullName")}
-              startAdornment={
+              prefix={
                 <ContactRound className="text-muted-foreground" size={18} />
               }
             />
-            <AuthInput
+            <Input
               type="password"
               autoComplete="off"
-              className="indent-6"
               placeholder={t("login.passwordPlaceholder")}
-              startAdornment={
+              prefix={
                 <LockKeyhole className="text-muted-foreground" size={18} />
               }
             />

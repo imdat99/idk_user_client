@@ -5,18 +5,15 @@ import {
   transformerVariantGroup,
 } from "unocss";
 import presetWind4 from "@unocss/preset-wind4";
-import presetRcSelect from "./rcSelectPreset";
+// import presetRcSelect from "./rcSelectPreset";
 export default defineConfig({
   // ...UnoCSS options
-  safelist: [
-    "load_ring"
-  ],
   presets: [
     presetWind4(),
     presetAttributify(),
-    presetRcSelect({
-      darkMode: false,
-    }),
+    // presetRcSelect({
+    //   darkMode: false,
+    // }),
   ],
   rules: [
     ["outline-none", { outline: "none" }],
@@ -81,9 +78,17 @@ export default defineConfig({
   },
   shortcuts: [
     {
+      focus_inp: "outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10",
       xemdi_inp:
-        "flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:(outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10) disabled:cursor-not-allowed disabled:opacity-50 md:text-sm",
-        load_ring: "w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4"
+        "flex h-9 w-full rounded-md border border-input bg-transparent p-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:focus_inp focus-within:focus_inp disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ",
+        load_ring: "w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4",
+        "rc-input": "w-full focus-visible:outline-none p-0 ",
+        "rc-input-out-of-range": "text-red-500",
+        "rc-input-affix-wrapper": "border border-gray-300 rounded-md overflow-hidden",
+        "rc-input-clear-icon": "p-0 text-xs bg-transparent border-0 cursor-pointer",
+        "rc-input-clear-icon-hidden": "hidden",
+        "rc-input-prefix": "px-1 flex items-center",
+        "rc-input-suffix": "px-1 flex items-center",
     },
   ],
   preflights: [
@@ -96,7 +101,47 @@ export default defineConfig({
       `,
     },
   ],
+  safelist: [
+    "rc-input",
+    "load_ring",
+    "rc-input-out-of-range",
+    "rc-input-affix-wrapper",
+    "rc-input-clear-icon",
+    "rc-input-clear-icon-hidden",
+    "rc-input-prefix",
+    "rc-input-suffix",
+  ],
 });
+/*
+.rc-input-out-of-range {
+  color: red;
+}
+.rc-input-affix-wrapper {
+  padding: 2px 8px;
+  overflow: hidden;
+  border: 1px solid lightgray;
+  border-radius: 2px;
+}
+.rc-input-affix-wrapper:hover,
+.rc-input-affix-wrapper:focus-within {
+  border-color: #000;
+}
+.rc-input-affix-wrapper input {
+  padding: 0;
+  border: none;
+  outline: none;
+}
+.rc-input-clear-icon {
+  padding: 0;
+  font-size: 12px;
+  background: none;
+  border: none;
+}
+.rc-input-clear-icon-hidden {
+  display: none;
+}
+
+*/
 /*
             primary: 'oklch(0.6276 0.2076 264.51)',
             secondary: 'oklch(0.6232 0.0397 257.69)',

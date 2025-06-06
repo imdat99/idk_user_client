@@ -1,17 +1,19 @@
-import { cn } from "lib/utils"
-import React from "react"
+import { cn, composeRef } from "lib/utils"
+import RcInput, { InputProps, InputRef } from 'rc-input';
+import React, { useRef } from "react"
 
 
-const Input = React.forwardRef<HTMLInputElement, React.ComponentProps<"input">>(
+const Input = React.forwardRef<InputRef, InputProps>(
   ({ className, type, ...props }, ref) => {
+    const inputRef = useRef<InputRef>(null);
     return (
-      <input
+      <RcInput
         type={type}
         className={cn(
           "xemdi_inp",
           className
         )}
-        ref={ref}
+        ref={composeRef(ref, inputRef)}
         {...props}
       />
     )

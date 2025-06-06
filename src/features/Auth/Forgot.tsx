@@ -3,7 +3,7 @@ import { authPath } from "lib/constants";
 import { Mail, SendHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { AuthInput } from "./components/Input";
+import { Input } from "components/Input";
 
 const Forgot = () => {
   const { t } = useTranslation("auth");
@@ -16,10 +16,10 @@ const Forgot = () => {
         <p className="text-sm text-gray-600">{t("forgot.subtitle")}</p>
       </div>
       <div className="flex w-full max-w-sm items-center space-x-2 [&>div]:flex-1">
-        <AuthInput
+        <Input
           type="email"
-          startAdornment={<Mail className="text-muted-foreground" size={18} />}
           placeholder={t("login.emailPlaceholder")}
+          prefix={<Mail className="text-muted-foreground" size={18} />}
         />
         <Button type="submit" size="icon" title={t("forgot.sendResetLink")}>
           <SendHorizontal />
