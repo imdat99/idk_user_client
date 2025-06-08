@@ -55,14 +55,6 @@ const routes: RouteObject[] = [
             {
                 lazy: async () => ({
                     Component: (await import('./features/Policy')).default,
-                    loader: async () => {
-                        const a = new Promise((resolve) => {
-                            setTimeout(() => {
-                                resolve(null)
-                            }, 5000)
-                        })
-                        return await a
-                    }
                 }),
                 children: [
                     {

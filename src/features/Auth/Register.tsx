@@ -1,12 +1,59 @@
 import { Button } from "components/Button";
 import { Input } from "components/Input";
+import { showToast } from "components/Toast";
 import { authPath } from "lib/constants";
 import { ContactRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { useCallback, useState } from "react";
+import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
+interface RegisterFormValues {
+  email: string;
+  code: string;
+  fullName: string;
+  password: string;
+}
 const Register = () => {
   const { t } = useTranslation("auth");
+  const [sendCodeLoading, setSendCodeLoading] = useState(false);
+  const [countdown, setCountdown] = useState(0);
+  const { register, handleSubmit, getValues, getFieldState } =
+    useForm<RegisterFormValues>();
+    const sendCodeCountdown = useCallback(() => {
+    let countdown = 60*5; // 5 minutes in milliseconds
+    setCountdown(countdown);
+    const interval = setInterval(() => {
+      countdown -= 1; // Decrease countdown by 1 second
+      setCountdown(countdown);
+    }, 1000);
+    if (countdown <= 0) {
+      clearInterval(interval);
+      setCountdown(0);
+    }
+  },[])
+  const sendCode = () => {
+    const error = getFieldState("email").error;
+    const email = getValues("email");
+    if (!error && email) {
+      setSendCodeLoading(true);
+      fetch("http://ip-api.com/json/", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      }).then((res) => {
+      sendCodeCountdown();
+      showToast({
+        // variant: "info",
+        title: t("register.codeSent"),
+        description: t("register.codeSentDescription", { email }),
+      })}).finally(() => {
+        setSendCodeLoading(false);
+      });
+    }
+  };
   return (
     <>
       <div className="text-center">
@@ -15,7 +62,12 @@ const Register = () => {
         </h2>
         <p className="text-sm text-gray-600">{t("register.subtitle")}</p>
       </div>
-      <form className="mt-6 space-y-4">
+      <form
+        className="mt-6 space-y-4"
+        onSubmit={handleSubmit((data) => {
+          console.log(data);
+        })}
+      >
         <div className="gap-4 flex flex-col">
           <p className="text-black font-bold">
             {t("register.emailVerification")}
@@ -24,17 +76,29 @@ const Register = () => {
             type="email"
             autoComplete="off"
             id="email"
-            prefix={
-              <Mail className="text-muted-foreground" size={18} />
-            }
+            prefix={<Mail className="text-muted-foreground" size={18} />}
+            {...register("email", {
+              required: t("login.emailRequired"),
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: t("login.emailInvalid"),
+              },
+            })}
             placeholder={t("login.emailPlaceholder")}
           />
           <div className="flex flex-col gap-1">
             <Input
+              onPressEnter={(e) => e.preventDefault()}
               placeholder={t("register.codePlaceholder")}
               autoComplete="off"
               type="text"
-              name="code"
+              {...register("code", {
+                required: t("register.codeRequired"),
+                pattern: {
+                  value: /^[0-9]{6}$/,
+                  message: t("register.codeInvalid"),
+                },
+              })}
               prefix={
                 <ShieldCheck className="text-muted-foreground" size={18} />
               }
@@ -42,9 +106,11 @@ const Register = () => {
                 <Button
                   className="shadow-none h-7 px-2 bg-primary/80"
                   size={"sm"}
-                  disabled
+                  onClick={sendCode}
+                  loading={sendCodeLoading}
+                  disabled={countdown > 0}
                 >
-                  {t("register.sendCode")}
+                  {countdown ? countdown+"s" : t("register.sendCode")}
                 </Button>
               }
             />
@@ -55,23 +121,36 @@ const Register = () => {
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-black font-bold">{t("register.accountInfo")}</p>
-            <Input
-              type="text"
-              autoComplete="off"
-              placeholder={t("register.fullName")}
-              prefix={
-                <ContactRound className="text-muted-foreground" size={18} />
-              }
-            />
-            <Input
-              type="password"
-              autoComplete="off"
-              placeholder={t("login.passwordPlaceholder")}
-              prefix={
-                <LockKeyhole className="text-muted-foreground" size={18} />
-              }
-            />
-          </div>
+          <Input
+            type="text"
+            autoComplete="off"
+            placeholder={t("register.fullName")}
+            {...register("fullName", {
+              required: t("register.fullNameRequired"),
+              minLength: {
+                value: 2,
+                message: t("register.fullNameMinLength"),
+              },
+            })}
+            prefix={
+              <ContactRound className="text-muted-foreground" size={18} />
+            }
+          />
+          <Input
+            type="password"
+            autoComplete="off"
+            onPressEnter={(e) => e.preventDefault()}
+            placeholder={t("login.passwordPlaceholder")}
+            {...register("password", {
+              required: t("login.passwordRequired"),
+              minLength: {
+                value: 6,
+                message: t("login.passwordMinLength"),
+              },
+            })}
+            prefix={<LockKeyhole className="text-muted-foreground" size={18} />}
+          />
+        </div>
         <Button type="submit" className="w-full py-2 font-medium">
           {t("register.signUp")}
         </Button>

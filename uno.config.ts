@@ -3,14 +3,20 @@ import {
   presetAttributify,
   transformerCompileClass,
   transformerVariantGroup,
+  presetWind4,
+  // presetWind3,
 } from "unocss";
-import presetWind4 from "@unocss/preset-wind4";
+// import presetWind4 from "@unocss/preset-wind4";
 // import presetRcSelect from "./rcSelectPreset";
 export default defineConfig({
   // ...UnoCSS options
   presets: [
-    presetWind4(),
     presetAttributify(),
+    presetWind4({
+      preflights: { 
+        reset: true, 
+      } 
+    }),
     // presetRcSelect({
     //   darkMode: false,
     // }),
@@ -109,7 +115,7 @@ export default defineConfig({
     "rc-input-clear-icon",
     "rc-input-clear-icon-hidden",
     "rc-input-prefix",
-    "rc-input-suffix",
+    "rc-input-suffix"
   ],
 });
 /*

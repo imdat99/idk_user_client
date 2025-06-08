@@ -1,45 +1,39 @@
-import Form, { Field, FieldContext, FormInstance } from 'rc-field-form';
 import { Button } from "components/Button";
+import { Input } from "components/Input";
+import { showToast } from "components/Toast";
 import { authPath } from "lib/constants";
-import { LockKeyhole, Mail } from "lucide-react";
+import { LockKeyhole, Mail, Eye, EyeClosed, EyeOff } from "lucide-react";
+import { useMemo, useState } from "react";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
-import { showToast } from "components/Toast";
-import { Input } from 'components/Input';
-import { useContext, useEffect } from 'react';
-interface FieldStateProps<T = any> {
-  form?: FormInstance<T>;
-  name: string;
-}
-const FieldState: React.FC<FieldStateProps> = (props) => {
-  let { form } = props;
-  if (!props.form) {
-    form = useContext(FieldContext);
-    if (!form) {
-      console.warn('FieldState: form is not provided and no form instance found in context.');
-      return null;
-    }
-  }
-  const touched = form?.isFieldTouched(props.name);
-  const validating = form?.isFieldValidating(props.name);
-  const error = form?.getFieldError(props.name);
-  useEffect(() => {
-    form?.getFieldError(props.name);
-    console.log(`FieldState: name=${props.name}, touched=${touched}, validating=${validating}, error=${error}`);
-  }, [props.name, form?.getFieldError(props.name)]);
-  return (
-    <div style={{ color: 'green' }}>
-      <span>Field: {props.name} {touched} {validating} {error}</span>
-      {touched ? <span>Touched!</span> : null}
-      {validating ? <span>Validating!</span> : null}
-    </div>
-  );
+
+type FormValues = {
+  email: string;
+  password: string;
 };
+
 const Login = () => {
   const { t } = useTranslation("auth");
-  const [form] = Form.useForm<{ email: string; password: string }>();
-  const error = form?.getFieldError('email');
-  console.log("Login component rendered", form, error);
+  const [inpPasswordType, setInpType] = useState("password");
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<FormValues>();
+  const onSubmit: SubmitHandler<FormValues> = (data) => new Promise((resolve, reject) => {
+      // Simulate an API call
+      setTimeout(() => {
+        console.log(data);
+        reject(data);
+      }, 2000);
+    }).catch(() => showToast({
+      variant: "error",
+      title: "Lỗi",
+      description: t("login.errorMessage"),
+      duration: 3000,
+    }))
+  const EyeCom = useMemo(() => inpPasswordType === "password" ? EyeOff : Eye, [inpPasswordType]);
   return (
     <>
       <div className="text-center">
@@ -54,12 +48,14 @@ const Login = () => {
           className="shadow-none w-full py-2 hover:bg-gray-50 bg-transparent"
           title={t("login.signInWithGoogle")}
         >
-          <img src="/assets/images/google.svg" alt="Google" className="w-5 h-5" />
+          <img
+            src="/assets/images/google.svg"
+            alt="Google"
+            className="w-5 h-5"
+          />
           {t("login.signInWithGoogle")}
         </Button>
       </div>
-
-
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
           <div className="w-full border-t border-gray-300"></div>
@@ -71,40 +67,31 @@ const Login = () => {
         </div>
       </div>
 
-      <Form onFinishFailed={console.log} form={form} className="space-y-4" onFinish={(values) => console.log(values)}>
-        <Field name="email" rules={[{ required: true, message: t("login.emailRequired") }]}>
-          <Input
-            type="email"
-            placeholder={t("login.emailPlaceholder")}
-            prefix={<Mail className="text-muted-foreground" size={18} />}
-          />
-        </Field>
-        <FieldState name="email" form={form} />
-
-        <Field name="password" rules={[{ required: true, message: t("login.passwordRequired") }]}>
-          <Input
-            type="password"
-            placeholder={t("login.passwordPlaceholder")}
-            prefix={<LockKeyhole className="text-muted-foreground" size={18} />}
-          />
-        </Field>
-        <FieldState name="password" form={form} />
-        <Button
-          className="w-full py-2 font-medium"
-          type='submit'
-          // onClick={() =>
-          //   showToast({
-          //     title: "Error",
-          //     description: "Something went wrong. Please try again.",
-          //     variant: "error",
-          //     duration: 5000,
-          //     position: "top-right",
-          //   })
-          // }
-        >
+      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+        <Input
+          type="email"
+          placeholder={t("login.emailPlaceholder")}
+          prefix={<Mail className="text-muted-foreground" size={18} />}
+          {...register("email", { required: "Email is required" })}
+        />
+        <Input
+          onPressEnter={(e) => e.preventDefault()}
+          onClick={(e) => e.preventDefault()}
+          type={inpPasswordType}
+          placeholder={t("login.passwordPlaceholder")}
+          prefix={<LockKeyhole className="text-muted-foreground" size={18} />}
+          suffix={<button onClick={e => {
+            e.preventDefault();
+            setInpType(prev => prev === "password" ? "text" : "password");
+          }} className="text-muted-foreground cursor-pointer">
+            <EyeCom size={18}/>
+          </button>}
+          {...register("password", { required: "Password is required" })}
+        />
+        <Button className="w-full py-2 font-medium select-none" type="submit" loading={isSubmitting} >
           {t("login.signIn")}
         </Button>
-      </Form>
+      </form>
       <div className="mt-6 mb-3 text-center text-sm">
         <Link
           to={authPath.forgotPassword}

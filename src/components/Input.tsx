@@ -4,11 +4,10 @@ import React, { useRef } from "react"
 
 
 const Input = React.forwardRef<InputRef, InputProps>(
-  ({ className, type, ...props }, ref) => {
+  ({ className, ...props }, ref) => {
     const inputRef = useRef<InputRef>(null);
     return (
       <RcInput
-        type={type}
         className={cn(
           "xemdi_inp",
           className

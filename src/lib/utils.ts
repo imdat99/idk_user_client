@@ -42,8 +42,20 @@ export const composeRef = <T>(...refs: React.Ref<T>[]): React.Ref<T> => {
 };
 export const fillRef = <T>(ref: React.Ref<T>, node: T) => {
   if (typeof ref === 'function') {
-    ref(node);
+    ref((node as any)?.nativeElement ?? node);
   } else if (typeof ref === 'object' && ref && 'current' in ref) {
     (ref as any).current = node;
   }
 };
+export const debounce = <T extends (...args: any[]) => void>(func: T, wait: number = 100): T => {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+  return function (this: any, ...args: Parameters<T>) {
+    const context = this;
+    if (timeout) {
+      clearTimeout(timeout);
+    }
+    timeout = setTimeout(() => {
+      func.apply(context, args);
+    }, wait);
+  } as T;
+}
