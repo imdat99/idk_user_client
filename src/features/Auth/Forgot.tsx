@@ -4,9 +4,27 @@ import { Mail, SendHorizontal } from "lucide-react";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 import { Input } from "components/Input";
+import { useForm } from "react-hook-form";
 
+interface FormValues {
+  email: string;
+}
 const Forgot = () => {
   const { t } = useTranslation("auth");
+   const {
+      register,
+      handleSubmit,
+      formState: { isSubmitting },
+    } = useForm<FormValues>();
+  const onSubmit = (data: FormValues) => {
+    return new Promise((resolve, reject) => {
+      // Simulate an API call
+      setTimeout(() => {
+        console.log(data);
+        resolve(data);
+      }, 2000);
+    })
+  }
   return (
     <>
       <div className="text-center">
@@ -15,27 +33,22 @@ const Forgot = () => {
         </h2>
         <p className="text-sm text-gray-600">{t("forgot.subtitle")}</p>
       </div>
-      <div className="flex w-full max-w-sm items-center space-x-2 [&>div]:flex-1">
+      <form className="flex w-full max-w-sm items-center space-x-2 [&>div]:flex-1" onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="email"
           placeholder={t("login.emailPlaceholder")}
           prefix={<Mail className="text-muted-foreground" size={18} />}
+          {...register("email", {
+            required: t("login.emailRequired"),
+            pattern: {
+              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+              message: t("login.emailInvalid"),
+            },
+          })}
         />
-        <Button type="submit" size="icon" title={t("forgot.sendResetLink")}>
+        <Button type="submit" size="icon" title={t("forgot.sendResetLink")} loading={isSubmitting}>
           <SendHorizontal />
         </Button>
-      </div>
-      <form className="mt-6 space-y-4">
-        {/* <Input
-          type="email"
-          placeholder={t('login.emailPlaceholder')}
-        />
-        <Button
-          type="submit"
-          className="w-full"
-        >
-          {t('forgot.sendResetLink')}
-        </Button> */}
       </form>
 
       <div className="mt-6 text-center text-sm text-gray-600">

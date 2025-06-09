@@ -1,12 +1,13 @@
-import { Outlet, RouteObject } from 'react-router'
+import { Outlet } from 'react-router'
+import type { RouteObject } from 'react-router'
 import { createElement as _c } from 'react'
-import Error from './components/Error'
 import { authPath, PolicyPath } from 'lib/constants'
 import RootLayout from 'components/RootLayout'
 import FullyLoading from 'components/FullyLoading'
+import ErrorScreen from 'components/Error'
 const routes: RouteObject[] = [
     {
-        ErrorBoundary: Error,
+        ErrorBoundary: ErrorScreen,
         HydrateFallback: () => _c(FullyLoading),
         Component: RootLayout,
         children: [

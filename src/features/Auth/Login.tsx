@@ -2,9 +2,10 @@ import { Button } from "components/Button";
 import { Input } from "components/Input";
 import { showToast } from "components/Toast";
 import { authPath } from "lib/constants";
-import { LockKeyhole, Mail, Eye, EyeClosed, EyeOff } from "lucide-react";
+import { LockKeyhole, Mail, Eye, EyeOff } from "lucide-react";
 import { useMemo, useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
 
@@ -58,7 +59,7 @@ const Login = () => {
       </div>
       <div className="relative my-6">
         <div className="absolute inset-0 flex items-center">
-          <div className="w-full border-t border-gray-300"></div>
+          <div className="w-full border-t border-gray-300" />
         </div>
         <div className="relative flex justify-center text-sm">
           <span className="bg-white px-2 text-gray-500">
@@ -80,7 +81,7 @@ const Login = () => {
           type={inpPasswordType}
           placeholder={t("login.passwordPlaceholder")}
           prefix={<LockKeyhole className="text-muted-foreground" size={18} />}
-          suffix={<button onClick={e => {
+          suffix={<button type="button" onClick={e => {
             e.preventDefault();
             setInpType(prev => prev === "password" ? "text" : "password");
           }} className="text-muted-foreground cursor-pointer">

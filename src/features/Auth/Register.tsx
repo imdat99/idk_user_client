@@ -2,8 +2,8 @@ import { Button } from "components/Button";
 import { Input } from "components/Input";
 import { showToast } from "components/Toast";
 import { authPath } from "lib/constants";
-import { ContactRound, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
-import { useCallback, useState } from "react";
+import { ContactRound, Eye, EyeOff, LockKeyhole, Mail, ShieldCheck } from "lucide-react";
+import { type MouseEvent, useCallback, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router";
@@ -17,11 +17,12 @@ interface RegisterFormValues {
 const Register = () => {
   const { t } = useTranslation("auth");
   const [sendCodeLoading, setSendCodeLoading] = useState(false);
+  const [inpPasswordType, setInpType] = useState("password");
   const [countdown, setCountdown] = useState(0);
   const { register, handleSubmit, getValues, getFieldState } =
     useForm<RegisterFormValues>();
-    const sendCodeCountdown = useCallback(() => {
-    let countdown = 60*5; // 5 minutes in milliseconds
+  const sendCodeCountdown = useCallback(() => {
+    let countdown = 60 * 5; // 5 minutes in milliseconds
     setCountdown(countdown);
     const interval = setInterval(() => {
       countdown -= 1; // Decrease countdown by 1 second
@@ -31,8 +32,9 @@ const Register = () => {
       clearInterval(interval);
       setCountdown(0);
     }
-  },[])
-  const sendCode = () => {
+  }, [])
+  const sendCode = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+    e.stopPropagation();
     const error = getFieldState("email").error;
     const email = getValues("email");
     if (!error && email) {
@@ -44,16 +46,18 @@ const Register = () => {
         },
         body: JSON.stringify({ email }),
       }).then((res) => {
-      sendCodeCountdown();
-      showToast({
-        // variant: "info",
-        title: t("register.codeSent"),
-        description: t("register.codeSentDescription", { email }),
-      })}).finally(() => {
+        sendCodeCountdown();
+        showToast({
+          // variant: "info",
+          title: t("register.codeSent"),
+          description: t("register.codeSentDescription", { email }),
+        })
+      }).finally(() => {
         setSendCodeLoading(false);
       });
     }
   };
+  const EyeCom = useMemo(() => inpPasswordType === "password" ? EyeOff : Eye, [inpPasswordType]);
   return (
     <>
       <div className="text-center">
@@ -110,7 +114,7 @@ const Register = () => {
                   loading={sendCodeLoading}
                   disabled={countdown > 0}
                 >
-                  {countdown ? countdown+"s" : t("register.sendCode")}
+                  {countdown ? `${countdown}s` : t("register.sendCode")}
                 </Button>
               }
             />
@@ -137,7 +141,7 @@ const Register = () => {
             }
           />
           <Input
-            type="password"
+            type={inpPasswordType}
             autoComplete="off"
             onPressEnter={(e) => e.preventDefault()}
             placeholder={t("login.passwordPlaceholder")}
@@ -148,6 +152,12 @@ const Register = () => {
                 message: t("login.passwordMinLength"),
               },
             })}
+            suffix={<button type="button" onClick={e => {
+              e.preventDefault();
+              setInpType(prev => prev === "password" ? "text" : "password");
+            }} className="text-muted-foreground cursor-pointer">
+              <EyeCom size={18} />
+            </button>}
             prefix={<LockKeyhole className="text-muted-foreground" size={18} />}
           />
         </div>

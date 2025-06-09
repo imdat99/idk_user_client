@@ -1,5 +1,6 @@
 import { cn, composeRef } from "lib/utils"
-import RcInput, { InputProps, InputRef } from 'rc-input';
+import RcInput from 'rc-input';
+import type { InputProps, InputRef } from "rc-input";
 import React, { useRef } from "react"
 
 
