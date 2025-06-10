@@ -26,12 +26,12 @@ const Register = () => {
     setCountdown(countdown);
     const interval = setInterval(() => {
       countdown -= 1; // Decrease countdown by 1 second
+      if (countdown <= 0) {
+        clearInterval(interval);
+      }
       setCountdown(countdown);
     }, 1000);
-    if (countdown <= 0) {
-      clearInterval(interval);
-      setCountdown(0);
-    }
+    
   }, [])
   const sendCode = (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
     e.stopPropagation();
@@ -78,8 +78,6 @@ const Register = () => {
           </p>
           <Input
             type="email"
-            autoComplete="off"
-            id="email"
             prefix={<Mail className="text-muted-foreground" size={18} />}
             {...register("email", {
               required: t("login.emailRequired"),
