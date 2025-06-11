@@ -19,7 +19,7 @@ const index = () => {
           <Outlet />
         </div>
       </div>
-      <div className="flex justify-between"></div>
+      <div className="flex justify-between" />
       <div className="mb-8 text-center text-xs text-gray-500">
         <p>{t('footer.text', { year: new Date().getFullYear() })}</p>
         <div className="mt-2 space-x-4">

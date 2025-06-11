@@ -1,6 +1,7 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { CreditCard, Home, Info, Lock, User } from 'lucide-react';
+import { forwardRef } from 'react';
 import { NavLink } from 'react-router';
 
 const menus = [
@@ -41,36 +42,35 @@ const menus = [
   },
 ];
 
-const Navigation = () => {
+const Navigation = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({className, children, ...props}, ref) => {
   return (
-    <>
+    <div ref={ref} className={className} {...props}>
       {/* Mobile navigation */}
       <div id="mobile-nav" className="mobile-nav">
         <div id="mobile-sidebar" className="mobile-sidebar overflow-y-auto">
           {/* Mobile sidebar content goes here - same as desktop sidebar */}
         </div>
       </div>
-      <div className="fixed">
-        <aside className="desktop-sidebar w-[280px] overflow-y-auto py-4">
-          <nav>
-            <ul className="cursor-pointer font-medium text-sm">
-              {menus.map((menu) => (
-                <li key={menu.path}>
-                  <NavLink
-                    to={menu.path}
-                    className={({ isActive }) =>
-                      cn(
-                        'px-4 py-3 flex items-center rounded-r-3xl',
-                        isActive ? 'bg-primary/30' : '',
-                      )
-                    }
-                  >
-                    <menu.icon className="mr-4 h-4 w-5" />
-                    <span>{menu.title}</span>
-                  </NavLink>
-                </li>
-              ))}
-              {/* <li className="sidebar-item px-4 py-3 flex items-center">
+      <aside className="w-70 overflow-y-auto py-4 lg:block hidden">
+        <nav>
+          <ul className="cursor-pointer font-medium text-sm">
+            {menus.map((menu) => (
+              <li key={menu.path}>
+                <NavLink
+                  to={menu.path}
+                  className={({ isActive }) =>
+                    cn(
+                      'px-4 py-3 flex items-center rounded-r-3xl',
+                      isActive ? 'bg-primary/20 text-primary' : '',
+                    )
+                  }
+                >
+                  <menu.icon className="mr-4 h-4 w-5" />
+                  <span>{menu.title}</span>
+                </NavLink>
+              </li>
+            ))}
+            {/* <li className="sidebar-item px-4 py-3 flex items-center">
                 <NavLink to={PATH_HOME} className="flex items-center">
                   <FiHome className="mr-4 h-4 w-5" />
                   <span>Trang chủ</span>
@@ -103,12 +103,13 @@ const Navigation = () => {
                 <FiInfo className="mr-4 h-4 w-5" />
                 <span>Giới thiệu</span>
               </li> */}
-            </ul>
-          </nav>
-        </aside>
-      </div>
-    </>
+          </ul>
+        </nav>
+      </aside>
+      {children}
+    </div>
   );
-};
+});
+Navigation.displayName = 'Navigation';
 
 export default Navigation;

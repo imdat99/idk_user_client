@@ -49,7 +49,7 @@ const Pages = () => {
         </p>
       </div>
       {/* Search box */}
-      <div className="search-box rounded-full flex items-center px-4 py-3 mb-6 focus-within:bg-white! focus-within:ring-1 focus-within:ring-primary">
+      <div className="bg-gray-100 rounded-full flex items-center px-4 py-3 mb-6 focus-within:bg-white! focus-within:focus_inp">
         <Search className="text-black mr-3" />
         <input
           type="text"
@@ -58,30 +58,32 @@ const Pages = () => {
         />
       </div>
       {/* Quick links */}
-      <div className="flex flex-wrap gap-4 mb-6 [&_button]:border text-black font-medium [&_button]:rounded-md [&_button]:cursor-pointer [&_button]:hover:bg-gray-50 [&_button]:border-black">
-        <button className="px-4 py-1 text-sm focus:outline-none">
+      <div className=":uno: flex flex-wrap gap-4 mb-6 text-black font-medium [&_button]:(rounded-md cursor-pointer border-primary text-primary border)">
+        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
           Mật khẩu của tôi
         </button>
-        <button className="px-4 py-1 text-sm focus:outline-none">
+        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
           Thiết bị
         </button>
-        <button className="px-4 py-1 text-sm focus:outline-none">
+        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
           Trình quản lý mật khẩu
         </button>
-        <button className="px-4 py-1 text-sm focus:outline-none">
+        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
           Hoạt động của tôi
         </button>
-        <button className="px-4 py-1 text-sm focus:outline-none">Email</button>
+        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
+          Email
+        </button>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-        {cards.map((card, index) => (
+        {cards.map((card) => (
           <Link
             to={card.link}
             className={cn(
               'card cursor-pointer flex flex-col',
               card.isFullWidth ? 'md:col-span-2' : '',
             )}
-            key={index}
+            key={card.link}
           >
             <div className="flex p-6 pb-3 flex-1">
               <div className="flex-1">
@@ -98,7 +100,7 @@ const Pages = () => {
                   <img
                     // src={card.img}
                     srcSet={
-                      (card.mimg || card.img) + ' 700w, ' + card.img + ' 1000w'
+                      `${card.mimg || card.img} 700w, ${card.img} 1000w`
                     }
                     alt="Privacy icon"
                     className="m-auto"
@@ -130,19 +132,19 @@ const Pages = () => {
               </button>
             </div> */}
         <div className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-          <Search className="text-gray-400 mr-4" />
+          <Search className="text-gray-400 mr-4" size={16}/>
           <span className="text-sm">Tìm trong Tài khoản Google</span>
-          <ChevronRight className="text-gray-400 ml-auto" />
+          <ChevronRight className="text-gray-400 ml-auto" size={16} />
         </div>
         <div className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-          <HelpCircle className="text-gray-400 mr-4" />
+          <HelpCircle className="text-gray-400 mr-4" size={16}/>
           <span className="text-sm">Xem các lựa chọn trợ giúp</span>
-          <ChevronRight className="text-gray-400 ml-auto" />
+          <ChevronRight className="text-gray-400 ml-auto" size={16} />
         </div>
         <div className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-          <MessageSquare className="text-gray-400 mr-4" />
+          <MessageSquare className="text-gray-400 mr-4" size={16}/>
           <span className="text-sm">Gửi ý kiến phản hồi</span>
-          <ChevronRight className="text-gray-400 ml-auto" />
+          <ChevronRight className="text-gray-400 ml-auto" size={16} />
         </div>
       </div>
     </>

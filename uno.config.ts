@@ -4,10 +4,8 @@ import {
   transformerCompileClass,
   transformerVariantGroup,
   presetWind4,
-  // presetWind3,
+  presetWebFonts
 } from "unocss";
-// import presetWind4 from "@unocss/preset-wind4";
-// import presetRcSelect from "./rcSelectPreset";
 export default defineConfig({
   // ...UnoCSS options
   presets: [
@@ -16,6 +14,16 @@ export default defineConfig({
       preflights: { 
         reset: true, 
       } 
+    }),
+    presetWebFonts({
+      provider: "google",
+      fonts: {
+        sans: ["Google Sans", "Inter","Roboto","Arial"],
+        serif: "Merriweather",
+        mono: "Fira Code",
+        display: "Poppins",
+        body: "Roboto",
+      },
     }),
     // presetRcSelect({
     //   darkMode: false,
@@ -95,6 +103,7 @@ export default defineConfig({
         "rc-input-clear-icon-hidden": "hidden",
         "rc-input-prefix": "px-1 flex items-center",
         "rc-input-suffix": "px-1 flex items-center",
+        "card": "bg-white border border-gray-200 rounded-lg",
     },
   ],
   preflights: [
@@ -103,6 +112,9 @@ export default defineConfig({
         @keyframes loadingBar {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
+        }
+        body {
+          font-family: "Google Sans", Inter, Roboto, Arial, sans-serif;
         }
       `,
     },
@@ -115,7 +127,7 @@ export default defineConfig({
     "rc-input-clear-icon",
     "rc-input-clear-icon-hidden",
     "rc-input-prefix",
-    "rc-input-suffix"
+    "rc-input-suffix",
   ],
 });
 /*
