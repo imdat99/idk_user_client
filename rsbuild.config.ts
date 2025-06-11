@@ -2,6 +2,7 @@ import { defineConfig } from "@rsbuild/core";
 import { pluginReact } from "@rsbuild/plugin-react";
 import { pluginBabel } from '@rsbuild/plugin-babel';
 import { UnoCSSRspackPlugin } from "@unocss/webpack/rspack";
+import { pluginAddHtmlAttributes } from "./rsbuild.plugin";
 const date = new Date();
 const dateNow = date
   .toLocaleDateString("vi-VN", {
@@ -19,6 +20,7 @@ export default defineConfig({
         opts.plugins?.unshift('babel-plugin-react-compiler');
       },
     }),
+     pluginAddHtmlAttributes(),
   ],
   tools: {
     rspack: {
