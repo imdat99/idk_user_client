@@ -37,7 +37,56 @@ const PersonalInfo = () => {
           </div>
         </div>
       </div>
-      <div className="card p-6 pb-0 mb-6">
+      <div className="border border-gray-200 rounded-lg overflow-hidden">
+        <div className="px-6 py-4 border-b border-gray-200">
+          <h2 className="text-xl mb-3 text-gray-800">Thông tin cơ bản</h2>
+          <p className="text-gray-600 mb-4 text-sm">
+            Những người khác sử dụng các dịch vụ của Google có thể nhìn thấy một
+            số thông tin.{' '}
+          </p>
+        </div>
+
+        <div className="divide-y divide-gray-200 [&_div]:cursor-pointer">
+          <div className="px-6 py-4 flex  hover:bg-gray-100">
+            <div className='flex flex-1 flex-col sm:flex-row'>
+                <div className="w-48 flex-shrink-0">
+                <span className="text-gray-500 font-medium">Name</span>
+              </div>
+              <div className="mt-2 sm:mt-0 flex-1">
+                <span className="text-gray-800">John Doe</span>
+              </div>
+            </div>
+            <div className="m-auto sm:mt-0">
+              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
+            </div>
+          </div>
+
+          <div className="px-6 py-4 flex flex-col sm:flex-row">
+            <div className="w-48 flex-shrink-0">
+              <span className="text-google-dark-gray">Email</span>
+            </div>
+            <div className="mt-2 sm:mt-0 flex-1">
+              <span className="text-gray-800">john.doe@gmail.com</span>
+            </div>
+            <div className="mt-2 sm:mt-0">
+              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
+            </div>
+          </div>
+
+          <div className="px-6 py-4 flex flex-col sm:flex-row">
+            <div className="w-48 flex-shrink-0">
+              <span className="text-google-dark-gray">Password</span>
+            </div>
+            <div className="mt-2 sm:mt-0 flex-1">
+              <span className="text-gray-800">••••••••</span>
+            </div>
+            <div className="mt-2 sm:mt-0">
+              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* <div className="card p-6 pb-0 mb-6">
         <div className="mb-5">
           <h2 className="text-xl mb-3 text-gray-800">Thông tin cơ bản</h2>
           <p className="text-gray-600 mb-4 text-sm">
@@ -77,7 +126,7 @@ const PersonalInfo = () => {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

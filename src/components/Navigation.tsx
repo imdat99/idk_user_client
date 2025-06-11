@@ -58,6 +58,7 @@ const Navigation = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
               <li key={menu.path}>
                 <NavLink
                   to={menu.path}
+                  state={{ from: `navigation-${menu.title}` }}
                   className={({ isActive }) =>
                     cn(
                       'px-4 py-3 flex items-center rounded-r-3xl',

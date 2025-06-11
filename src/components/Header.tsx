@@ -1,12 +1,14 @@
 import { cn } from 'lib/utils';
-import { Grid, Menu } from 'lucide-react';
+import { ArrowLeft, Grid, Menu } from 'lucide-react';
 import { forwardRef, useEffect, useRef, useState } from 'react';
+import { Link, useLocation, useNavigation } from 'react-router';
 
 const Header = forwardRef<HTMLHeadElement, React.HTMLAttributes<HTMLHeadElement>>(({ className, children, ...props }, ref) => {
   const [hasShadow, setHasShadow] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-
+  const { state } = useLocation();
+  
   useEffect(() => {
     if (!sentinelRef.current) return;
 
@@ -31,32 +33,40 @@ const Header = forwardRef<HTMLHeadElement, React.HTMLAttributes<HTMLHeadElement>
   return (
     <>
       <div ref={sentinelRef} className="absolute top-0 h-0 w-full" />
-      <header className={cn("flex items-center px-4 py-2 sticky top-0 bg-white/90 z-50 backdrop-blur-sm transition-shadow duration-300 will-change-transform", className, hasShadow && "shadow-md")} {...props} ref={ref}>
-        <div className="flex items-center">
-          <button id="mobile-menu-btn" type='button' className="mr-4 hidden mobile-menu-btn">
-            <Menu />
-          </button>
-          <img
-            src="/assets/images/logo.svg"
-            alt="Google Logo"
-            className="h-6"
-          />
-          <span className="ml-2 text-lg text-gray-600 font-bold">Tài khoản</span>
-        </div>
-        <div className="ml-auto flex items-center">
-          {/* <button className="p-2" type='button'>
+      <header className={cn(":uno: flex relative flex-col items-center sticky px-4 top-0 bg-white/90 z-50 backdrop-blur-sm transition-shadow duration-300 will-change-transform", className, hasShadow && "shadow-md")} {...props} ref={ref}>
+        <div className="flex items-center w-full py-2">
+          <div className="flex items-center">
+            <button id="mobile-menu-btn" type='button' className="mr-4 hidden mobile-menu-btn">
+              <Menu />
+            </button>
+            <img
+              src="/assets/images/logo.svg"
+              alt="Google Logo"
+              className="h-6"
+            />
+            <span className="ml-2 text-lg text-gray-600 font-bold">Tài khoản</span>
+          </div>
+          <div className="ml-auto flex items-center">
+            {/* <button className="p-2" type='button'>
             <Search className="h-5 w-5 text-gray-500" />
           </button> */}
-          {/* <button className="p-2" type='button'>
+            {/* <button className="p-2" type='button'>
             <HelpCircle className="h-5 w-5 text-gray-500" />
           </button> */}
-          <button className="p-2" type='button'>
-            <Grid className="h-5 w-5 text-gray-500" />
-          </button>
-          <div className="ml-2 bg-purple-700 text-white rounded-full h-8 w-8 flex items-center justify-center">
-            D
+            <button className="p-2" type='button'>
+              <Grid className="h-5 w-5 text-gray-500" />
+            </button>
+            <div className="ml-2 bg-purple-700 text-white rounded-full h-8 w-8 flex items-center justify-center">
+              D
+            </div>
           </div>
         </div>
+        <div className='mx-auto mb-3 max-w-full w-4xl lg:px-6'>
+          <Link to=".." className="text-google-blue hover:text-blue-700 font-medium inline-flex items-center">
+            <ArrowLeft className='text-gray-500' /><span className={cn('text-2xl transition-all duration-300 ml-3', hasShadow && "text-xl")}>Quay lại</span>
+          </Link>
+        </div>
+        <div className='border-b border-gray-300 w-full absolute left-0 bottom-0' />
       </header>
     </>
   );
