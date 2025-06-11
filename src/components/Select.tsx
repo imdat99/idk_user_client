@@ -16,13 +16,23 @@ export interface LabeledValue {
   label: React.ReactNode;
 }
 
-export type SelectValue = RawValue | RawValue[] | LabeledValue | LabeledValue[] | undefined;
+export type SelectValue =
+  | RawValue
+  | RawValue[]
+  | LabeledValue
+  | LabeledValue[]
+  | undefined;
 
-export type { BaseOptionType, DefaultOptionType, OptionProps, BaseSelectRef as RefSelectProps };
+export type {
+  BaseOptionType,
+  DefaultOptionType,
+  OptionProps,
+  BaseSelectRef as RefSelectProps,
+};
 
 export interface SelectProps<
   ValueType = any,
-  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType
+  OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
 > extends Omit<RcSelectProps<ValueType, OptionType>, 'mode'> {
   mode?: 'multiple' | 'tags';
   size?: 'large' | 'middle' | 'small';
@@ -36,9 +46,12 @@ export interface SelectProps<
 }
 
 const Select = React.forwardRef(
-  <ValueType = any, OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType>(
+  <
+    ValueType = any,
+    OptionType extends BaseOptionType | DefaultOptionType = DefaultOptionType,
+  >(
     props: React.PropsWithChildren<SelectProps<ValueType, OptionType>>,
-    ref: React.Ref<BaseSelectRef>
+    ref: React.Ref<BaseSelectRef>,
   ) => {
     const {
       mode,
@@ -73,35 +86,40 @@ const Select = React.forwardRef(
     // Generate class names based on props
     const selectClassName = cn(
       // Base styles
-      "w-full transition-colors relative",
+      'w-full transition-colors relative',
       // Size variants
       {
-        "h-8 text-xs": size === 'small',
-        "h-9 text-sm": size === 'middle',
-        "h-10 text-base": size === 'large',
+        'h-8 text-xs': size === 'small',
+        'h-9 text-sm': size === 'middle',
+        'h-10 text-base': size === 'large',
       },
       // Variant styles
       {
-        "border rounded-md focus-within:ring-1 focus-within:ring-primary focus-within:border-primary": variant === 'outlined',
-        "bg-gray-100 border-0 focus-within:bg-white focus-within:ring-1 focus-within:ring-primary": variant === 'filled',
-        "border-0 border-b border-gray-200 rounded-none focus-within:border-b-primary": variant === 'borderless',
+        'border rounded-md focus-within:ring-1 focus-within:ring-primary focus-within:border-primary':
+          variant === 'outlined',
+        'bg-gray-100 border-0 focus-within:bg-white focus-within:ring-1 focus-within:ring-primary':
+          variant === 'filled',
+        'border-0 border-b border-gray-200 rounded-none focus-within:border-b-primary':
+          variant === 'borderless',
       },
       // Status styles
       {
-        "border-red-500 focus-within:ring-red-500 focus-within:border-red-500": status === 'error',
-        "border-yellow-500 focus-within:ring-yellow-500 focus-within:border-yellow-500": status === 'warning',
+        'border-red-500 focus-within:ring-red-500 focus-within:border-red-500':
+          status === 'error',
+        'border-yellow-500 focus-within:ring-yellow-500 focus-within:border-yellow-500':
+          status === 'warning',
       },
       // Disabled styles
       {
-        "opacity-50 cursor-not-allowed bg-gray-50": disabled,
+        'opacity-50 cursor-not-allowed bg-gray-50': disabled,
       },
-      className
+      className,
     );
 
     // Popup/dropdown class names
     const dropdownClassName = cn(
-      "rounded-md shadow-md border border-gray-200 bg-white p-1",
-      popupClassName
+      'rounded-md shadow-md border border-gray-200 bg-white p-1',
+      popupClassName,
     );
 
     return (
@@ -115,18 +133,24 @@ const Select = React.forwardRef(
         className={selectClassName}
         dropdownClassName={dropdownClassName}
         dropdownMatchSelectWidth={popupMatchSelectWidth}
-        notFoundContent={<div className="p-2 text-gray-500 text-sm">No options found</div>}
+        notFoundContent={
+          <div className="p-2 text-gray-500 text-sm">No options found</div>
+        }
         {...restProps}
       >
         {children}
       </RcSelect>
     );
-  }
+  },
 );
 
 // Add static properties for backwards compatibility
-{/* Select.Option = Option; */}
-{/* Select.OptGroup = OptGroup; */}
+{
+  /* Select.Option = Option; */
+}
+{
+  /* Select.OptGroup = OptGroup; */
+}
 Select.displayName = 'Select';
 
 export default Select;

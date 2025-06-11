@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 
 const FullyLoading = () => {
   return (
@@ -7,7 +7,7 @@ const FullyLoading = () => {
         <span className="sr-only">Loading...</span>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default FullyLoading
+export default FullyLoading;

@@ -1,4 +1,8 @@
-import { MathOperation, MathWorkerInput, MathWorkerOutput } from './math.worker.d';
+import {
+  MathOperation,
+  MathWorkerInput,
+  MathWorkerOutput,
+} from './math.worker.d';
 /**
  * A class to interact with the Math Worker
  */
@@ -15,14 +19,17 @@ class MathService {
    * @param values The values to operate on
    * @returns A promise that resolves with the result
    */
-  performOperation(operation: MathOperation, values: number[]): Promise<number> {
+  performOperation(
+    operation: MathOperation,
+    values: number[],
+  ): Promise<number> {
     return new Promise((resolve, reject) => {
       // Set up the message handler
       const handleMessage = (event: MessageEvent<MathWorkerOutput>) => {
         this.worker.removeEventListener('message', handleMessage);
-        
+
         const { result, error } = event.data;
-        
+
         if (error) {
           reject(new Error(error));
         } else {

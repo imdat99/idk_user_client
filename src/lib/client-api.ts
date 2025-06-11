@@ -9,1049 +9,1553 @@
 // ReSharper disable InconsistentNaming
 
 export class Client {
-    private http: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> };
-    private baseUrl: string;
-    protected jsonParseReviver: ((key: string, value: any) => any) | undefined = undefined;
+  private http: {
+    fetch(url: RequestInfo, init?: RequestInit): Promise<Response>;
+  };
+  private baseUrl: string;
+  protected jsonParseReviver: ((key: string, value: any) => any) | undefined =
+    undefined;
 
-    constructor(baseUrl?: string, http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> }) {
-        this.http = http ? http : window as any;
-        this.baseUrl = baseUrl ?? "localhost:3000/v1";
+  constructor(
+    baseUrl?: string,
+    http?: { fetch(url: RequestInfo, init?: RequestInit): Promise<Response> },
+  ) {
+    this.http = http ? http : (window as any);
+    this.baseUrl = baseUrl ?? 'localhost:3000/v1';
+  }
+
+  /**
+   * Forgot password
+   * @param request Request body
+   * @return OK
+   */
+  forgotPassword(request: ForgotPassword): Promise<ForgotPasswordResponse> {
+    let url_ = this.baseUrl + '/auth/forgot-password';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processForgotPassword(_response);
+    });
+  }
+
+  protected processForgotPassword(
+    response: Response,
+  ): Promise<ForgotPasswordResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Forgot password
-     * @param request Request body
-     * @return OK
-     */
-    forgotPassword(request: ForgotPassword): Promise<ForgotPasswordResponse> {
-        let url_ = this.baseUrl + "/auth/forgot-password";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processForgotPassword(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as ForgotPasswordResponse);
+        return result200;
+      });
+    } else if (status === 404) {
+      return response.text().then((_responseText) => {
+        let result404: any = null;
+        result404 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as NotFound);
+        return throwException(
+          'Not found',
+          status,
+          _responseText,
+          _headers,
+          result404,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<ForgotPasswordResponse>(null as any);
+  }
 
-    protected processForgotPassword(response: Response): Promise<ForgotPasswordResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ForgotPasswordResponse;
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as NotFound;
-            return throwException("Not found", status, _responseText, _headers, result404);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ForgotPasswordResponse>(null as any);
+  /**
+   * Login with google
+   * @return OK
+   */
+  google(): Promise<GoogleLoginResponse> {
+    let url_ = this.baseUrl + '/auth/google';
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processGoogle(_response);
+    });
+  }
+
+  protected processGoogle(response: Response): Promise<GoogleLoginResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Login with google
-     * @return OK
-     */
-    google(): Promise<GoogleLoginResponse> {
-        let url_ = this.baseUrl + "/auth/google";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processGoogle(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as GoogleLoginResponse);
+        return result200;
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<GoogleLoginResponse>(null as any);
+  }
 
-    protected processGoogle(response: Response): Promise<GoogleLoginResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GoogleLoginResponse;
-            return result200;
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<GoogleLoginResponse>(null as any);
+  /**
+   * Login
+   * @param request Request body
+   * @return OK
+   */
+  login(request: Login): Promise<LoginResponse> {
+    let url_ = this.baseUrl + '/auth/login';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processLogin(_response);
+    });
+  }
+
+  protected processLogin(response: Response): Promise<LoginResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Login
-     * @param request Request body
-     * @return OK
-     */
-    login(request: Login): Promise<LoginResponse> {
-        let url_ = this.baseUrl + "/auth/login";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processLogin(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as LoginResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as FailedLogin);
+        return throwException(
+          'Invalid email or password',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<LoginResponse>(null as any);
+  }
 
-    protected processLogin(response: Response): Promise<LoginResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as LoginResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as FailedLogin;
-            return throwException("Invalid email or password", status, _responseText, _headers, result401);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<LoginResponse>(null as any);
+  /**
+   * Logout
+   * @param request Request body
+   * @return OK
+   */
+  logout(request: RefreshToken): Promise<LogoutResponse> {
+    let url_ = this.baseUrl + '/auth/logout';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processLogout(_response);
+    });
+  }
+
+  protected processLogout(response: Response): Promise<LogoutResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Logout
-     * @param request Request body
-     * @return OK
-     */
-    logout(request: RefreshToken): Promise<LogoutResponse> {
-        let url_ = this.baseUrl + "/auth/logout";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processLogout(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as LogoutResponse);
+        return result200;
+      });
+    } else if (status === 404) {
+      return response.text().then((_responseText) => {
+        let result404: any = null;
+        result404 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as NotFound);
+        return throwException(
+          'Not found',
+          status,
+          _responseText,
+          _headers,
+          result404,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<LogoutResponse>(null as any);
+  }
 
-    protected processLogout(response: Response): Promise<LogoutResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as LogoutResponse;
-            return result200;
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as NotFound;
-            return throwException("Not found", status, _responseText, _headers, result404);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<LogoutResponse>(null as any);
+  /**
+   * Refresh auth tokens
+   * @param request Request body
+   * @return OK
+   */
+  refreshTokens(request: RefreshToken): Promise<RefreshTokenResponse> {
+    let url_ = this.baseUrl + '/auth/refresh-tokens';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processRefreshTokens(_response);
+    });
+  }
+
+  protected processRefreshTokens(
+    response: Response,
+  ): Promise<RefreshTokenResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Refresh auth tokens
-     * @param request Request body
-     * @return OK
-     */
-    refreshTokens(request: RefreshToken): Promise<RefreshTokenResponse> {
-        let url_ = this.baseUrl + "/auth/refresh-tokens";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRefreshTokens(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as RefreshTokenResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<RefreshTokenResponse>(null as any);
+  }
 
-    protected processRefreshTokens(response: Response): Promise<RefreshTokenResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RefreshTokenResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<RefreshTokenResponse>(null as any);
+  /**
+   * Register as user
+   * @param request Request body
+   * @return Created
+   */
+  register(request: Register): Promise<RegisterResponse> {
+    let url_ = this.baseUrl + '/auth/register';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processRegister(_response);
+    });
+  }
+
+  protected processRegister(response: Response): Promise<RegisterResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Register as user
-     * @param request Request body
-     * @return Created
-     */
-    register(request: Register): Promise<RegisterResponse> {
-        let url_ = this.baseUrl + "/auth/register";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processRegister(_response);
-        });
+    if (status === 201) {
+      return response.text().then((_responseText) => {
+        let result201: any = null;
+        result201 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as RegisterResponse);
+        return result201;
+      });
+    } else if (status === 409) {
+      return response.text().then((_responseText) => {
+        let result409: any = null;
+        result409 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as DuplicateEmail);
+        return throwException(
+          'Email already taken',
+          status,
+          _responseText,
+          _headers,
+          result409,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<RegisterResponse>(null as any);
+  }
 
-    protected processRegister(response: Response): Promise<RegisterResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 201) {
-            return response.text().then((_responseText) => {
-            let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as RegisterResponse;
-            return result201;
-            });
-        } else if (status === 409) {
-            return response.text().then((_responseText) => {
-            let result409: any = null;
-            result409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as DuplicateEmail;
-            return throwException("Email already taken", status, _responseText, _headers, result409);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<RegisterResponse>(null as any);
+  /**
+   * Reset password
+   * @param token The reset password token
+   * @param request Request body
+   * @return OK
+   */
+  resetPassword(
+    token: string,
+    request: UpdatePassOrVerify,
+  ): Promise<ResetPasswordResponse> {
+    let url_ = this.baseUrl + '/auth/reset-password?';
+    if (token === undefined || token === null)
+      throw new Error(
+        "The parameter 'token' must be defined and cannot be null.",
+      );
+    else url_ += 'token=' + encodeURIComponent('' + token) + '&';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processResetPassword(_response);
+    });
+  }
+
+  protected processResetPassword(
+    response: Response,
+  ): Promise<ResetPasswordResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Reset password
-     * @param token The reset password token
-     * @param request Request body
-     * @return OK
-     */
-    resetPassword(token: string, request: UpdatePassOrVerify): Promise<ResetPasswordResponse> {
-        let url_ = this.baseUrl + "/auth/reset-password?";
-        if (token === undefined || token === null)
-            throw new Error("The parameter 'token' must be defined and cannot be null.");
-        else
-            url_ += "token=" + encodeURIComponent("" + token) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processResetPassword(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as ResetPasswordResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as FailedResetPassword);
+        return throwException(
+          'Password reset failed',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<ResetPasswordResponse>(null as any);
+  }
 
-    protected processResetPassword(response: Response): Promise<ResetPasswordResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as ResetPasswordResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as FailedResetPassword;
-            return throwException("Password reset failed", status, _responseText, _headers, result401);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<ResetPasswordResponse>(null as any);
+  /**
+   * Send verification email
+   * @return OK
+   */
+  sendVerificationEmail(): Promise<SendVerificationEmailResponse> {
+    let url_ = this.baseUrl + '/auth/send-verification-email';
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processSendVerificationEmail(_response);
+    });
+  }
+
+  protected processSendVerificationEmail(
+    response: Response,
+  ): Promise<SendVerificationEmailResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Send verification email
-     * @return OK
-     */
-    sendVerificationEmail(): Promise<SendVerificationEmailResponse> {
-        let url_ = this.baseUrl + "/auth/send-verification-email";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processSendVerificationEmail(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as SendVerificationEmailResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<SendVerificationEmailResponse>(null as any);
+  }
 
-    protected processSendVerificationEmail(response: Response): Promise<SendVerificationEmailResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as SendVerificationEmailResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<SendVerificationEmailResponse>(null as any);
+  /**
+   * Verify email
+   * @param token The verify email token
+   * @return OK
+   */
+  verifyEmail(token: string): Promise<VerifyEmailResponse> {
+    let url_ = this.baseUrl + '/auth/verify-email?';
+    if (token === undefined || token === null)
+      throw new Error(
+        "The parameter 'token' must be defined and cannot be null.",
+      );
+    else url_ += 'token=' + encodeURIComponent('' + token) + '&';
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processVerifyEmail(_response);
+    });
+  }
+
+  protected processVerifyEmail(
+    response: Response,
+  ): Promise<VerifyEmailResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Verify email
-     * @param token The verify email token
-     * @return OK
-     */
-    verifyEmail(token: string): Promise<VerifyEmailResponse> {
-        let url_ = this.baseUrl + "/auth/verify-email?";
-        if (token === undefined || token === null)
-            throw new Error("The parameter 'token' must be defined and cannot be null.");
-        else
-            url_ += "token=" + encodeURIComponent("" + token) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "POST",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processVerifyEmail(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as VerifyEmailResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as FailedVerifyEmail);
+        return throwException(
+          'Verify email failed',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<VerifyEmailResponse>(null as any);
+  }
 
-    protected processVerifyEmail(response: Response): Promise<VerifyEmailResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as VerifyEmailResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as FailedVerifyEmail;
-            return throwException("Verify email failed", status, _responseText, _headers, result401);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<VerifyEmailResponse>(null as any);
+  /**
+   * Health Check
+   * @return OK
+   */
+  healthCheck(): Promise<HealthCheckResponse> {
+    let url_ = this.baseUrl + '/health-check';
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processHealthCheck(_response);
+    });
+  }
+
+  protected processHealthCheck(
+    response: Response,
+  ): Promise<HealthCheckResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Health Check
-     * @return OK
-     */
-    healthCheck(): Promise<HealthCheckResponse> {
-        let url_ = this.baseUrl + "/health-check";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processHealthCheck(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as HealthCheckResponse);
+        return result200;
+      });
+    } else if (status === 500) {
+      return response.text().then((_responseText) => {
+        let result500: any = null;
+        result500 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as HealthCheckResponseError);
+        return throwException(
+          'Internal Server Error',
+          status,
+          _responseText,
+          _headers,
+          result500,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<HealthCheckResponse>(null as any);
+  }
 
-    protected processHealthCheck(response: Response): Promise<HealthCheckResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as HealthCheckResponse;
-            return result200;
-            });
-        } else if (status === 500) {
-            return response.text().then((_responseText) => {
-            let result500: any = null;
-            result500 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as HealthCheckResponseError;
-            return throwException("Internal Server Error", status, _responseText, _headers, result500);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<HealthCheckResponse>(null as any);
+  /**
+   * Get all users
+   * @param page (optional) Page number
+   * @param limit (optional) Maximum number of users
+   * @param search (optional) Search by name or email or role
+   * @return OK
+   */
+  usersGET(
+    page: number | null | undefined,
+    limit: number | null | undefined,
+    search: string | null | undefined,
+  ): Promise<GetAllUserResponse> {
+    let url_ = this.baseUrl + '/users?';
+    if (page !== undefined && page !== null)
+      url_ += 'page=' + encodeURIComponent('' + page) + '&';
+    if (limit !== undefined && limit !== null)
+      url_ += 'limit=' + encodeURIComponent('' + limit) + '&';
+    if (search !== undefined && search !== null)
+      url_ += 'search=' + encodeURIComponent('' + search) + '&';
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUsersGET(_response);
+    });
+  }
+
+  protected processUsersGET(response: Response): Promise<GetAllUserResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Get all users
-     * @param page (optional) Page number
-     * @param limit (optional) Maximum number of users
-     * @param search (optional) Search by name or email or role
-     * @return OK
-     */
-    usersGET(page: number | null | undefined, limit: number | null | undefined, search: string | null | undefined): Promise<GetAllUserResponse> {
-        let url_ = this.baseUrl + "/users?";
-        if (page !== undefined && page !== null)
-            url_ += "page=" + encodeURIComponent("" + page) + "&";
-        if (limit !== undefined && limit !== null)
-            url_ += "limit=" + encodeURIComponent("" + limit) + "&";
-        if (search !== undefined && search !== null)
-            url_ += "search=" + encodeURIComponent("" + search) + "&";
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsersGET(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as GetAllUserResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status === 403) {
+      return response.text().then((_responseText) => {
+        let result403: any = null;
+        result403 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as Forbidden);
+        return throwException(
+          'Forbidden',
+          status,
+          _responseText,
+          _headers,
+          result403,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<GetAllUserResponse>(null as any);
+  }
 
-    protected processUsersGET(response: Response): Promise<GetAllUserResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetAllUserResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            let result403: any = null;
-            result403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Forbidden;
-            return throwException("Forbidden", status, _responseText, _headers, result403);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<GetAllUserResponse>(null as any);
+  /**
+   * Create a user
+   * @param request Request body
+   * @return Created
+   */
+  usersPOST(request: CreateUser): Promise<CreateUserResponse> {
+    let url_ = this.baseUrl + '/users';
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUsersPOST(_response);
+    });
+  }
+
+  protected processUsersPOST(response: Response): Promise<CreateUserResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Create a user
-     * @param request Request body
-     * @return Created
-     */
-    usersPOST(request: CreateUser): Promise<CreateUserResponse> {
-        let url_ = this.baseUrl + "/users";
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsersPOST(_response);
-        });
+    if (status === 201) {
+      return response.text().then((_responseText) => {
+        let result201: any = null;
+        result201 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as CreateUserResponse);
+        return result201;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status === 403) {
+      return response.text().then((_responseText) => {
+        let result403: any = null;
+        result403 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as Forbidden);
+        return throwException(
+          'Forbidden',
+          status,
+          _responseText,
+          _headers,
+          result403,
+        );
+      });
+    } else if (status === 409) {
+      return response.text().then((_responseText) => {
+        let result409: any = null;
+        result409 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as DuplicateEmail);
+        return throwException(
+          'Email already taken',
+          status,
+          _responseText,
+          _headers,
+          result409,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<CreateUserResponse>(null as any);
+  }
 
-    protected processUsersPOST(response: Response): Promise<CreateUserResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 201) {
-            return response.text().then((_responseText) => {
-            let result201: any = null;
-            result201 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as CreateUserResponse;
-            return result201;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            let result403: any = null;
-            result403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Forbidden;
-            return throwException("Forbidden", status, _responseText, _headers, result403);
-            });
-        } else if (status === 409) {
-            return response.text().then((_responseText) => {
-            let result409: any = null;
-            result409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as DuplicateEmail;
-            return throwException("Email already taken", status, _responseText, _headers, result409);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<CreateUserResponse>(null as any);
+  /**
+   * Get a user
+   * @param id User id
+   * @return OK
+   */
+  usersGET2(id: string): Promise<GetUserResponse> {
+    let url_ = this.baseUrl + '/users/{id}';
+    if (id === undefined || id === null)
+      throw new Error("The parameter 'id' must be defined.");
+    url_ = url_.replace('{id}', encodeURIComponent('' + id));
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUsersGET2(_response);
+    });
+  }
+
+  protected processUsersGET2(response: Response): Promise<GetUserResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Get a user
-     * @param id User id
-     * @return OK
-     */
-    usersGET2(id: string): Promise<GetUserResponse> {
-        let url_ = this.baseUrl + "/users/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "GET",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsersGET2(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as GetUserResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status === 403) {
+      return response.text().then((_responseText) => {
+        let result403: any = null;
+        result403 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as Forbidden);
+        return throwException(
+          'Forbidden',
+          status,
+          _responseText,
+          _headers,
+          result403,
+        );
+      });
+    } else if (status === 404) {
+      return response.text().then((_responseText) => {
+        let result404: any = null;
+        result404 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as NotFound);
+        return throwException(
+          'Not found',
+          status,
+          _responseText,
+          _headers,
+          result404,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<GetUserResponse>(null as any);
+  }
 
-    protected processUsersGET2(response: Response): Promise<GetUserResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as GetUserResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            let result403: any = null;
-            result403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Forbidden;
-            return throwException("Forbidden", status, _responseText, _headers, result403);
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as NotFound;
-            return throwException("Not found", status, _responseText, _headers, result404);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<GetUserResponse>(null as any);
+  /**
+   * Delete a user
+   * @param id User id
+   * @return OK
+   */
+  usersDELETE(id: string): Promise<DeleteUserResponse> {
+    let url_ = this.baseUrl + '/users/{id}';
+    if (id === undefined || id === null)
+      throw new Error("The parameter 'id' must be defined.");
+    url_ = url_.replace('{id}', encodeURIComponent('' + id));
+    url_ = url_.replace(/[?&]$/, '');
+
+    let options_: RequestInit = {
+      method: 'DELETE',
+      headers: {
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUsersDELETE(_response);
+    });
+  }
+
+  protected processUsersDELETE(
+    response: Response,
+  ): Promise<DeleteUserResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Delete a user
-     * @param id User id
-     * @return OK
-     */
-    usersDELETE(id: string): Promise<DeleteUserResponse> {
-        let url_ = this.baseUrl + "/users/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        let options_: RequestInit = {
-            method: "DELETE",
-            headers: {
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsersDELETE(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as DeleteUserResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status === 403) {
+      return response.text().then((_responseText) => {
+        let result403: any = null;
+        result403 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as Forbidden);
+        return throwException(
+          'Forbidden',
+          status,
+          _responseText,
+          _headers,
+          result403,
+        );
+      });
+    } else if (status === 404) {
+      return response.text().then((_responseText) => {
+        let result404: any = null;
+        result404 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as NotFound);
+        return throwException(
+          'Not found',
+          status,
+          _responseText,
+          _headers,
+          result404,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
+    return Promise.resolve<DeleteUserResponse>(null as any);
+  }
 
-    protected processUsersDELETE(response: Response): Promise<DeleteUserResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as DeleteUserResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            let result403: any = null;
-            result403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Forbidden;
-            return throwException("Forbidden", status, _responseText, _headers, result403);
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as NotFound;
-            return throwException("Not found", status, _responseText, _headers, result404);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<DeleteUserResponse>(null as any);
+  /**
+   * Update a user
+   * @param id User id
+   * @param request Request body
+   * @return OK
+   */
+  usersPATCH(id: string, request: UpdateUser): Promise<UpdateUserResponse> {
+    let url_ = this.baseUrl + '/users/{id}';
+    if (id === undefined || id === null)
+      throw new Error("The parameter 'id' must be defined.");
+    url_ = url_.replace('{id}', encodeURIComponent('' + id));
+    url_ = url_.replace(/[?&]$/, '');
+
+    const content_ = JSON.stringify(request);
+
+    let options_: RequestInit = {
+      body: content_,
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    };
+
+    return this.http.fetch(url_, options_).then((_response: Response) => {
+      return this.processUsersPATCH(_response);
+    });
+  }
+
+  protected processUsersPATCH(response: Response): Promise<UpdateUserResponse> {
+    const status = response.status;
+    let _headers: any = {};
+    if (response.headers && response.headers.forEach) {
+      response.headers.forEach((v: any, k: any) => (_headers[k] = v));
     }
-
-    /**
-     * Update a user
-     * @param id User id
-     * @param request Request body
-     * @return OK
-     */
-    usersPATCH(id: string, request: UpdateUser): Promise<UpdateUserResponse> {
-        let url_ = this.baseUrl + "/users/{id}";
-        if (id === undefined || id === null)
-            throw new Error("The parameter 'id' must be defined.");
-        url_ = url_.replace("{id}", encodeURIComponent("" + id));
-        url_ = url_.replace(/[?&]$/, "");
-
-        const content_ = JSON.stringify(request);
-
-        let options_: RequestInit = {
-            body: content_,
-            method: "PATCH",
-            headers: {
-                "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
-        };
-
-        return this.http.fetch(url_, options_).then((_response: Response) => {
-            return this.processUsersPATCH(_response);
-        });
+    if (status === 200) {
+      return response.text().then((_responseText) => {
+        let result200: any = null;
+        result200 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as UpdateUserResponse);
+        return result200;
+      });
+    } else if (status === 401) {
+      return response.text().then((_responseText) => {
+        let result401: any = null;
+        result401 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as Unauthorized);
+        return throwException(
+          'Unauthorized',
+          status,
+          _responseText,
+          _headers,
+          result401,
+        );
+      });
+    } else if (status === 403) {
+      return response.text().then((_responseText) => {
+        let result403: any = null;
+        result403 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as Forbidden);
+        return throwException(
+          'Forbidden',
+          status,
+          _responseText,
+          _headers,
+          result403,
+        );
+      });
+    } else if (status === 404) {
+      return response.text().then((_responseText) => {
+        let result404: any = null;
+        result404 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(_responseText, this.jsonParseReviver) as NotFound);
+        return throwException(
+          'Not found',
+          status,
+          _responseText,
+          _headers,
+          result404,
+        );
+      });
+    } else if (status === 409) {
+      return response.text().then((_responseText) => {
+        let result409: any = null;
+        result409 =
+          _responseText === ''
+            ? null
+            : (JSON.parse(
+                _responseText,
+                this.jsonParseReviver,
+              ) as DuplicateEmail);
+        return throwException(
+          'Email already taken',
+          status,
+          _responseText,
+          _headers,
+          result409,
+        );
+      });
+    } else if (status !== 200 && status !== 204) {
+      return response.text().then((_responseText) => {
+        return throwException(
+          'An unexpected server error occurred.',
+          status,
+          _responseText,
+          _headers,
+        );
+      });
     }
-
-    protected processUsersPATCH(response: Response): Promise<UpdateUserResponse> {
-        const status = response.status;
-        let _headers: any = {}; if (response.headers && response.headers.forEach) { response.headers.forEach((v: any, k: any) => _headers[k] = v); };
-        if (status === 200) {
-            return response.text().then((_responseText) => {
-            let result200: any = null;
-            result200 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as UpdateUserResponse;
-            return result200;
-            });
-        } else if (status === 401) {
-            return response.text().then((_responseText) => {
-            let result401: any = null;
-            result401 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Unauthorized;
-            return throwException("Unauthorized", status, _responseText, _headers, result401);
-            });
-        } else if (status === 403) {
-            return response.text().then((_responseText) => {
-            let result403: any = null;
-            result403 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as Forbidden;
-            return throwException("Forbidden", status, _responseText, _headers, result403);
-            });
-        } else if (status === 404) {
-            return response.text().then((_responseText) => {
-            let result404: any = null;
-            result404 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as NotFound;
-            return throwException("Not found", status, _responseText, _headers, result404);
-            });
-        } else if (status === 409) {
-            return response.text().then((_responseText) => {
-            let result409: any = null;
-            result409 = _responseText === "" ? null : JSON.parse(_responseText, this.jsonParseReviver) as DuplicateEmail;
-            return throwException("Email already taken", status, _responseText, _headers, result409);
-            });
-        } else if (status !== 200 && status !== 204) {
-            return response.text().then((_responseText) => {
-            return throwException("An unexpected server error occurred.", status, _responseText, _headers);
-            });
-        }
-        return Promise.resolve<UpdateUserResponse>(null as any);
-    }
+    return Promise.resolve<UpdateUserResponse>(null as any);
+  }
 }
 
 export interface CreateUserResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
-    user?: User | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
+  user?: User | undefined;
 }
 
 export interface DeleteUserResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface DuplicateEmail {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface FailedLogin {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface FailedResetPassword {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface FailedVerifyEmail {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface Forbidden {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface ForgotPasswordResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface GetAllUserResponse {
-    code?: number | undefined;
-    limit?: number | undefined;
-    message?: string | undefined;
-    page?: number | undefined;
-    results?: User[] | undefined;
-    status?: string | undefined;
-    total_pages?: number | undefined;
-    total_results?: number | undefined;
+  code?: number | undefined;
+  limit?: number | undefined;
+  message?: string | undefined;
+  page?: number | undefined;
+  results?: User[] | undefined;
+  status?: string | undefined;
+  total_pages?: number | undefined;
+  total_results?: number | undefined;
 }
 
 export interface GetUserResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
-    user?: User | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
+  user?: User | undefined;
 }
 
 export interface GoogleLoginResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
-    tokens?: Tokens | undefined;
-    user?: GoogleUser | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
+  tokens?: Tokens | undefined;
+  user?: GoogleUser | undefined;
 }
 
 export interface GoogleUser {
-    email?: string | undefined;
-    id?: string | undefined;
-    name?: string | undefined;
-    role?: string | undefined;
-    verified_email?: boolean | undefined;
+  email?: string | undefined;
+  id?: string | undefined;
+  name?: string | undefined;
+  role?: string | undefined;
+  verified_email?: boolean | undefined;
 }
 
 export interface HealthCheck {
-    is_up?: boolean | undefined;
-    name?: string | undefined;
-    status?: string | undefined;
+  is_up?: boolean | undefined;
+  name?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface HealthCheckError {
-    is_up?: boolean | undefined;
-    message?: string | undefined;
-    name?: string | undefined;
-    status?: string | undefined;
+  is_up?: boolean | undefined;
+  message?: string | undefined;
+  name?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface HealthCheckResponse {
-    code?: number | undefined;
-    is_healthy?: boolean | undefined;
-    message?: string | undefined;
-    result?: HealthCheck[] | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  is_healthy?: boolean | undefined;
+  message?: string | undefined;
+  result?: HealthCheck[] | undefined;
+  status?: string | undefined;
 }
 
 export interface HealthCheckResponseError {
-    code?: number | undefined;
-    is_healthy?: boolean | undefined;
-    message?: string | undefined;
-    result?: HealthCheckError[] | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  is_healthy?: boolean | undefined;
+  message?: string | undefined;
+  result?: HealthCheckError[] | undefined;
+  status?: string | undefined;
 }
 
 export interface LoginResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
-    tokens?: Tokens | undefined;
-    user?: User | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
+  tokens?: Tokens | undefined;
+  user?: User | undefined;
 }
 
 export interface LogoutResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface NotFound {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface RefreshToken {
-    refresh_token?: string | undefined;
+  refresh_token?: string | undefined;
 }
 
 export interface RefreshTokenResponse {
-    code?: number | undefined;
-    status?: string | undefined;
-    tokens?: Tokens | undefined;
+  code?: number | undefined;
+  status?: string | undefined;
+  tokens?: Tokens | undefined;
 }
 
 export interface RegisterResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
-    tokens?: Tokens | undefined;
-    user?: User | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
+  tokens?: Tokens | undefined;
+  user?: User | undefined;
 }
 
 export interface ResetPasswordResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface SendVerificationEmailResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface TokenExpires {
-    expires?: string | undefined;
-    token?: string | undefined;
+  expires?: string | undefined;
+  token?: string | undefined;
 }
 
 export interface Tokens {
-    access?: TokenExpires | undefined;
-    refresh?: TokenExpires | undefined;
+  access?: TokenExpires | undefined;
+  refresh?: TokenExpires | undefined;
 }
 
 export interface Unauthorized {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface UpdateUserResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
-    user?: User | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
+  user?: User | undefined;
 }
 
 export interface User {
-    email?: string | undefined;
-    id?: string | undefined;
-    name?: string | undefined;
-    role?: string | undefined;
-    verified_email?: boolean | undefined;
+  email?: string | undefined;
+  id?: string | undefined;
+  name?: string | undefined;
+  role?: string | undefined;
+  verified_email?: boolean | undefined;
 }
 
 export interface VerifyEmailResponse {
-    code?: number | undefined;
-    message?: string | undefined;
-    status?: string | undefined;
+  code?: number | undefined;
+  message?: string | undefined;
+  status?: string | undefined;
 }
 
 export interface CreateUser {
-    email: string;
-    name: string;
-    password: string;
-    role: CreateUserRole;
+  email: string;
+  name: string;
+  password: string;
+  role: CreateUserRole;
 }
 
 export interface ForgotPassword {
-    email: string;
+  email: string;
 }
 
 export interface Login {
-    email: string;
-    password: string;
+  email: string;
+  password: string;
 }
 
 export interface Register {
-    email: string;
-    name: string;
-    password: string;
+  email: string;
+  name: string;
+  password: string;
 }
 
 export interface UpdatePassOrVerify {
-    password?: string | undefined;
+  password?: string | undefined;
 }
 
 export interface UpdateUser {
-    email?: string | undefined;
-    name?: string | undefined;
-    password?: string | undefined;
+  email?: string | undefined;
+  name?: string | undefined;
+  password?: string | undefined;
 }
 
 export enum CreateUserRole {
-    User = "user",
-    Admin = "admin",
+  User = 'user',
+  Admin = 'admin',
 }
 
 export class ApiException extends Error {
-    override message: string;
-    status: number;
-    response: string;
-    headers: { [key: string]: any; };
-    result: any;
+  override message: string;
+  status: number;
+  response: string;
+  headers: { [key: string]: any };
+  result: any;
 
-    constructor(message: string, status: number, response: string, headers: { [key: string]: any; }, result: any) {
-        super();
+  constructor(
+    message: string,
+    status: number,
+    response: string,
+    headers: { [key: string]: any },
+    result: any,
+  ) {
+    super();
 
-        this.message = message;
-        this.status = status;
-        this.response = response;
-        this.headers = headers;
-        this.result = result;
-    }
+    this.message = message;
+    this.status = status;
+    this.response = response;
+    this.headers = headers;
+    this.result = result;
+  }
 
-    protected isApiException = true;
+  protected isApiException = true;
 
-    static isApiException(obj: any): obj is ApiException {
-        return obj.isApiException === true;
-    }
+  static isApiException(obj: any): obj is ApiException {
+    return obj.isApiException === true;
+  }
 }
 
-function throwException(message: string, status: number, response: string, headers: { [key: string]: any; }, result?: any): any {
-    if (result !== null && result !== undefined)
-        throw result;
-    else
-        throw new ApiException(message, status, response, headers, null);
+function throwException(
+  message: string,
+  status: number,
+  response: string,
+  headers: { [key: string]: any },
+  result?: any,
+): any {
+  if (result !== null && result !== undefined) throw result;
+  else throw new ApiException(message, status, response, headers, null);
 }

@@ -54,7 +54,9 @@ const Dialog: React.FC<DialogProps> = ({
 }) => {
   const [internalOpen, setInternalOpen] = useState(defaultOpen);
   const [titleId, setTitleId] = useState<string | undefined>(undefined);
-  const [descriptionId, setDescriptionId] = useState<string | undefined>(undefined);
+  const [descriptionId, setDescriptionId] = useState<string | undefined>(
+    undefined,
+  );
 
   const isControlled = controlledOpen !== undefined;
   const isOpen = isControlled ? controlledOpen : internalOpen;
@@ -78,12 +80,22 @@ const Dialog: React.FC<DialogProps> = ({
   }, [isControlled, onOpenChange]);
 
   return (
-    <DialogContext.Provider value={{ isOpen, openModal, closeModal, titleId, setTitleId, descriptionId, setDescriptionId }}>
+    <DialogContext.Provider
+      value={{
+        isOpen,
+        openModal,
+        closeModal,
+        titleId,
+        setTitleId,
+        descriptionId,
+        setDescriptionId,
+      }}
+    >
       {children}
     </DialogContext.Provider>
   );
 };
-Dialog.displayName = "Dialog";
+Dialog.displayName = 'Dialog';
 
 // DialogTrigger
 interface DialogTriggerProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -100,7 +112,10 @@ const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerProps>(
     };
 
     if (asChild && React.isValidElement(children)) {
-      const childProps = children.props as { onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; [key: string]: any };
+      const childProps = children.props as {
+        onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+        [key: string]: any;
+      };
       return React.cloneElement(children, {
         ref,
         ...props,
@@ -117,9 +132,9 @@ const DialogTrigger = React.forwardRef<HTMLButtonElement, DialogTriggerProps>(
         {children}
       </button>
     );
-  }
+  },
 );
-DialogTrigger.displayName = "DialogTrigger";
+DialogTrigger.displayName = 'DialogTrigger';
 
 // DialogPortal
 interface DialogPortalProps {
@@ -139,17 +154,17 @@ const DialogPortal: React.FC<DialogPortalProps> = ({ children, container }) => {
   useEffect(() => {
     if (isOpen) {
       setRenderStructure(true);
-      document.body.style.overflow = "hidden"; // Prevent background scroll when modal is open
+      document.body.style.overflow = 'hidden'; // Prevent background scroll when modal is open
     } else {
       const timer = setTimeout(() => {
         setRenderStructure(false);
       }, ANIMATION_DURATION);
-      return () => clearTimeout(timer) 
+      return () => clearTimeout(timer);
     }
     return () => {
       setRenderStructure(false); // Cleanup on unmount
-      document.body.style.overflow = ""; // Reset overflow when modal is closed
-    }
+      document.body.style.overflow = ''; // Reset overflow when modal is closed
+    };
   }, [isOpen]);
 
   if (!isMountedClientSide || !renderStructure) {
@@ -158,7 +173,7 @@ const DialogPortal: React.FC<DialogPortalProps> = ({ children, container }) => {
 
   return createPortal(children, container || document.body);
 };
-DialogPortal.displayName = "DialogPortal";
+DialogPortal.displayName = 'DialogPortal';
 
 // DialogOverlay
 interface DialogOverlayProps extends HTMLAttributes<HTMLDivElement> {
@@ -167,7 +182,7 @@ interface DialogOverlayProps extends HTMLAttributes<HTMLDivElement> {
 const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
   ({ className, onClick, ...props }, ref) => {
     const { isOpen, closeModal } = useDialog();
-    
+
     const handleOverlayClick = (e: React.MouseEvent<HTMLDivElement>) => {
       onClick?.(e); // Call original onClick if provided
       if (!e.defaultPrevented) {
@@ -177,21 +192,23 @@ const DialogOverlay = React.forwardRef<HTMLDivElement, DialogOverlayProps>(
 
     return (
       <div
-        role='dialog'
+        role="dialog"
         ref={ref}
         className={cn(
-          "fixed inset-0 z-50 bg-black/70 transition-opacity ease-in-out",
-          isOpen ? "opacity-100 duration-250" : "opacity-0 duration-250 pointer-events-none", // Added pointer-events-none when closed
-          className
+          'fixed inset-0 z-50 bg-black/70 transition-opacity ease-in-out',
+          isOpen
+            ? 'opacity-100 duration-250'
+            : 'opacity-0 duration-250 pointer-events-none', // Added pointer-events-none when closed
+          className,
         )}
-        data-state={isOpen ? "open" : "closed"}
+        data-state={isOpen ? 'open' : 'closed'}
         onClick={handleOverlayClick}
         {...props}
       />
     );
-  }
+  },
 );
-DialogOverlay.displayName = "DialogOverlay";
+DialogOverlay.displayName = 'DialogOverlay';
 
 // DialogContent
 interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
@@ -199,19 +216,22 @@ interface DialogContentProps extends HTMLAttributes<HTMLDivElement> {
   onEscapeKeyDown?: (event: KeyboardEvent) => void;
   onPointerDownOutside?: (event: MouseEvent | TouchEvent) => void;
   onOpenAutoFocus?: (event: Event) => void;
-  onCloseAutoFocus?: (event: Event) => void; 
+  onCloseAutoFocus?: (event: Event) => void;
 }
 
 const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
-  ({
-    className,
-    children,
-    onEscapeKeyDown,
-    onPointerDownOutside,
-    onOpenAutoFocus,
-    onCloseAutoFocus,
-    ...props
-  }, ref) => {
+  (
+    {
+      className,
+      children,
+      onEscapeKeyDown,
+      onPointerDownOutside,
+      onOpenAutoFocus,
+      onCloseAutoFocus,
+      ...props
+    },
+    ref,
+  ) => {
     const { isOpen, closeModal, titleId, descriptionId } = useDialog();
     const contentRef = useRef<HTMLDivElement>(null);
     const combinedRef = useMergeRefs([ref, contentRef]);
@@ -243,7 +263,10 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
     // Handle outside click (pointer down)
     useEffect(() => {
       const handlePointerDown = (event: MouseEvent | TouchEvent) => {
-        if (contentRef.current && !contentRef.current.contains(event.target as Node)) {
+        if (
+          contentRef.current &&
+          !contentRef.current.contains(event.target as Node)
+        ) {
           onPointerDownOutside?.(event);
           // Default behavior of closing on outside click is usually handled by DialogOverlay
           // If DialogOverlay is not used, or if specific logic is needed here:
@@ -262,18 +285,21 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         document.removeEventListener('touchstart', handlePointerDown);
       };
     }, [isOpen, closeModal, onPointerDownOutside]);
-    
+
     // Focus Trapping & Auto Focus
     useEffect(() => {
       if (isOpen && contentRef.current) {
-        const focusableElements = contentRef.current.querySelectorAll<HTMLElement>(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-        );
+        const focusableElements =
+          contentRef.current.querySelectorAll<HTMLElement>(
+            'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])',
+          );
         const firstFocusable = focusableElements[0];
         const lastFocusable = focusableElements[focusableElements.length - 1];
 
         if (onOpenAutoFocus) {
-          const openAutoFocusEvent = new CustomEvent('openevent', { cancelable: true });
+          const openAutoFocusEvent = new CustomEvent('openevent', {
+            cancelable: true,
+          });
           onOpenAutoFocus(openAutoFocusEvent);
           if (openAutoFocusEvent.defaultPrevented) return;
         }
@@ -282,12 +308,14 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         const handleTabKey = (e: KeyboardEvent) => {
           if (e.key === 'Tab' && contentRef.current) {
             const currentFocus = document.activeElement;
-            if (e.shiftKey) { // Shift + Tab
+            if (e.shiftKey) {
+              // Shift + Tab
               if (currentFocus === firstFocusable) {
                 lastFocusable?.focus();
                 e.preventDefault();
               }
-            } else { // Tab
+            } else {
+              // Tab
               if (currentFocus === lastFocusable) {
                 firstFocusable?.focus();
                 e.preventDefault();
@@ -299,7 +327,9 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         return () => {
           document.removeEventListener('keydown', handleTabKey);
           if (onCloseAutoFocus) {
-            const closeAutoFocusEvent = new CustomEvent('closeevent', { cancelable: true });
+            const closeAutoFocusEvent = new CustomEvent('closeevent', {
+              cancelable: true,
+            });
             onCloseAutoFocus(closeAutoFocusEvent);
             if (closeAutoFocusEvent.defaultPrevented) return;
           }
@@ -309,7 +339,7 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
           }
         };
       }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [isOpen, onOpenAutoFocus, onCloseAutoFocus]); // Dependencies for focus management
 
     return (
@@ -321,23 +351,23 @@ const DialogContent = React.forwardRef<HTMLDivElement, DialogContentProps>(
         aria-describedby={descriptionId}
         tabIndex={-1} // Make the content itself focusable for certain scenarios
         className={cn(
-          "fixed left-1/2 top-1/2 z-50 w-full bg-white rounded-lg shadow-lg p-6",
-          "transition-all ease-in-out duration-150",
-          isOpen 
-            ? "opacity-100 scale-100 translate-x-[-50%] translate-y-[-50%]"
-            : "opacity-0 scale-95 translate-x-[-50%] translate-y-[-45%] pointer-events-none", // Slight upward movement on close
-          className
+          'fixed left-1/2 top-1/2 z-50 w-full bg-white rounded-lg shadow-lg p-6',
+          'transition-all ease-in-out duration-150',
+          isOpen
+            ? 'opacity-100 scale-100 translate-x-[-50%] translate-y-[-50%]'
+            : 'opacity-0 scale-95 translate-x-[-50%] translate-y-[-45%] pointer-events-none', // Slight upward movement on close
+          className,
         )}
-        data-state={isOpen ? "open" : "closed"}
+        data-state={isOpen ? 'open' : 'closed'}
         // onClick={(e) => e.stopPropagation()} // Already handled by DialogOverlay logic for outside click
         {...props}
       >
         {children}
       </div>
     );
-  }
+  },
 );
-DialogContent.displayName = "DialogContent";
+DialogContent.displayName = 'DialogContent';
 
 // DialogHeader
 interface DialogHeaderProps extends HTMLAttributes<HTMLDivElement> {
@@ -347,12 +377,15 @@ const DialogHeader = React.forwardRef<HTMLDivElement, DialogHeaderProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col space-y-1.5 text-center sm:text-left mb-4", className)}
+      className={cn(
+        'flex flex-col space-y-1.5 text-center sm:text-left mb-4',
+        className,
+      )}
       {...props}
     />
-  )
+  ),
 );
-DialogHeader.displayName = "DialogHeader";
+DialogHeader.displayName = 'DialogHeader';
 
 // DialogFooter
 interface DialogFooterProps extends HTMLAttributes<HTMLDivElement> {
@@ -362,12 +395,15 @@ const DialogFooter = React.forwardRef<HTMLDivElement, DialogFooterProps>(
   ({ className, ...props }, ref) => (
     <div
       ref={ref}
-      className={cn("flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6", className)}
+      className={cn(
+        'flex flex-col-reverse sm:flex-row sm:justify-end sm:space-x-2 mt-6',
+        className,
+      )}
       {...props}
     />
-  )
+  ),
 );
-DialogFooter.displayName = "DialogFooter";
+DialogFooter.displayName = 'DialogFooter';
 
 // DialogTitle
 interface DialogTitleProps extends HTMLAttributes<HTMLHeadingElement> {
@@ -377,8 +413,13 @@ const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps>(
   ({ className, id: providedId, ...props }, ref) => {
     const { setTitleId } = useDialog();
     // Ensure id is stable and unique if not provided
-    const id = useMemo(() => providedId || `dialog-title-${Math.random().toString(36).substring(2, 9)}`, [providedId]);
-    
+    const id = useMemo(
+      () =>
+        providedId ||
+        `dialog-title-${Math.random().toString(36).substring(2, 9)}`,
+      [providedId],
+    );
+
     useEffect(() => {
       setTitleId(id);
       return () => setTitleId(''); // Clean up on unmount or id change
@@ -388,39 +429,47 @@ const DialogTitle = React.forwardRef<HTMLHeadingElement, DialogTitleProps>(
       <h2
         ref={ref}
         id={id}
-        className={cn("text-lg font-semibold leading-none tracking-tight", className)}
+        className={cn(
+          'text-lg font-semibold leading-none tracking-tight',
+          className,
+        )}
         {...props}
       />
     );
-  }
+  },
 );
-DialogTitle.displayName = "DialogTitle";
+DialogTitle.displayName = 'DialogTitle';
 
 // DialogDescription
 interface DialogDescriptionProps extends HTMLAttributes<HTMLParagraphElement> {
   className?: string;
 }
-const DialogDescription = React.forwardRef<HTMLParagraphElement, DialogDescriptionProps>(
-  ({ className, id: providedId, ...props }, ref) => {
-    const { setDescriptionId } = useDialog();
-    const id = useMemo(() => providedId || `dialog-desc-${Math.random().toString(36).substring(2, 9)}`, [providedId]);
+const DialogDescription = React.forwardRef<
+  HTMLParagraphElement,
+  DialogDescriptionProps
+>(({ className, id: providedId, ...props }, ref) => {
+  const { setDescriptionId } = useDialog();
+  const id = useMemo(
+    () =>
+      providedId || `dialog-desc-${Math.random().toString(36).substring(2, 9)}`,
+    [providedId],
+  );
 
-    useEffect(() => {
-      setDescriptionId(id);
-      return () => setDescriptionId('');
-    }, [id, setDescriptionId]);
-    
-    return (
-      <p
-        ref={ref}
-        id={id}
-        className={cn("text-sm text-gray-500", className)}
-        {...props}
-      />
-    );
-  }
-);
-DialogDescription.displayName = "DialogDescription";
+  useEffect(() => {
+    setDescriptionId(id);
+    return () => setDescriptionId('');
+  }, [id, setDescriptionId]);
+
+  return (
+    <p
+      ref={ref}
+      id={id}
+      className={cn('text-sm text-gray-500', className)}
+      {...props}
+    />
+  );
+});
+DialogDescription.displayName = 'DialogDescription';
 
 // DialogClose
 interface DialogCloseProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -436,7 +485,10 @@ const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>(
     };
 
     if (asChild && React.isValidElement(children)) {
-      const childProps = children.props as { onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; [key: string]: any };
+      const childProps = children.props as {
+        onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void;
+        [key: string]: any;
+      };
       return React.cloneElement(children, {
         ref,
         ...props,
@@ -455,19 +507,19 @@ const DialogClose = React.forwardRef<HTMLButtonElement, DialogCloseProps>(
         onClick={handleClick}
         className={cn(
           // Default styling for X button, can be overridden
-          !children && "absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 data-[state=open]:text-gray-600",
-          className
+          !children &&
+            'absolute right-4 top-4 rounded-sm opacity-70 ring-offset-white transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-gray-100 data-[state=open]:text-gray-600',
+          className,
         )}
-        aria-label={children ? undefined : "Close"} // Only add aria-label if it's the default X icon
+        aria-label={children ? undefined : 'Close'} // Only add aria-label if it's the default X icon
         {...props}
       >
         {children || <X className="h-4 w-4" />}
       </button>
     );
-  }
+  },
 );
-DialogClose.displayName = "DialogClose";
-
+DialogClose.displayName = 'DialogClose';
 
 // --- Demo Component (Updated from GoogleModalDemo) ---
 export default function DialogDemo() {
@@ -478,19 +530,25 @@ export default function DialogDemo() {
     <div className="flex flex-col items-center justify-center min-h-screen bg-slate-50 p-4">
       <Dialog open={isModalOpen} onOpenChange={setIsModalOpen}>
         <DialogTrigger asChild>
-          <button
-            className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-md shadow-sm transition-colors"
-          >
+          <button className="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-6 rounded-md shadow-sm transition-colors">
             Open Controlled Dialog (Edit Profile)
           </button>
         </DialogTrigger>
         <DialogPortal>
           <DialogOverlay />
-          <DialogContent 
+          <DialogContent
             className="sm:max-w-[425px]"
-            onEscapeKeyDown={(e) => { console.log("Escape pressed on controlled"); e.preventDefault(); setIsModalOpen(false);}}
-            onOpenAutoFocus={(e) => console.log("Controlled Dialog OpenAutoFocus", e)}
-            onCloseAutoFocus={(e) => console.log("Controlled Dialog CloseAutoFocus", e)}
+            onEscapeKeyDown={(e) => {
+              console.log('Escape pressed on controlled');
+              e.preventDefault();
+              setIsModalOpen(false);
+            }}
+            onOpenAutoFocus={(e) =>
+              console.log('Controlled Dialog OpenAutoFocus', e)
+            }
+            onCloseAutoFocus={(e) =>
+              console.log('Controlled Dialog CloseAutoFocus', e)
+            }
           >
             <DialogHeader>
               <DialogTitle>Edit Profile</DialogTitle>
@@ -498,32 +556,44 @@ export default function DialogDemo() {
                 Make changes to your profile here. Click save when you're done.
               </DialogDescription>
             </DialogHeader>
-            
+
             <div className="grid gap-4 py-4">
               <div className="grid grid-cols-4 items-center gap-4">
-                <label htmlFor="name" className="text-right text-sm">Name</label>
-                <input id="name" defaultValue="Pedro Duarte" className="col-span-3 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                <label htmlFor="name" className="text-right text-sm">
+                  Name
+                </label>
+                <input
+                  id="name"
+                  defaultValue="Pedro Duarte"
+                  className="col-span-3 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
               </div>
               <div className="grid grid-cols-4 items-center gap-4">
-                <label htmlFor="username" className="text-right text-sm">Username</label>
-                <input id="username" defaultValue="@peduarte" className="col-span-3 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent" />
+                <label htmlFor="username" className="text-right text-sm">
+                  Username
+                </label>
+                <input
+                  id="username"
+                  defaultValue="@peduarte"
+                  className="col-span-3 border border-gray-300 rounded-md p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                />
               </div>
             </div>
 
             <DialogFooter>
               <DialogClose asChild>
-                 <button 
-                    type="button"
-                    className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
-                  >
-                    Cancel
-                  </button>
+                <button
+                  type="button"
+                  className="px-4 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100 rounded-md transition-colors"
+                >
+                  Cancel
+                </button>
               </DialogClose>
-              <button 
+              <button
                 type="submit" // This would typically be inside a <form>
                 className="px-4 py-2 text-sm font-medium bg-blue-500 text-white hover:bg-blue-600 rounded-md shadow-sm transition-colors"
                 onClick={() => {
-                  console.log("Changes saved!");
+                  console.log('Changes saved!');
                   setIsModalOpen(false); // Close the dialog on save
                 }}
               >
@@ -531,34 +601,48 @@ export default function DialogDemo() {
               </button>
             </DialogFooter>
             {/* Default X close button, absolutely positioned by its own styles */}
-            <DialogClose /> 
+            <DialogClose />
           </DialogContent>
         </DialogPortal>
       </Dialog>
 
       {/* Example of a non-controlled dialog, triggered by a separate button */}
       <div className="mt-4">
-        <button 
+        <button
           onClick={() => setShowUncontrolled(true)}
           className="bg-orange-500 hover:bg-orange-600 text-white font-medium py-2 px-6 rounded-md shadow-sm transition-colors mb-2"
         >
-            Toggle Uncontrolled Dialog Visibility (External State)
+          Toggle Uncontrolled Dialog Visibility (External State)
         </button>
         {/* This Dialog is uncontrolled internally but its mounting is controlled by showUncontrolled */}
         {showUncontrolled && (
-          <Dialog defaultOpen={true} onOpenChange={(open) => { if(!open) setShowUncontrolled(false); /* Sync external state on close */ }}>
+          <Dialog
+            defaultOpen={true}
+            onOpenChange={(open) => {
+              if (!open)
+                setShowUncontrolled(false); /* Sync external state on close */
+            }}
+          >
             {/* No DialogTrigger needed here as it opens by defaultOpen and its mounting */}
             <DialogPortal>
               <DialogOverlay />
               <DialogContent className="sm:max-w-sm">
                 <DialogHeader>
                   <DialogTitle>Uncontrolled Dialog</DialogTitle>
-                  <DialogDescription>This dialog manages its own open/close state once mounted. Closing it will also unmount it via onOpenChange.</DialogDescription>
+                  <DialogDescription>
+                    This dialog manages its own open/close state once mounted.
+                    Closing it will also unmount it via onOpenChange.
+                  </DialogDescription>
                 </DialogHeader>
-                <p className="my-4">Some content here. You can close this with Escape, the X button, or the button below.</p>
+                <p className="my-4">
+                  Some content here. You can close this with Escape, the X
+                  button, or the button below.
+                </p>
                 <DialogFooter>
                   <DialogClose asChild>
-                    <button className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 rounded-md">Close Me</button>
+                    <button className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 rounded-md">
+                      Close Me
+                    </button>
                   </DialogClose>
                 </DialogFooter>
                 <DialogClose />
@@ -570,23 +654,27 @@ export default function DialogDemo() {
 
       <div className="mt-4">
         <Dialog>
-            <DialogTrigger className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-md shadow-sm transition-colors">
-                Open Fully Uncontrolled Dialog
-            </DialogTrigger>
-            <DialogPortal>
-                <DialogOverlay />
-                <DialogContent className="sm:max-w-xs">
-                    <DialogHeader>
-                        <DialogTitle>Fully Uncontrolled</DialogTitle>
-                        <DialogDescription>This one is completely self-contained.</DialogDescription>
-                    </DialogHeader>
-                    <p className="my-4">Hello there!</p>
-                    <DialogFooter>
-                        <DialogClose className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 rounded-md">OK</DialogClose>
-                    </DialogFooter>
-                    <DialogClose/>
-                </DialogContent>
-            </DialogPortal>
+          <DialogTrigger className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-md shadow-sm transition-colors">
+            Open Fully Uncontrolled Dialog
+          </DialogTrigger>
+          <DialogPortal>
+            <DialogOverlay />
+            <DialogContent className="sm:max-w-xs">
+              <DialogHeader>
+                <DialogTitle>Fully Uncontrolled</DialogTitle>
+                <DialogDescription>
+                  This one is completely self-contained.
+                </DialogDescription>
+              </DialogHeader>
+              <p className="my-4">Hello there!</p>
+              <DialogFooter>
+                <DialogClose className="px-4 py-2 text-sm font-medium bg-gray-200 hover:bg-gray-300 rounded-md">
+                  OK
+                </DialogClose>
+              </DialogFooter>
+              <DialogClose />
+            </DialogContent>
+          </DialogPortal>
         </Dialog>
       </div>
     </div>
