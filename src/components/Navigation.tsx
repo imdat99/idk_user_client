@@ -13,7 +13,7 @@ const menus = [
   {
     icon: User,
     title: 'Thông tin cá nhân',
-    path: dashboardPath.profile,
+    path: dashboardPath.personalInfo,
   },
   // {
   //     icon: Database,

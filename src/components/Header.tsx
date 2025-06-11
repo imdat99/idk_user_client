@@ -1,14 +1,12 @@
 import { cn } from 'lib/utils';
 import { ArrowLeft, Grid, Menu } from 'lucide-react';
 import { forwardRef, useEffect, useRef, useState } from 'react';
-import { Link, useLocation, useNavigation } from 'react-router';
+import { Link } from 'react-router';
 
 const Header = forwardRef<HTMLHeadElement, React.HTMLAttributes<HTMLHeadElement>>(({ className, children, ...props }, ref) => {
   const [hasShadow, setHasShadow] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);
-  const { state } = useLocation();
-  
   useEffect(() => {
     if (!sentinelRef.current) return;
 
@@ -61,12 +59,12 @@ const Header = forwardRef<HTMLHeadElement, React.HTMLAttributes<HTMLHeadElement>
             </div>
           </div>
         </div>
-        <div className='mx-auto mb-3 max-w-full w-4xl lg:px-6'>
+        <div className='mx-auto mb-3 max-w-full w-4xl lg:px-6' hidden>
           <Link to=".." className="text-google-blue hover:text-blue-700 font-medium inline-flex items-center">
             <ArrowLeft className='text-gray-500' /><span className={cn('text-2xl transition-all duration-300 ml-3', hasShadow && "text-xl")}>Quay lại</span>
           </Link>
+          <div className='border-b border-gray-300 w-full absolute left-0 bottom-0' />
         </div>
-        <div className='border-b border-gray-300 w-full absolute left-0 bottom-0' />
       </header>
     </>
   );

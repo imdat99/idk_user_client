@@ -1,0 +1,22 @@
+{
+  "title": "Personal Information",
+  "subtitle": "Information about you and your preferences on Google services",
+  "section": {
+    "profileInfoTitle": "Information in your profile on Google services",
+    "profileInfoDesc": "Personal information and options to help you manage that information. You can allow others to see some of this data (such as contact information) so they can easily contact you. You can also view a summary of your profiles.",
+    "basicInfoTitle": "Basic Information",
+    "basicInfoDesc": "Other people using Google services may be able to see some information."
+  },
+  "field": {
+    "name": "Name",
+    "email": "Email",
+    "dob": "Date of Birth",
+    "gender": "Gender",
+    "language": "Language"
+  },
+  "gender": {
+    "male": "Male",
+    "female": "Female",
+    "other": "Other"
+  }
+}

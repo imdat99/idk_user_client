@@ -1,5 +1,5 @@
 import { useMemo } from 'react';
-import { Outlet, useNavigation } from 'react-router';
+import { Outlet, useLocation, useNavigation } from 'react-router';
 
 const RootLayout = () => {
   const navigation = useNavigation();
@@ -7,6 +7,8 @@ const RootLayout = () => {
     () => navigation.state === 'loading',
     [navigation.state],
   );
+  const location = useLocation();
+  console.log('Current location:', location.state);
   return (
     <>
       {loading && (

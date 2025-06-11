@@ -23,7 +23,7 @@ const routes: RouteObject[] = [
             }),
           },
           {
-            path: dashboardPath.profile,
+            path: dashboardPath.personalInfo,
             lazy: async () => ({
               Component: (await import('./features/Profile')).default,
             }),

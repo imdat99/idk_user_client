@@ -11,7 +11,7 @@ const cards = [
     mimg: '',
     footer: 'Quản lý dữ liệu và quyền riêng tư của bạn',
     isFullWidth: false,
-    link: dashboardPath.profile,
+    link: dashboardPath.personalInfo,
   },
   {
     header: 'Chúng tôi có một số đề xuất bảo mật dành cho bạn',

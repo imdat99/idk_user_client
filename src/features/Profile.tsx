@@ -1,30 +1,44 @@
+import DataCard from 'components/DataCard';
+import { dashboardPath } from 'lib/constants';
 import { ChevronRight } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { Link, useNavigate } from 'react-router';
+
+const userInfo = {
+  name: 'John Doe',
+  email: 'abc@gmail.com',
+  dob: "1998-03-31",
+  gender: 'male',
+  language: 'English',
+  active: true,
+  nested: {
+    field1: 'value1',
+    field2: 'value2',
+  }
+};
 
 const PersonalInfo = () => {
+  const { t } = useTranslation('profile');
+  const na = useNavigate();
   return (
     <>
       <div className="text-center mb-6">
         <h1 className="text-2xl md:text-3xl font-medium mb-4">
-          Thông tin cá nhân
+          {t('title')}
         </h1>
         <p className="text-gray-600 mb-6">
-          Thông tin về bạn và các lựa chọn ưu tiên của bạn trên các dịch vụ của
-          Google
+          {t('subtitle')}
         </p>
       </div>
       <div className="p-6 h-1" />
       <div className="bg-white mb-6">
-        <div className="flex">
+        <div className="flex flex-col md:flex-row items-center p-6">
           <div className="flex-1">
             <h2 className="text-3xl mb-2">
-              Thông tin trong hồ sơ của bạn trên các dịch vụ của Google
+              {t('section.profileInfoTitle')}
             </h2>
             <p className="text-gray-600 mb-4">
-              Thông tin cá nhân và các tùy chọn giúp quản lý thông tin đó. Bạn
-              có thể cho phép người khác nhìn thấy một số dữ liệu của thông tin
-              này (chẳng hạn như thông tin liên hệ) để họ có thể dễ dàng liên hệ
-              với bạn. Bạn cũng có thể xem thông tin tóm tắt về các hồ sơ của
-              mình.
+              {t('section.profileInfoDesc')}
             </p>
           </div>
           <div className="ml-4">
@@ -37,96 +51,56 @@ const PersonalInfo = () => {
           </div>
         </div>
       </div>
-      <div className="border border-gray-200 rounded-lg overflow-hidden">
-        <div className="px-6 py-4 border-b border-gray-200">
-          <h2 className="text-xl mb-3 text-gray-800">Thông tin cơ bản</h2>
-          <p className="text-gray-600 mb-4 text-sm">
-            Những người khác sử dụng các dịch vụ của Google có thể nhìn thấy một
-            số thông tin.{' '}
-          </p>
-        </div>
-
-        <div className="divide-y divide-gray-200 [&_div]:cursor-pointer">
-          <div className="px-6 py-4 flex  hover:bg-gray-100">
-            <div className='flex flex-1 flex-col sm:flex-row'>
-                <div className="w-48 flex-shrink-0">
-                <span className="text-gray-500 font-medium">Name</span>
-              </div>
-              <div className="mt-2 sm:mt-0 flex-1">
-                <span className="text-gray-800">John Doe</span>
-              </div>
-            </div>
-            <div className="m-auto sm:mt-0">
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-
-          <div className="px-6 py-4 flex flex-col sm:flex-row">
-            <div className="w-48 flex-shrink-0">
-              <span className="text-google-dark-gray">Email</span>
-            </div>
-            <div className="mt-2 sm:mt-0 flex-1">
-              <span className="text-gray-800">john.doe@gmail.com</span>
-            </div>
-            <div className="mt-2 sm:mt-0">
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-
-          <div className="px-6 py-4 flex flex-col sm:flex-row">
-            <div className="w-48 flex-shrink-0">
-              <span className="text-google-dark-gray">Password</span>
-            </div>
-            <div className="mt-2 sm:mt-0 flex-1">
-              <span className="text-gray-800">••••••••</span>
-            </div>
-            <div className="mt-2 sm:mt-0">
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-        </div>
-      </div>
-      {/* <div className="card p-6 pb-0 mb-6">
-        <div className="mb-5">
-          <h2 className="text-xl mb-3 text-gray-800">Thông tin cơ bản</h2>
-          <p className="text-gray-600 mb-4 text-sm">
-            Những người khác sử dụng các dịch vụ của Google có thể nhìn thấy một
-            số thông tin.{' '}
-          </p>
-        </div>
-        <div className="space-y-4">
-          <div className="flex justify-between items-center border-b pb-4 hover:bg-gray-50">
-            <span className="text-gray-600">Ảnh hồ sơ</span>
-            <div className="flex items-center">
-              <div className="w-12 h-12 bg-purple-500 rounded-full flex items-center justify-center text-white font-bold mr-2">
-                LD
-              </div>
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-          <div className="flex justify-between items-center border-b pb-4 hover:bg-gray-50">
-            <span className="text-gray-600">Tên</span>
-            <div className="flex items-center">
-              <span className="mr-2">Lê Đạt</span>
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-          <div className="flex justify-between items-center border-b pb-4 hover:bg-gray-50">
-            <span className="text-gray-600">Ngày sinh</span>
-            <div className="flex items-center">
-              <span className="mr-2">31 tháng 3, 1998</span>
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-          <div className="flex justify-between items-center pb-4 hover:bg-gray-50">
-            <span className="text-gray-600">Giới tính</span>
-            <div className="flex items-center">
-              <span className="mr-2">Nam</span>
-              <ChevronRight className="text-2xl text-gray-400 ml-auto" />
-            </div>
-          </div>
-        </div>
-      </div> */}
+      <DataCard
+        title={t('section.basicInfoTitle')}
+        description={t('section.basicInfoDesc')}
+        fields={[
+          {
+            key: "name",
+            title: t('field.name'),
+          },
+          {
+            key: 'email',
+            title: t('field.email'),
+          },
+          {
+            key: 'dob',
+            title: t('field.dob'),
+            render: (value) => {
+              const date = new Date(value);
+              return date.toLocaleDateString("vi-VN", {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric',
+              }  );
+            }
+          },
+          {
+            key: "gender",
+            title: t('field.gender'),
+            render: (value) => t(`gender.${value}`),
+          },
+          {
+            key: "language",
+            title: t('field.language'),
+          },
+          {
+            key: "active",
+            title: t('field.active'),
+            render: (value) => (
+              <span className={`text-${value ? 'green' : 'red'}-600`}>
+                {value ? t('field.activeYes') : t('field.activeNo')}
+              </span>
+            ),
+          },
+        ]}
+        data={userInfo}
+        onRowClick={(key, value, data, index) => {
+          na(dashboardPath.details+"?field="+key, {
+            state: { key, value, data }
+          });
+        }}
+      />
     </>
   );
 };

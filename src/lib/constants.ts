@@ -27,9 +27,11 @@ export const dashboardPath = {
   index: '/',
   overview: '/overview',
   settings: '/settings',
-  profile: '/profile',
+  personalInfo: '/personal-info',
   notifications: '/notifications',
   security: '/security',
   payments: '/payments',
   sharing: '/sharing',
+  details: 'details',
+  // personalInfo: '/personal-info',
 };

@@ -1,0 +1,22 @@
+{
+  "title": "Thông tin cá nhân",
+  "subtitle": "Thông tin về bạn và các lựa chọn ưu tiên của bạn trên các dịch vụ của Google",
+  "section": {
+    "profileInfoTitle": "Thông tin trong hồ sơ của bạn trên các dịch vụ của Google",
+    "profileInfoDesc": "Thông tin cá nhân và các tùy chọn giúp quản lý thông tin đó. Bạn có thể cho phép người khác nhìn thấy một số dữ liệu của thông tin này (chẳng hạn như thông tin liên hệ) để họ có thể dễ dàng liên hệ với bạn. Bạn cũng có thể xem thông tin tóm tắt về các hồ sơ của mình.",
+    "basicInfoTitle": "Thông tin cơ bản",
+    "basicInfoDesc": "Những người khác sử dụng các dịch vụ của Google có thể nhìn thấy một số thông tin."
+  },
+  "field": {
+    "name": "Tên",
+    "email": "Email",
+    "dob": "Ngày sinh",
+    "gender": "Giới tính",
+    "language": "Ngôn ngữ"
+  },
+  "gender": {
+    "male": "Nam",
+    "female": "Nữ",
+    "other": "Khác"
+  }
+}
