@@ -3,7 +3,7 @@ import { Button } from './Button';
 
 const ErrorScreen = () => {
   return (
-    <body className="bg-background min-h-screen flex items-center justify-center p-4">
+    <body className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-sm w-full bg-white rounded-lg p-8 text-center">
         <div className="w-16 h-16 bg-red-50 rounded-full flex items-center justify-center mx-auto mb-6 relative">
           <Server className="​text-3xl text-red-500" />

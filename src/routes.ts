@@ -68,6 +68,12 @@ const routes: RouteObject[] = [
           },
         ],
       },
+      {
+        path: '*',
+        lazy: async () => ({
+          Component: (await import('./components/NotfoundPage')).default,
+        }),
+      }
     ],
   },
 ];

@@ -1,8 +1,7 @@
 import DataCard from 'components/DataCard';
 import { dashboardPath } from 'lib/constants';
-import { ChevronRight } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Link, useNavigate } from 'react-router';
+import { useNavigate } from 'react-router';
 
 const userInfo = {
   name: 'John Doe',
@@ -96,7 +95,7 @@ const PersonalInfo = () => {
         ]}
         data={userInfo}
         onRowClick={(key, value, data, index) => {
-          na(dashboardPath.details+"?field="+key, {
+          na(`${dashboardPath.details}?field=${key}`, {
             state: { key, value, data }
           });
         }}
