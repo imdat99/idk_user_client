@@ -18,11 +18,15 @@ export default defineConfig({
     presetWebFonts({
       provider: "google",
       fonts: {
-        sans: ["Google Sans", "Inter","Roboto","Arial"],
-        serif: "Merriweather",
-        mono: "Fira Code",
-        display: "Poppins",
-        body: "Roboto",
+        sans: [{
+          name: "Google Sans",
+          weights: ["400", "500", "700"],
+          italic: true
+        }, "Inter","Roboto","Arial"],
+        // serif: "Merriweather",
+        // mono: "Fira Code",
+        // display: "Poppins",
+        body: "Google Sans",
       },
     }),
     // presetRcSelect({

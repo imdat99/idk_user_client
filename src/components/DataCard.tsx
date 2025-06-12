@@ -63,10 +63,10 @@ const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
       )}
       {...otherProps}
     >
-      <div className="px-6 py-4 border-b border-gray-200">
-        <h2 className="text-xl mb-3 text-gray-800">{title}</h2>
+      <div className="px-6 pb-4 pt-6">
+        <h2 className="md:text-2xl mb-3 text-gray-800">{title}</h2>
         {description && (
-          <p className="text-gray-600 mb-4 text-sm">{description}</p>
+          <p className="text-gray-600 text-sm">{description}</p>
         )}
       </div>
       <div className="divide-y divide-gray-200 [&_div]:cursor-pointer">

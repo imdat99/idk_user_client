@@ -1,9 +1,11 @@
 import { cn } from 'lib/utils';
 import { ArrowLeft, Grid, Menu } from 'lucide-react';
 import { forwardRef, useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useLocation } from 'react-router';
 
 const Header = forwardRef<HTMLHeadElement, React.HTMLAttributes<HTMLHeadElement>>(({ className, children, ...props }, ref) => {
+  const location = useLocation();
+  console.log("Header rendered at:", location.pathname, location.state);
   const [hasShadow, setHasShadow] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
   const observerRef = useRef<IntersectionObserver | null>(null);

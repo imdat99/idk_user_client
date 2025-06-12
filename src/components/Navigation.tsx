@@ -67,7 +67,7 @@ const Navigation = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
                   }
                 >
                   <menu.icon className="mr-4 h-4 w-5" />
-                  <span>{menu.title}</span>
+                  <span className='font-medium'>{menu.title}</span>
                 </NavLink>
               </li>
             ))}

@@ -26,8 +26,12 @@ const routes: RouteObject[] = [
             path: dashboardPath.personalInfo,
             lazy: async () => ({
               Component: (await import('./features/Profile')).default,
-            }),
+            })
           },
+          {
+            path: "/:detailPath/detail",
+            Component: () => _c("div", { className: "p-6" }, "Settings Page"),
+          }
         ],
       },
       {

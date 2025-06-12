@@ -95,8 +95,8 @@ const PersonalInfo = () => {
         ]}
         data={userInfo}
         onRowClick={(key, value, data, index) => {
-          na(`${dashboardPath.details}?field=${key}`, {
-            state: { key, value, data }
+          na(`/${key}/detail`, {
+            state: { title: t(`field.${key}`), value, isDetail: true },
           });
         }}
       />
