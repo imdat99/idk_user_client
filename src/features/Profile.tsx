@@ -1,19 +1,18 @@
 import DataCard from 'components/DataCard';
-import { dashboardPath } from 'lib/constants';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
 const userInfo = {
   name: 'John Doe',
   email: 'abc@gmail.com',
-  dob: "1998-03-31",
+  dob: '1998-03-31',
   gender: 'male',
   language: 'English',
   active: true,
   nested: {
     field1: 'value1',
     field2: 'value2',
-  }
+  },
 };
 
 const PersonalInfo = () => {
@@ -22,23 +21,15 @@ const PersonalInfo = () => {
   return (
     <>
       <div className="text-center mb-6">
-        <h1 className="text-2xl md:text-3xl font-medium mb-4">
-          {t('title')}
-        </h1>
-        <p className="text-gray-600 mb-6">
-          {t('subtitle')}
-        </p>
+        <h1 className="text-2xl md:text-3xl font-medium mb-4">{t('title')}</h1>
+        <p className="text-gray-600 mb-6">{t('subtitle')}</p>
       </div>
       <div className="p-6 h-1" />
       <div className="bg-white mb-6">
         <div className="flex flex-col md:flex-row items-center p-6">
           <div className="flex-1">
-            <h2 className="text-3xl mb-2">
-              {t('section.profileInfoTitle')}
-            </h2>
-            <p className="text-gray-600 mb-4">
-              {t('section.profileInfoDesc')}
-            </p>
+            <h2 className="text-3xl mb-2">{t('section.profileInfoTitle')}</h2>
+            <p className="text-gray-600 mb-4">{t('section.profileInfoDesc')}</p>
           </div>
           <div className="ml-4">
             <div className="flex items-center justify-center h-full max-w-[360px]">
@@ -55,7 +46,7 @@ const PersonalInfo = () => {
         description={t('section.basicInfoDesc')}
         fields={[
           {
-            key: "name",
+            key: 'name',
             title: t('field.name'),
           },
           {
@@ -67,24 +58,24 @@ const PersonalInfo = () => {
             title: t('field.dob'),
             render: (value) => {
               const date = new Date(value);
-              return date.toLocaleDateString("vi-VN", {
+              return date.toLocaleDateString('vi-VN', {
                 day: 'numeric',
                 month: 'long',
                 year: 'numeric',
-              }  );
-            }
+              });
+            },
           },
           {
-            key: "gender",
+            key: 'gender',
             title: t('field.gender'),
             render: (value) => t(`gender.${value}`),
           },
           {
-            key: "language",
+            key: 'language',
             title: t('field.language'),
           },
           {
-            key: "active",
+            key: 'active',
             title: t('field.active'),
             render: (value) => (
               <span className={`text-${value ? 'green' : 'red'}-600`}>

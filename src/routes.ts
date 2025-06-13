@@ -1,20 +1,20 @@
-import { Outlet } from 'react-router';
-import type { RouteObject } from 'react-router';
-import { createElement as _c } from 'react';
-import { authPath, dashboardPath, PolicyPath } from 'lib/constants';
-import RootLayout from 'components/RootLayout';
-import FullyLoading from 'components/FullyLoading';
-import ErrorScreen from 'components/Error';
 import DashboardLayout from 'components/DashboardLayout';
+import ErrorScreen from 'components/Error';
+import FullyLoading from 'components/FullyLoading';
+import NotfoundPage from 'components/NotfoundPage';
+import RootLayout from 'components/RootLayout';
+import { PolicyPath, authPath, dashboardPath } from 'lib/constants';
+import { createElement as _c } from 'react';
+import type { RouteObject } from 'react-router';
 const routes: RouteObject[] = [
   {
     ErrorBoundary: ErrorScreen,
-    HydrateFallback: () => _c(FullyLoading),
+    HydrateFallback: FullyLoading,
     Component: RootLayout,
     children: [
       {
         path: '/',
-        element: _c(DashboardLayout),
+        Component: DashboardLayout,
         children: [
           {
             index: true,
@@ -26,12 +26,12 @@ const routes: RouteObject[] = [
             path: dashboardPath.personalInfo,
             lazy: async () => ({
               Component: (await import('./features/Profile')).default,
-            })
+            }),
           },
           {
-            path: "/:detailPath/detail",
-            Component: () => _c("div", { className: "p-6" }, "Settings Page"),
-          }
+            path: '/:detailPath/detail',
+            Component: () => _c('div', { className: 'p-6' }, 'Settings Page'),
+          },
         ],
       },
       {
@@ -74,10 +74,8 @@ const routes: RouteObject[] = [
       },
       {
         path: '*',
-        lazy: async () => ({
-          Component: (await import('./components/NotfoundPage')).default,
-        }),
-      }
+        Component: NotfoundPage,
+      },
     ],
   },
 ];

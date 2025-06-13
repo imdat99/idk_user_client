@@ -2,7 +2,7 @@ import { Button } from 'components/Button';
 import { Input } from 'components/Input';
 import { showToast } from 'components/Toast';
 import { authPath } from 'lib/constants';
-import { LockKeyhole, Mail, Eye, EyeOff } from 'lucide-react';
+import { Eye, EyeOff, LockKeyhole, Mail } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import type { SubmitHandler } from 'react-hook-form';

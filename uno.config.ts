@@ -1,32 +1,42 @@
 import {
   defineConfig,
   presetAttributify,
+  presetWebFonts,
+  presetWind4,
   transformerCompileClass,
   transformerVariantGroup,
-  presetWind4,
-  presetWebFonts
-} from "unocss";
+} from 'unocss';
 export default defineConfig({
   // ...UnoCSS options
   presets: [
     presetAttributify(),
     presetWind4({
-      preflights: { 
-        reset: true, 
-      } 
+      preflights: {
+        reset: true,
+      },
     }),
     presetWebFonts({
-      provider: "google",
+      provider: 'google',
       fonts: {
-        sans: [{
-          name: "Google Sans",
-          weights: ["400", "500", "700"],
-          italic: true
-        }, "Inter","Roboto","Arial"],
+        sans: [
+          {
+            name: 'Google Sans',
+            weights: ['400', '500', '700'],
+            italic: true,
+          },
+          'Inter',
+          'Arial',
+        ],
         // serif: "Merriweather",
-        // mono: "Fira Code",
+        mono: [
+          {
+            name: 'Roboto',
+            weights: ['100', '400', '500', '700'],
+            italic: true,
+          },
+        ],
         // display: "Poppins",
-        body: "Google Sans",
+        body: 'Google Sans',
       },
     }),
     // presetRcSelect({
@@ -34,104 +44,117 @@ export default defineConfig({
     // }),
   ],
   rules: [
-    ["outline-none", { outline: "none" }],
-    ["leading-none", { lineHeight: "1" }],
+    ['outline-none', { outline: 'none' }],
+    ['leading-none', { lineHeight: '1' }],
     [
-      "animate-loadingBar",
+      'animate-loadingBar',
       {
-        animation: "loadingBar 1.5s linear infinite",
+        animation: 'loadingBar 1.5s linear infinite',
       },
     ],
   ],
   transformers: [
     transformerVariantGroup(),
     transformerCompileClass({
-      classPrefix: "xemdi_",
+      classPrefix: 'xemdi_',
     }),
   ],
   theme: {
     colors: {
-      border: "hsl(214.3 31.8% 91.4%)",
-      input: "hsl(214.3 31.8% 91.4%)",
-      ring: "oklch(0.6276 0.2076 264.51)",
-      background: "oklch(0.98 0 0)",
-      foreground: "oklch(0.18 0 0)",
+      border: 'hsl(214.3 31.8% 91.4%)',
+      input: 'hsl(214.3 31.8% 91.4%)',
+      ring: 'oklch(0.6276 0.2076 264.51)',
+      background: 'oklch(0.98 0 0)',
+      foreground: 'oklch(0.18 0 0)',
       primary: {
-        DEFAULT: "oklch(0.6276 0.2076 264.51)",
-        foreground: "hsl(210 40% 98%)",
+        DEFAULT: 'oklch(0.6276 0.2076 264.51)',
+        foreground: 'hsl(210 40% 98%)',
       },
       secondary: {
-        DEFAULT: "hsl(210 40% 96%)",
-        foreground: "hsl(222.2 84% 4.9%)",
+        DEFAULT: 'hsl(210 40% 96%)',
+        foreground: 'hsl(222.2 84% 4.9%)',
       },
       muted: {
-        DEFAULT: "hsl(210 40% 96%)",
-        foreground: "hsl(215.4 16.3% 46.9%)",
+        DEFAULT: 'hsl(210 40% 96%)',
+        foreground: 'hsl(215.4 16.3% 46.9%)',
       },
       accent: {
-        DEFAULT: "hsl(210 40% 96%)",
-        foreground: "hsl(222.2 84% 4.9%)",
+        DEFAULT: 'hsl(210 40% 96%)',
+        foreground: 'hsl(222.2 84% 4.9%)',
       },
 
       destructive: {
-        DEFAULT: "hsl(0 84.2% 60.2%)",
-        foreground: "hsl(210 40% 98%)",
+        DEFAULT: 'hsl(0 84.2% 60.2%)',
+        foreground: 'hsl(210 40% 98%)',
       },
       card: {
-        DEFAULT: "hsl(0 0% 100%)",
-        foreground: "hsl(222.2 84% 4.9%)",
+        DEFAULT: 'hsl(0 0% 100%)',
+        foreground: 'hsl(222.2 84% 4.9%)',
       },
     },
     radius: {
-      none: "0px",
-      sm: "0.125rem", // 2px
-      DEFAULT: "0rem", // 4px (áp dụng cho .rounded)
-      md: "0.375rem", // 6px
-      lg: "0.5rem", // 8px
-      xl: "0.75rem", // 12px
-      "2xl": "1rem", // 16px
-      "3xl": "1.5rem", // 24px
-      full: "9999px",
+      none: '0px',
+      sm: '0.125rem', // 2px
+      DEFAULT: '0rem', // 4px (áp dụng cho .rounded)
+      md: '0.375rem', // 6px
+      lg: '0.5rem', // 8px
+      xl: '0.75rem', // 12px
+      '2xl': '1rem', // 16px
+      '3xl': '1.5rem', // 24px
+      full: '9999px',
+    },
+    fontFamily: {
+      mono: {
+        name: 'Roboto',
+        weights: ['100', '400', '500', '700'],
+        italic: true,
+      },
     },
   },
   shortcuts: [
     {
-      focus_inp: "outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10",
+      focus_inp:
+        'outline-none ring-1 ring-primary shadow-[0_0_0_0.25rem] shadow-primary/10',
       xemdi_inp:
-        "flex h-9 w-full rounded-md border border-input bg-transparent p-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:focus_inp focus-within:focus_inp disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ",
-        load_ring: "w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4",
-        "rc-input": "w-full focus-visible:outline-none p-0 ",
-        "rc-input-out-of-range": "text-red-500",
-        "rc-input-affix-wrapper": "border border-gray-300 rounded-md overflow-hidden",
-        "rc-input-clear-icon": "p-0 text-xs bg-transparent border-0 cursor-pointer",
-        "rc-input-clear-icon-hidden": "hidden",
-        "rc-input-prefix": "px-1 flex items-center",
-        "rc-input-suffix": "px-1 flex items-center",
-        "card": "bg-white border border-gray-200 rounded-lg",
+        'flex h-9 w-full rounded-md border border-input bg-transparent p-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:focus_inp focus-within:focus_inp disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ',
+      load_ring:
+        'w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4',
+      'rc-input': 'w-full focus-visible:outline-none p-0 ',
+      'rc-input-out-of-range': 'text-red-500',
+      'rc-input-affix-wrapper':
+        'border border-gray-300 rounded-md overflow-hidden',
+      'rc-input-clear-icon':
+        'p-0 text-xs bg-transparent border-0 cursor-pointer',
+      'rc-input-clear-icon-hidden': 'hidden',
+      'rc-input-prefix': 'px-1 flex items-center',
+      'rc-input-suffix': 'px-1 flex items-center',
+      card: 'bg-white border border-gray-200 rounded-lg',
     },
   ],
   preflights: [
     {
-      getCSS: () => `
+      getCSS: (context) => {
+        return `
         @keyframes loadingBar {
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
         }
         body {
-          font-family: "Google Sans", Inter, Roboto, Arial, sans-serif;
+          font-family: ${context.theme.fontFamily.sans};
         }
-      `,
+      `;
+      },
     },
   ],
   safelist: [
-    "rc-input",
-    "load_ring",
-    "rc-input-out-of-range",
-    "rc-input-affix-wrapper",
-    "rc-input-clear-icon",
-    "rc-input-clear-icon-hidden",
-    "rc-input-prefix",
-    "rc-input-suffix",
+    'rc-input',
+    'load_ring',
+    'rc-input-out-of-range',
+    'rc-input-affix-wrapper',
+    'rc-input-clear-icon',
+    'rc-input-clear-icon-hidden',
+    'rc-input-prefix',
+    'rc-input-suffix',
   ],
 });
 /*

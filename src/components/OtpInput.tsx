@@ -1,11 +1,11 @@
 import { cn } from 'lib/utils';
 import {
-  useState,
-  useRef,
-  ClipboardEvent,
   ChangeEvent,
+  ClipboardEvent,
   KeyboardEvent,
   useEffect,
+  useRef,
+  useState,
 } from 'react';
 
 interface OTPInputProps {

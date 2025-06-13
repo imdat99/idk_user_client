@@ -1,58 +1,58 @@
-import type { Preset, PresetOrFactory } from 'unocss'
+import type { Preset, PresetOrFactory } from 'unocss';
 
 export interface RcSelectPresetOptions {
   /**
    * Prefix for CSS classes
    * @default ''
    */
-  prefix?: string
-  
+  prefix?: string;
+
   /**
    * Enable dark mode support
    * @default true
    */
-  darkMode?: boolean
-  
+  darkMode?: boolean;
+
   /**
    * Use colors from main UnoCSS config theme
    * @default true
    */
-  useThemeColors?: boolean
-  
+  useThemeColors?: boolean;
+
   /**
    * Custom color theme (will be merged with theme colors if useThemeColors is true)
    */
   colors?: {
-    border?: string
-    input?: string
-    ring?: string
-    background?: string
-    foreground?: string
+    border?: string;
+    input?: string;
+    ring?: string;
+    background?: string;
+    foreground?: string;
     primary?: {
-      DEFAULT: string
-      foreground: string
-    }
+      DEFAULT: string;
+      foreground: string;
+    };
     secondary?: {
-      DEFAULT: string
-      foreground: string
-    }
+      DEFAULT: string;
+      foreground: string;
+    };
     muted?: {
-      DEFAULT: string
-      foreground: string
-    }
+      DEFAULT: string;
+      foreground: string;
+    };
     accent?: {
-      DEFAULT: string
-      foreground: string
-    }
+      DEFAULT: string;
+      foreground: string;
+    };
     destructive?: {
-      DEFAULT: string
-      foreground: string
-    }
+      DEFAULT: string;
+      foreground: string;
+    };
     card?: {
-      DEFAULT: string
-      foreground: string
-    }
-  }
+      DEFAULT: string;
+      foreground: string;
+    };
+  };
 }
 
 const defaultColors = {
@@ -85,7 +85,7 @@ const defaultColors = {
     DEFAULT: 'hsl(0 0% 100%)',
     foreground: 'hsl(222.2 84% 4.9%)',
   },
-}
+};
 
 const darkColors = {
   border: 'hsl(217.2 32.6% 17.5%)',
@@ -117,105 +117,222 @@ const darkColors = {
     DEFAULT: 'hsl(222.2 84% 4.9%)',
     foreground: 'hsl(210 40% 98%)',
   },
-}
+};
 
 // Helper function to get color value from theme or fallback
 function getColorValue(color: any, fallback: string): string {
-  if (typeof color === 'string') return color
-  if (typeof color === 'object' && color.DEFAULT) return color.DEFAULT
-  return fallback
+  if (typeof color === 'string') return color;
+  if (typeof color === 'object' && color.DEFAULT) return color.DEFAULT;
+  return fallback;
 }
 
-function getNestedColorValue(color: any, key: string, fallback: string): string {
+function getNestedColorValue(
+  color: any,
+  key: string,
+  fallback: string,
+): string {
   if (typeof color === 'object' && color[key]) {
-    return typeof color[key] === 'string' ? color[key] : color[key].DEFAULT || fallback
+    return typeof color[key] === 'string'
+      ? color[key]
+      : color[key].DEFAULT || fallback;
   }
-  return fallback
+  return fallback;
 }
 
-export function presetRcSelect(options: RcSelectPresetOptions = {}): PresetOrFactory {
-  const { 
+export function presetRcSelect(
+  options: RcSelectPresetOptions = {},
+): PresetOrFactory {
+  const {
     prefix = '',
     darkMode = true,
     useThemeColors = true,
-    colors = {}
-  } = options
+    colors = {},
+  } = options;
 
   return {
     name: '@unocss/preset-rc-select',
     configResolved(config) {
       // Access theme colors from main config
-      const themeColors = (config.theme as any)?.colors || {}
-      
-      // Merge colors: theme colors -> default colors -> custom colors
-      const resolvedColors = useThemeColors ? {
-        border: getColorValue(themeColors.border, defaultColors.border),
-        input: getColorValue(themeColors.input || themeColors.border, defaultColors.input),
-        ring: getColorValue(themeColors.ring || themeColors.primary, defaultColors.ring),
-        background: getColorValue(themeColors.background, defaultColors.background),
-        foreground: getColorValue(themeColors.foreground, defaultColors.foreground),
-        primary: {
-          DEFAULT: getColorValue(themeColors.primary, defaultColors.primary.DEFAULT),
-          foreground: getNestedColorValue(themeColors.primary, 'foreground', defaultColors.primary.foreground),
-        },
-        secondary: {
-          DEFAULT: getColorValue(themeColors.secondary, defaultColors.secondary.DEFAULT),
-          foreground: getNestedColorValue(themeColors.secondary, 'foreground', defaultColors.secondary.foreground),
-        },
-        muted: {
-          DEFAULT: getColorValue(themeColors.muted, defaultColors.muted.DEFAULT),
-          foreground: getNestedColorValue(themeColors.muted, 'foreground', defaultColors.muted.foreground),
-        },
-        accent: {
-          DEFAULT: getColorValue(themeColors.accent, defaultColors.accent.DEFAULT),
-          foreground: getNestedColorValue(themeColors.accent, 'foreground', defaultColors.accent.foreground),
-        },
-        destructive: {
-          DEFAULT: getColorValue(themeColors.destructive, defaultColors.destructive.DEFAULT),
-          foreground: getNestedColorValue(themeColors.destructive, 'foreground', defaultColors.destructive.foreground),
-        },
-        card: {
-          DEFAULT: getColorValue(themeColors.card, defaultColors.card.DEFAULT),
-          foreground: getNestedColorValue(themeColors.card, 'foreground', defaultColors.card.foreground),
-        },
-        ...colors
-      } : { ...defaultColors, ...colors }
+      const themeColors = (config.theme as any)?.colors || {};
 
-      const resolvedDarkColors = useThemeColors ? {
-        border: getColorValue(themeColors.border, darkColors.border),
-        input: getColorValue(themeColors.input || themeColors.border, darkColors.input),
-        ring: getColorValue(themeColors.ring || themeColors.primary, darkColors.ring),
-        background: getColorValue(themeColors.background, darkColors.background),
-        foreground: getColorValue(themeColors.foreground, darkColors.foreground),
-        primary: {
-          DEFAULT: getColorValue(themeColors.primary, darkColors.primary.DEFAULT),
-          foreground: getNestedColorValue(themeColors.primary, 'foreground', darkColors.primary.foreground),
-        },
-        secondary: {
-          DEFAULT: getColorValue(themeColors.secondary, darkColors.secondary.DEFAULT),
-          foreground: getNestedColorValue(themeColors.secondary, 'foreground', darkColors.secondary.foreground),
-        },
-        muted: {
-          DEFAULT: getColorValue(themeColors.muted, darkColors.muted.DEFAULT),
-          foreground: getNestedColorValue(themeColors.muted, 'foreground', darkColors.muted.foreground),
-        },
-        accent: {
-          DEFAULT: getColorValue(themeColors.accent, darkColors.accent.DEFAULT),
-          foreground: getNestedColorValue(themeColors.accent, 'foreground', darkColors.accent.foreground),
-        },
-        destructive: {
-          DEFAULT: getColorValue(themeColors.destructive, darkColors.destructive.DEFAULT),
-          foreground: getNestedColorValue(themeColors.destructive, 'foreground', darkColors.destructive.foreground),
-        },
-        card: {
-          DEFAULT: getColorValue(themeColors.card, darkColors.card.DEFAULT),
-          foreground: getNestedColorValue(themeColors.card, 'foreground', darkColors.card.foreground),
-        },
-        ...colors
-      } : { ...darkColors, ...colors }
+      // Merge colors: theme colors -> default colors -> custom colors
+      const resolvedColors = useThemeColors
+        ? {
+            border: getColorValue(themeColors.border, defaultColors.border),
+            input: getColorValue(
+              themeColors.input || themeColors.border,
+              defaultColors.input,
+            ),
+            ring: getColorValue(
+              themeColors.ring || themeColors.primary,
+              defaultColors.ring,
+            ),
+            background: getColorValue(
+              themeColors.background,
+              defaultColors.background,
+            ),
+            foreground: getColorValue(
+              themeColors.foreground,
+              defaultColors.foreground,
+            ),
+            primary: {
+              DEFAULT: getColorValue(
+                themeColors.primary,
+                defaultColors.primary.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.primary,
+                'foreground',
+                defaultColors.primary.foreground,
+              ),
+            },
+            secondary: {
+              DEFAULT: getColorValue(
+                themeColors.secondary,
+                defaultColors.secondary.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.secondary,
+                'foreground',
+                defaultColors.secondary.foreground,
+              ),
+            },
+            muted: {
+              DEFAULT: getColorValue(
+                themeColors.muted,
+                defaultColors.muted.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.muted,
+                'foreground',
+                defaultColors.muted.foreground,
+              ),
+            },
+            accent: {
+              DEFAULT: getColorValue(
+                themeColors.accent,
+                defaultColors.accent.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.accent,
+                'foreground',
+                defaultColors.accent.foreground,
+              ),
+            },
+            destructive: {
+              DEFAULT: getColorValue(
+                themeColors.destructive,
+                defaultColors.destructive.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.destructive,
+                'foreground',
+                defaultColors.destructive.foreground,
+              ),
+            },
+            card: {
+              DEFAULT: getColorValue(
+                themeColors.card,
+                defaultColors.card.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.card,
+                'foreground',
+                defaultColors.card.foreground,
+              ),
+            },
+            ...colors,
+          }
+        : { ...defaultColors, ...colors };
+
+      const resolvedDarkColors = useThemeColors
+        ? {
+            border: getColorValue(themeColors.border, darkColors.border),
+            input: getColorValue(
+              themeColors.input || themeColors.border,
+              darkColors.input,
+            ),
+            ring: getColorValue(
+              themeColors.ring || themeColors.primary,
+              darkColors.ring,
+            ),
+            background: getColorValue(
+              themeColors.background,
+              darkColors.background,
+            ),
+            foreground: getColorValue(
+              themeColors.foreground,
+              darkColors.foreground,
+            ),
+            primary: {
+              DEFAULT: getColorValue(
+                themeColors.primary,
+                darkColors.primary.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.primary,
+                'foreground',
+                darkColors.primary.foreground,
+              ),
+            },
+            secondary: {
+              DEFAULT: getColorValue(
+                themeColors.secondary,
+                darkColors.secondary.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.secondary,
+                'foreground',
+                darkColors.secondary.foreground,
+              ),
+            },
+            muted: {
+              DEFAULT: getColorValue(
+                themeColors.muted,
+                darkColors.muted.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.muted,
+                'foreground',
+                darkColors.muted.foreground,
+              ),
+            },
+            accent: {
+              DEFAULT: getColorValue(
+                themeColors.accent,
+                darkColors.accent.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.accent,
+                'foreground',
+                darkColors.accent.foreground,
+              ),
+            },
+            destructive: {
+              DEFAULT: getColorValue(
+                themeColors.destructive,
+                darkColors.destructive.DEFAULT,
+              ),
+              foreground: getNestedColorValue(
+                themeColors.destructive,
+                'foreground',
+                darkColors.destructive.foreground,
+              ),
+            },
+            card: {
+              DEFAULT: getColorValue(themeColors.card, darkColors.card.DEFAULT),
+              foreground: getNestedColorValue(
+                themeColors.card,
+                'foreground',
+                darkColors.card.foreground,
+              ),
+            },
+            ...colors,
+          }
+        : { ...darkColors, ...colors };
 
       // Add CSS to config
-      if (!config.preflights) config.preflights = []
+      if (!config.preflights) config.preflights = [];
       config.preflights.push({
         getCSS: () => `
 /* RC Select ShadcnUI Preset Styles */
@@ -627,7 +744,9 @@ export function presetRcSelect(options: RcSelectPresetOptions = {}): PresetOrFac
   }
 }
 
-${darkMode ? `
+${
+  darkMode
+    ? `
 /* Dark mode styles */
 @media (prefers-color-scheme: dark) {
   .${prefix}rc-select-disabled .${prefix}rc-select-selector {
@@ -735,11 +854,13 @@ ${darkMode ? `
     border-top-color: ${resolvedDarkColors.muted.foreground};
   }
 }
-` : ''}
-        `
-      })
-    }
-  } as Preset
+`
+    : ''
+}
+        `,
+      });
+    },
+  } as Preset;
 }
 
-export default presetRcSelect
+export default presetRcSelect;

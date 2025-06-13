@@ -59,19 +59,19 @@ const Pages = () => {
       </div>
       {/* Quick links */}
       <div className=":uno: flex flex-wrap gap-4 mb-6 text-black font-medium [&_button]:(rounded-md cursor-pointer border-primary text-primary border)">
-        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
+        <button type="button" className="px-4 py-1 text-sm focus:outline-none">
           Mật khẩu của tôi
         </button>
-        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
+        <button type="button" className="px-4 py-1 text-sm focus:outline-none">
           Thiết bị
         </button>
-        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
+        <button type="button" className="px-4 py-1 text-sm focus:outline-none">
           Trình quản lý mật khẩu
         </button>
-        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
+        <button type="button" className="px-4 py-1 text-sm focus:outline-none">
           Hoạt động của tôi
         </button>
-        <button type='button' className="px-4 py-1 text-sm focus:outline-none">
+        <button type="button" className="px-4 py-1 text-sm focus:outline-none">
           Email
         </button>
       </div>
@@ -99,9 +99,7 @@ const Pages = () => {
                 >
                   <img
                     // src={card.img}
-                    srcSet={
-                      `${card.mimg || card.img} 700w, ${card.img} 1000w`
-                    }
+                    srcSet={`${card.mimg || card.img} 700w, ${card.img} 1000w`}
                     alt="Privacy icon"
                     className="m-auto"
                   />
@@ -132,17 +130,17 @@ const Pages = () => {
               </button>
             </div> */}
         <div className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-          <Search className="text-gray-400 mr-4" size={16}/>
+          <Search className="text-gray-400 mr-4" size={16} />
           <span className="text-sm">Tìm trong Tài khoản Google</span>
           <ChevronRight className="text-gray-400 ml-auto" size={16} />
         </div>
         <div className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-          <HelpCircle className="text-gray-400 mr-4" size={16}/>
+          <HelpCircle className="text-gray-400 mr-4" size={16} />
           <span className="text-sm">Xem các lựa chọn trợ giúp</span>
           <ChevronRight className="text-gray-400 ml-auto" size={16} />
         </div>
         <div className="flex items-center p-2 hover:bg-gray-50 rounded-lg cursor-pointer">
-          <MessageSquare className="text-gray-400 mr-4" size={16}/>
+          <MessageSquare className="text-gray-400 mr-4" size={16} />
           <span className="text-sm">Gửi ý kiến phản hồi</span>
           <ChevronRight className="text-gray-400 ml-auto" size={16} />
         </div>

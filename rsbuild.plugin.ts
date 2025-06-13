@@ -1,7 +1,6 @@
 import type { RsbuildPlugin } from '@rsbuild/core';
 export const pluginAddHtmlAttributes = (): RsbuildPlugin => ({
   name: 'plugin-add-html-attributes',
-
   setup(api) {
     //  (async ({ stats }) => {
     //   const outputFiles = stats?.toJson({ assets: true }).assets || [];
@@ -16,8 +15,8 @@ export const pluginAddHtmlAttributes = (): RsbuildPlugin => ({
     //   });
     // });
     api.modifyHTML((html) => {
-        console.log("build html", api.processAssets)
-        return html;
-      });
+      // console.log("build html", api.processAssets)
+      return html;
+    });
   },
 });

@@ -1,3 +1,5 @@
+import { cn, useMergeRefs } from 'lib/utils';
+import { X } from 'lucide-react';
 import React, {
   useState,
   useEffect,
@@ -10,8 +12,6 @@ import React, {
   ButtonHTMLAttributes,
 } from 'react';
 import { createPortal } from 'react-dom';
-import { X } from 'lucide-react';
-import { cn, useMergeRefs } from 'lib/utils';
 
 const ANIMATION_DURATION = 250; // ms
 

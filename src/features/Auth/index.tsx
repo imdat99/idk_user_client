@@ -1,5 +1,5 @@
 import LanguageBtn from 'components/LanguageBtn';
-import { contactPath, PolicyPath } from 'lib/constants';
+import { PolicyPath, contactPath } from 'lib/constants';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet } from 'react-router';
 

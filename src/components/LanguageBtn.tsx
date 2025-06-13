@@ -1,6 +1,6 @@
+import i18n, { languages } from 'Translation';
 import React, { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import i18n, { languages } from 'Translation';
 // import "rc-select/assets/index.css";
 const LanguageBtn = () => {
   const { t } = useTranslation('common');

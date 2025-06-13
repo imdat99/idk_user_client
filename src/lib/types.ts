@@ -20,7 +20,8 @@ export type DeepNamePath<
     : Store extends any[] // Check if `Store` is `any[]`
       ? // Connect path. e.g. { a: { b: string }[] }
         // Get: [a] | [ a,number] | [ a ,number , b]
-        [...ParentNamePath, number] | DeepNamePath<Store[number], [...ParentNamePath, number]>
+          | [...ParentNamePath, number]
+          | DeepNamePath<Store[number], [...ParentNamePath, number]>
       : keyof Store extends never // unknown
         ? Store
         : {
@@ -30,6 +31,9 @@ export type DeepNamePath<
               :
                   | (ParentNamePath['length'] extends 0 ? FieldKey : never) // If `ParentNamePath` is empty, it can use `FieldKey` without array path
                   | [...ParentNamePath, FieldKey] // Exist `ParentNamePath`, connect it
-                  | DeepNamePath<Required<Store>[FieldKey], [...ParentNamePath, FieldKey]>; // If `Store[FieldKey]` is object
+                  | DeepNamePath<
+                      Required<Store>[FieldKey],
+                      [...ParentNamePath, FieldKey]
+                    >; // If `Store[FieldKey]` is object
           }[keyof Store];
 export type SpecialString<T> = T | (string & {});

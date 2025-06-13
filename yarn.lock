@@ -341,6 +341,16 @@
   resolved "https://registry.yarnpkg.com/@biomejs/cli-win32-x64/-/cli-win32-x64-1.9.4.tgz#4c7afa90e3970213599b4095e62f87e5972b2340"
   integrity sha512-8Y5wMhVIPaWe6jw2H+KlEm4wP/f7EW3810ZLmDlrEEy5KvBsb9ECEfu/kMWD484ijfQ8+nIi0giMgu9g1UAuuA==
 
+"@hiogawa/utils-node@^0.0.2":
+  version "0.0.2"
+  resolved "https://registry.yarnpkg.com/@hiogawa/utils-node/-/utils-node-0.0.2.tgz#ef1c067278e12c1afa34ba9ade7b206e27807c8e"
+  integrity sha512-qT44AXLtRNwxkPR/3teLjurW5kgeXOAp+/zzHCeQs9Pl88jKwpjm4+gcE2OqFChM0lpZyodVN3llw7stXwLmvQ==
+
+"@hiogawa/utils@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@hiogawa/utils/-/utils-1.7.0.tgz#db2686752297ec0b389b2897a95c48ecbc95b687"
+  integrity sha512-ghiEFWBR1NENoHn+lSuW7liicTIzVPN+8Srm5UedCTw43gus0mlse6Wp2lz6GmbOXJ/CalMPp/0Tz2X8tajkAg==
+
 "@iconify/types@^2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@iconify/types/-/types-2.0.0.tgz#ab0e9ea681d6c8a1214f30cd741fe3a20cc57f57"
@@ -628,6 +638,13 @@
   integrity sha512-dkO5fhS7+/oos4ciWxyEyjWe48zmG6wbCheo/G2ZnHx4fs3EU6YC6UM8rk56gAjNJ9P3MTH2jo5jb92/K6wbng==
   dependencies:
     "@babel/types" "^7.20.7"
+
+"@types/node@^24.0.1":
+  version "24.0.1"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-24.0.1.tgz#e9bfcb1c35547437c294403b7bec497772a88b0a"
+  integrity sha512-MX4Zioh39chHlDJbKmEgydJDS3tspMP/lnQC67G3SWsTnb9NeYVWOjkxpOSy4oMfPs4StcWHwBrvUb4ybfnuaw==
+  dependencies:
+    undici-types "~7.8.0"
 
 "@types/react-dom@^19.1.6":
   version "19.1.6"
@@ -1494,6 +1511,11 @@ reduce-configs@^1.1.0:
   resolved "https://registry.yarnpkg.com/reduce-configs/-/reduce-configs-1.1.0.tgz#6601bc10bbe60ec0900763c67680d56e3e9d356e"
   integrity sha512-DQxy6liNadHfrLahZR7lMdc227NYVaQZhY5FMsxLEjX8X0SCuH+ESHSLCoz2yDZFq1/CLMDOAHdsEHwOEXKtvg==
 
+remix-i18next@^7.2.1:
+  version "7.2.1"
+  resolved "https://registry.yarnpkg.com/remix-i18next/-/remix-i18next-7.2.1.tgz#c956df369e73f0e553ecc3200636cba961a89cd3"
+  integrity sha512-zjyDEOtSw2yF31tNHP6RLr7LZl1kEdZ3j3EpzB8905JNg4HsUk+6bNVrWhq8fFfacT6sPK0eH//NrYbpAI7bzw==
+
 resize-observer-polyfill@^1.5.1:
   version "1.5.1"
   resolved "https://registry.yarnpkg.com/resize-observer-polyfill/-/resize-observer-polyfill-1.5.1.tgz#0e9020dd3d21024458d4ebd27e23e40269810464"
@@ -1610,6 +1632,11 @@ unconfig@^7.3.2:
     defu "^6.1.4"
     jiti "^2.4.2"
     quansync "^0.2.8"
+
+undici-types@~7.8.0:
+  version "7.8.0"
+  resolved "https://registry.yarnpkg.com/undici-types/-/undici-types-7.8.0.tgz#de00b85b710c54122e44fbfd911f8d70174cd294"
+  integrity sha512-9UJ2xGDvQ43tYyVMpuHlsgApydB8ZKfVYTsLDhXkFL/6gfkp+U8xTGdh8pMJv1SpZna0zxG1DwsKZsreLbXBxw==
 
 unocss@^66.1.4:
   version "66.1.4"

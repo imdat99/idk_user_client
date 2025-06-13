@@ -1,10 +1,10 @@
-import React from 'react';
+import { cn } from 'lib/utils';
+import { ChevronDown, Loader2, X } from 'lucide-react';
 import type { BaseSelectRef, SelectProps as RcSelectProps } from 'rc-select';
 import RcSelect, { OptGroup, Option } from 'rc-select';
 import type { OptionProps } from 'rc-select/lib/Option';
 import type { BaseOptionType, DefaultOptionType } from 'rc-select/lib/Select';
-import { cn } from 'lib/utils';
-import { ChevronDown, X, Loader2 } from 'lucide-react';
+import React from 'react';
 import 'rc-select/assets/index.css';
 
 // Type definitions

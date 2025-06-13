@@ -42,7 +42,10 @@ const menus = [
   },
 ];
 
-const Navigation = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElement>>(({className, children, ...props}, ref) => {
+const Navigation = forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, children, ...props }, ref) => {
   return (
     <div ref={ref} className={className} {...props}>
       {/* Mobile navigation */}
@@ -67,7 +70,7 @@ const Navigation = forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDivElemen
                   }
                 >
                   <menu.icon className="mr-4 h-4 w-5" />
-                  <span className='font-medium'>{menu.title}</span>
+                  <span className="font-medium">{menu.title}</span>
                 </NavLink>
               </li>
             ))}

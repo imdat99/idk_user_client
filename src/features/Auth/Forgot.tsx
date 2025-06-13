@@ -1,10 +1,10 @@
 import { Button } from 'components/Button';
+import { Input } from 'components/Input';
 import { authPath } from 'lib/constants';
 import { Mail, SendHorizontal } from 'lucide-react';
+import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
-import { Input } from 'components/Input';
-import { useForm } from 'react-hook-form';
 
 interface FormValues {
   email: string;

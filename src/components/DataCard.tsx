@@ -1,37 +1,33 @@
-import type { DeepNamePath, SpecialString } from "lib/types";
-import { cn, get } from "lib/utils";
-import { ChevronRight } from "lucide-react";
-import React, { FC, forwardRef } from "react";
+import type { DeepNamePath, SpecialString } from 'lib/types';
+import { cn, get } from 'lib/utils';
+import { ChevronRight } from 'lucide-react';
+import React, { FC, forwardRef } from 'react';
 
 export type DataIndex<T = any> =
   | DeepNamePath<T>
   | SpecialString<T>
   | number
   | (SpecialString<T> | number)[];
-export type ExtractValue<T, K> =
-  K extends keyof T
-    ? T[K]
-    : K extends [infer First, ...infer Rest]
-      ? First extends keyof T
-        ? ExtractValue<T[First], Rest>
+export type ExtractValue<T, K> = K extends keyof T
+  ? T[K]
+  : K extends [infer First, ...infer Rest]
+    ? First extends keyof T
+      ? ExtractValue<T[First], Rest>
+      : never
+    : K extends `${infer Key}.${infer Rest}`
+      ? Key extends keyof T
+        ? ExtractValue<T[Key], Rest>
         : never
-      : K extends `${infer Key}.${infer Rest}`
-        ? Key extends keyof T
-          ? ExtractValue<T[Key], Rest>
-          : never
-        : never;
+      : never;
 
 interface DataCardField<RecordType extends object = any> {
   key: DataIndex<RecordType>;
   title: string;
-  render?: (
-    value: any,
-    record: RecordType,
-    index: number
-  ) => React.ReactNode;
+  render?: (value: any, record: RecordType, index: number) => React.ReactNode;
 }
 
-interface DataCardProps<RecordType extends object = any> extends React.HTMLAttributes<HTMLDivElement> {
+interface DataCardProps<RecordType extends object = any>
+  extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   description?: string;
   fields: Array<DataCardField<RecordType>>;
@@ -40,7 +36,7 @@ interface DataCardProps<RecordType extends object = any> extends React.HTMLAttri
     field: DataIndex<RecordType>,
     value: ExtractValue<RecordType, DataIndex<RecordType>>,
     record: RecordType,
-    index: number
+    index: number,
   ) => void;
 }
 
@@ -58,16 +54,14 @@ const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
   return (
     <div
       className={cn(
-        "border border-gray-200 rounded-lg overflow-hidden",
-        className
+        'border border-gray-200 rounded-lg overflow-hidden',
+        className,
       )}
       {...otherProps}
     >
       <div className="px-6 pb-4 pt-6">
         <h2 className="md:text-2xl mb-3 text-gray-800">{title}</h2>
-        {description && (
-          <p className="text-gray-600 text-sm">{description}</p>
-        )}
+        {description && <p className="text-gray-600 text-sm">{description}</p>}
       </div>
       <div className="divide-y divide-gray-200 [&_div]:cursor-pointer">
         {fields.map((field, index) => {

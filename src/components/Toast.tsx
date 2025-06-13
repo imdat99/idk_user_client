@@ -1,7 +1,7 @@
+import { AlertCircle, Bell, Check, Info, X } from 'lucide-react';
 import React, { useState, useEffect, useMemo, ReactNode } from 'react';
 import { createPortal } from 'react-dom';
-import { createRoot, Root as ReactRoot } from 'react-dom/client';
-import { Bell, Check, AlertCircle, Info, X } from 'lucide-react';
+import { Root as ReactRoot, createRoot } from 'react-dom/client';
 
 const TOAST_ID = 'TOAST_ID';
 // TypeScript Types and Interfaces
