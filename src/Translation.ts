@@ -30,8 +30,8 @@ i18n
       loadPath: '/locales/{{lng}}/{{ns}}.json', // dynamic fetch JSON
     },
     detection: {
-      order: ['localStorage', 'navigator'],
-      caches: ['localStorage'],
+      order: ['cookie'],
+      caches: ['cookie'],
     },
     react: {
       useSuspense: true, // quan trọng để lazy load hoạt động mượt
