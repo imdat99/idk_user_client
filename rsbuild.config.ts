@@ -123,7 +123,7 @@ export default defineConfig((env) => ({
           try {
             const mod = await server.environments.ssr.loadBundle('index');
             // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-            webToNodeHandler((mod as any).default)(req, res, handlerError);
+            webToNodeHandler((mod as any).default.fetch)(req, res, handlerError);
           } catch (e) {
             handlerError(e);
           }

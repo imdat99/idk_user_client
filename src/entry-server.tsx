@@ -107,7 +107,7 @@ async function getStatsJson(): Promise<Rspack.StatsCompilation> {
 }
 
 function Root(props: { styles: string[]; children?: React.ReactNode }) {
-  const { i18n } = useTranslation("profile");
+  const { i18n } = useTranslation();
   return (
     <>
       <html lang={i18n.language} dir={i18n.dir(i18n.language)}>
@@ -153,3 +153,4 @@ function Root(props: { styles: string[]; children?: React.ReactNode }) {
     </>
   );
 }
+export default handler;

@@ -13,7 +13,8 @@
 	],
 	"assets": {
 		"binding": "ASSETS",
-		"directory": "dist/client"
+		"directory": "dist/client",
+		"html_handling": "none"
 	},
 	"observability": {
 		"enabled": true

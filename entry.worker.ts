@@ -1,4 +1,3 @@
-import { compress } from "hono/compress";
 import { Hono } from "hono";
 import { etag } from "hono/etag";
 import { cors } from "hono/cors";
@@ -16,7 +15,7 @@ const applyMiddlewareToPaths = (paths, ...middleware) => {
 		app.use(path, ...middleware)
 	}
 }
-const middlewares = [compress(),
+const middlewares = [
 	etag(),
 	cors(),
 	async (c, next) => {
@@ -30,10 +29,9 @@ const middlewares = [compress(),
 	// })
 ]
 applyMiddlewareToPaths(["/static/*", "/assets/*", "/locales/*", "/site.webmanifest"], ...middlewares);
-app.use("*", compress());
 import("./dist/server/index.cjs").then((mod) => mod.default).then(
   (module) => {
-    app.all("*", async (c) => module.handler.fetch(c.req.raw));
+    app.all("*",...middlewares, async (c) => module.handler.fetch(c.req.raw));
   }
 );
 export default app;
