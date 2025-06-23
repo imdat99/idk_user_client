@@ -1,6 +1,7 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { ChevronRight, HelpCircle, MessageSquare, Search } from 'lucide-react';
+import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router';
 const cards = [
   {
@@ -36,6 +37,11 @@ const cards = [
 const Pages = () => {
   return (
     <>
+    <Helmet prioritizeSeoTags>
+      <title>Tài khoản Google</title>
+      <meta name="description" content="Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của bạn" />
+      <link rel="canonical" href="/account" />
+    </Helmet>
       <div className="text-center mb-6">
         <div className="mx-auto md:my-8 bg-purple-700 text-white font-bold text-6xl rounded-full h-24 w-24 flex items-center justify-center">
           D

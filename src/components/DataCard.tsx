@@ -1,8 +1,9 @@
 import type { DeepNamePath, SpecialString } from 'lib/types';
 import { cn, get } from 'lib/utils';
 import { ChevronRight } from 'lucide-react';
-import React, { FC, forwardRef } from 'react';
+import { Link } from 'react-router';
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 export type DataIndex<T = any> =
   | DeepNamePath<T>
   | SpecialString<T>
@@ -19,19 +20,22 @@ export type ExtractValue<T, K> = K extends keyof T
         ? ExtractValue<T[Key], Rest>
         : never
       : never;
-
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 interface DataCardField<RecordType extends object = any> {
   key: DataIndex<RecordType>;
   title: string;
+  // biome-ignore lint/suspicious/noExplicitAny: <explanation>
   render?: (value: any, record: RecordType, index: number) => React.ReactNode;
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 interface DataCardProps<RecordType extends object = any>
   extends React.HTMLAttributes<HTMLDivElement> {
   title: string;
   description?: string;
   fields: Array<DataCardField<RecordType>>;
   data: RecordType;
+  rowComponent?: React.ComponentType;
   onRowClick?: (
     field: DataIndex<RecordType>,
     value: ExtractValue<RecordType, DataIndex<RecordType>>,
@@ -40,6 +44,7 @@ interface DataCardProps<RecordType extends object = any>
   ) => void;
 }
 
+// biome-ignore lint/suspicious/noExplicitAny: <explanation>
 const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
   const {
     className,
@@ -49,6 +54,7 @@ const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
     fields,
     data,
     onRowClick,
+    rowComponent,
     ...otherProps
   } = props;
   return (
@@ -75,12 +81,23 @@ const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
           // Sử dụng ExtractValue để đảm bảo đúng kiểu value
           const value = get(data, path) as ExtractValue<T, typeof key>;
           return (
-            <div
+            <Link
+              to={{
+                pathname: `/${key}/detail`,
+                search: `?token=${crypto.randomUUID()}`,
+              }}
               onClick={() => {
                 if (onRowClick) {
                   onRowClick(key, value, data, index);
                 }
               }}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' && onRowClick) {
+                  onRowClick(key, value, data, index);
+                }
+              }}
+              
+              tabIndex={index}
               key={String(key)}
               className="px-6 py-4 flex hover:bg-gray-100"
             >
@@ -99,7 +116,7 @@ const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
               <div className="mt-2 sm:mt-0">
                 <ChevronRight className="text-2xl text-gray-400 ml-auto" />
               </div>
-            </div>
+            </Link>
           );
         })}
       </div>

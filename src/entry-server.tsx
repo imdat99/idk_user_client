@@ -58,9 +58,9 @@ handler.use(async (c) => {
           } as unstable_RouterContextProvider,
           params: {},
         },
-        // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         (() => {
           resolve(routerContextProvider);
+          // biome-ignore lint/suspicious/noExplicitAny: <explanation>
         }) as any
       );
     }
@@ -83,7 +83,16 @@ handler.use(async (c) => {
   const htmlStream = await ReactDOMServer.renderToReadableStream(root, {
     bootstrapScripts: scripts,
   });
-  return new Response(htmlStream, {
+  // console.log("helmetContext", Object.values(helmetContext.helmet).map((h) => h.toComponent()));
+  return new Response(htmlStream.pipeThrough(new TransformStream({
+    transform(chunk, controller) {
+      // Giả sử chunk là text
+      const text = new TextDecoder().decode(chunk);
+      const modifiedText = text.replace(/<\/head>/g, `${Object.values(helmetContext.helmet).map((h) => h.toString()).join("")}</head>`); // sửa dữ liệu
+      controller.enqueue(new TextEncoder().encode(modifiedText));
+    }
+  })
+  ), {
     headers: {
       "content-type": "text/html",
     },
@@ -129,20 +138,10 @@ function Root(props: { styles: string[]; children?: React.ReactNode }) {
           />
           <link rel="manifest" href="/site.webmanifest" />
           <link rel="icon" href="/assets/images/favicon.ico" />
-          <title>Xemdi - Xem phim online miễn phí</title>
           <meta charSet="UTF-8" />
           <meta
             name="viewport"
             content="width=device-width, initial-scale=1.0"
-          />
-          <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-          />
-          <meta name="theme-color" content="#ffffff" />
-          <meta
-            name="description"
-            content="Xemdi - Your go-to platform for movie and TV show recommendations."
           />
           {props.styles.map((href) => (
             <link key={href} rel="stylesheet" href={href} />
