@@ -54,9 +54,9 @@ const Navigation = forwardRef<
           {/* Mobile sidebar content goes here - same as desktop sidebar */}
         </div>
       </div>
-      <aside className="w-70 overflow-y-auto py-4 lg:block hidden">
+      <aside className="max-w-xs h-svh overflow-y-auto lg:block hidden">
         <nav>
-          <ul className="cursor-pointer font-medium text-sm">
+          <ul className="cursor-pointer text-[14px]">
             {menus.map((menu) => (
               <li key={menu.path}>
                 <NavLink
@@ -64,13 +64,14 @@ const Navigation = forwardRef<
                   state={{ from: `navigation-${menu.title}` }}
                   className={({ isActive }) =>
                     cn(
-                      'px-4 py-3 flex items-center rounded-r-3xl',
-                      isActive ? 'bg-primary/20 text-primary' : '',
+                      'px-4 py-2 flex items-center rounded-r-2xl',
+                      isActive ? 'bg-[#d3e3fd] fw-bold' : '',
                     )
                   }
+                  viewTransition
                 >
                   <menu.icon className="mr-4 h-4 w-5" />
-                  <span className="font-medium">{menu.title}</span>
+                  <span className="">{menu.title}</span>
                 </NavLink>
               </li>
             ))}

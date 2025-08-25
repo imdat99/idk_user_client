@@ -40,6 +40,7 @@ const Forgot = () => {
         <Input
           type="email"
           placeholder={t('login.emailPlaceholder')}
+          autoComplete='email'
           prefix={<Mail className="text-muted-foreground" size={18} />}
           {...register('email', {
             required: t('login.emailRequired'),

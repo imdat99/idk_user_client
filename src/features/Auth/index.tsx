@@ -8,7 +8,7 @@ const index = () => {
   return (
     <div className="bg-background flex items-center min-h-svh flex-col">
       <div className="flex-1 items-center flex">
-        <div className=":uno: bg-white w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6">
+        <div className=":uno: bg-white w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6 border border-gray-100">
           <div className="flex">
             <img
               className="mx-auto animate-bounce-in duration-500 h-10 w-10"
