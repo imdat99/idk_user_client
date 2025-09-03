@@ -40,5 +40,10 @@
   },
   "loading": {
     "message": "Loading, please wait..."
+  },
+   "sendRequest": {
+    "title": "Send Request",
+    "success": "Request sent successfully!",
+    "error": "An error occurred while sending the request. Please try again."
   }
 }

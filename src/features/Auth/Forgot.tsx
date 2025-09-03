@@ -10,7 +10,7 @@ interface FormValues {
   email: string;
 }
 const Forgot = () => {
-  const { t } = useTranslation('auth');
+  const { t } = useTranslation(['auth', 'common']);
   const {
     register,
     handleSubmit,
@@ -34,7 +34,7 @@ const Forgot = () => {
         <p className="text-sm text-gray-600">{t('forgot.subtitle')}</p>
       </div>
       <form
-        className="flex w-full max-w-sm items-center space-x-2 [&>div]:flex-1"
+        className="w-full flex flex-col max-w-sm items-center space-y-4 [&>div]:flex-1"
         onSubmit={handleSubmit(onSubmit)}
       >
         <Input
@@ -52,11 +52,10 @@ const Forgot = () => {
         />
         <Button
           type="submit"
-          size="icon"
           title={t('forgot.sendResetLink')}
           loading={isSubmitting}
         >
-          <SendHorizontal />
+          {t('common:sendRequest.title')}
         </Button>
       </form>
 

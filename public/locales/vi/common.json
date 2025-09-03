@@ -40,5 +40,10 @@
   },
   "loading": {
     "message": "Đang tải, vui lòng đợi..."
+  },
+  "sendRequest": {
+    "title": "Gửi yêu cầu",
+    "success": "Yêu cầu đã được gửi thành công!",
+    "error": "Đã xảy ra lỗi khi gửi yêu cầu. Vui lòng thử lại."
   }
 }

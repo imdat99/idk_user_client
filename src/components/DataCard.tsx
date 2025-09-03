@@ -84,7 +84,7 @@ const DataCard = <T extends object = any>(props: DataCardProps<T>) => {
             <Link
               to={{
                 pathname: `/${key}/detail`,
-                search: `?token=${crypto.randomUUID()}`,
+                search: `?token=`,
               }}
               onClick={() => {
                 if (onRowClick) {
