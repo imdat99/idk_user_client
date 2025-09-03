@@ -1,8 +1,8 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { ChevronRight, HelpCircle, MessageSquare, Search } from 'lucide-react';
-import { Helmet } from 'react-helmet-async';
 import { Link } from 'react-router';
+import useBearStore from 'store/user';
 const cards = [
   {
     header: 'Quyền riêng tư và cá nhân hóa',
@@ -35,13 +35,15 @@ const cards = [
   },
 ];
 const Pages = () => {
+  const abc = useBearStore()
+  
   return (
     <>
-    <Helmet prioritizeSeoTags>
+    <>
       <title>Tài khoản Google</title>
       <meta name="description" content="Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của bạn" />
       <link rel="canonical" href="/account" />
-    </Helmet>
+    </>
       <div className="text-center mb-6">
         <div className="mx-auto md:my-8 bg-purple-700 text-white font-bold text-6xl rounded-full h-24 w-24 flex items-center justify-center">
           D
@@ -53,9 +55,10 @@ const Pages = () => {
           Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của
           bạn
         </p>
+        <p>{abc.bears}</p>
       </div>
       {/* Search box */}
-      <div className="bg-gray-100 rounded-full flex items-center px-4 py-3 mb-6 focus-within:bg-white! focus-within:focus_inp">
+      <div className="bg-gray-100 rounded-full flex items-center px-4 py-3 mb-6 focus-within:(bg-white! focus_inp focus_inp)">
         <Search className="text-black mr-3" />
         <input
           type="text"
@@ -65,7 +68,7 @@ const Pages = () => {
       </div>
       {/* Quick links */}
       <div className=":uno: flex flex-wrap gap-4 mb-6 text-black font-medium [&_button]:(rounded-md cursor-pointer border-primary text-primary border)">
-        <button type="button" className="px-4 py-1 text-sm focus:outline-none">
+        <button type="button" className="px-4 py-1 text-sm focus:outline-none" onClick={abc.increase}>
           Mật khẩu của tôi
         </button>
         <button type="button" className="px-4 py-1 text-sm focus:outline-none">

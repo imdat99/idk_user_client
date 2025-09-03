@@ -1,6 +1,6 @@
 import { Outlet } from 'react-router';
-import Header from './Header';
 import Navigation from './Navigation';
+import Header from './Header';
 
 const DashboardLayout = () => {
   return (

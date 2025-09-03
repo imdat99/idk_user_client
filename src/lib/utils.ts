@@ -116,3 +116,12 @@ export function set<T extends object>(obj: T, path: PathInput, value: any): T {
 
   return obj;
 }
+// this function ensures a function is only run on the client side
+export function runOnClient<T extends (...args: any[]) => any>(fn: T): T {
+  return ((...args: Parameters<T>): ReturnType<T> | null => {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    return fn(...args);
+  }) as T;
+}

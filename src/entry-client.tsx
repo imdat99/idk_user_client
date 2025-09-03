@@ -1,5 +1,4 @@
 import { hydrateRoot } from 'react-dom/client';
-import { HelmetProvider } from 'react-helmet-async';
 import { RouterProvider, createBrowserRouter, matchRoutes } from 'react-router';
 
 import i18n from 'Translation';
@@ -37,7 +36,6 @@ if (typeof window === 'object' && lazyMatches && lazyMatches?.length > 0) {
   }
   const router = createBrowserRouter(routes);
   return (
-    <HelmetProvider>
       <I18nextProvider i18n={i18n}>
         <SWRConfig
           value={{ provider: () => new Map(), fetcher: useEnhancedFetch() }}
@@ -45,6 +43,5 @@ if (typeof window === 'object' && lazyMatches && lazyMatches?.length > 0) {
           <RouterProvider router={router} />
         </SWRConfig>
       </I18nextProvider>
-    </HelmetProvider>
   );
 }

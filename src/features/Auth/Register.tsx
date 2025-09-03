@@ -10,10 +10,10 @@ import {
   Mail,
   ShieldCheck,
 } from 'lucide-react';
-import { type MouseEvent, useCallback, useMemo, useState } from 'react';
+import { type MouseEvent, useCallback, useEffect, useInsertionEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link } from 'react-router';
+import { Link, useLoaderData, useRevalidator } from 'react-router';
 
 interface RegisterFormValues {
   email: string;
@@ -23,6 +23,13 @@ interface RegisterFormValues {
 }
 const Register = () => {
   const { t } = useTranslation('auth');
+  const revalidator = useRevalidator();
+  const data = useLoaderData();
+  useEffect(() => {
+    if (!data) {
+      revalidator.revalidate();
+    }
+  }, [data, revalidator]);
   const [sendCodeLoading, setSendCodeLoading] = useState(false);
   const [inpPasswordType, setInpType] = useState('password');
   const [countdown, setCountdown] = useState(0);

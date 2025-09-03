@@ -2,6 +2,7 @@ import { cn } from 'lib/utils';
 import { ArrowLeft, Grid, Menu } from 'lucide-react';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
+import LogoIcon from './Icon/Logo';
 
 const Header = forwardRef<
   HTMLHeadElement,
@@ -34,7 +35,7 @@ const Header = forwardRef<
     };
   }, []);
   return (
-    <>
+    <div className='lg:hidden'>
       <div ref={sentinelRef} className="absolute top-0 h-0 w-full" />
       <header
         className={cn(
@@ -50,15 +51,11 @@ const Header = forwardRef<
             <button
               id="mobile-menu-btn"
               type="button"
-              className="mr-4 hidden mobile-menu-btn"
+              className="mr-4 text-gray-500 lg:hidden"
             >
               <Menu />
             </button>
-            <img
-              src="/assets/images/logo.svg"
-              alt="Xemdi Logo"
-              className="h-6"
-            />
+            <LogoIcon className="h-6 w-6" />
             <span className="ml-2 text-lg text-xl text-center h-6">
               Tài khoản
             </span>
@@ -70,9 +67,6 @@ const Header = forwardRef<
             {/* <button className="p-2" type='button'>
             <HelpCircle className="h-5 w-5 text-gray-500" />
           </button> */}
-            <button className="p-2" type="button">
-              <Grid className="h-5 w-5 text-gray-500" />
-            </button>
             <div className="ml-2 bg-purple-700 text-white rounded-full h-8 w-8 flex items-center justify-center">
               D
             </div>
@@ -96,7 +90,7 @@ const Header = forwardRef<
           <div className="border-b border-gray-300 w-full absolute left-0 bottom-0" />
         </div>
       </header>
-    </>
+    </div>
   );
 });
 Header.displayName = 'Xemdi-Header';

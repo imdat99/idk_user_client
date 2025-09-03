@@ -8,7 +8,6 @@ import {
   type unstable_RouterContextProvider,
 } from "react-router";
 import routes from "routes";
-import { HelmetProvider, type HelmetServerState } from "react-helmet-async";
 import { I18nextProvider, useTranslation } from "react-i18next";
 import { getInstance, i18nextMiddleware } from "i18n.server";
 import { Hono } from "hono";
@@ -66,9 +65,7 @@ handler.use(async (c) => {
     }
   );
   // biome-ignore lint/suspicious/noExplicitAny: <explanation>
-  const helmetContext: { helmet: HelmetServerState } = { helmet: {} as any };
   const root = (
-    <HelmetProvider context={helmetContext}>
       <I18nextProvider i18n={getInstance(getContext)}>
         <Root styles={styles}>
           <StaticRouterProvider
@@ -78,21 +75,22 @@ handler.use(async (c) => {
           />
         </Root>
       </I18nextProvider>
-    </HelmetProvider>
   );
   const htmlStream = await ReactDOMServer.renderToReadableStream(root, {
     bootstrapScripts: scripts,
   });
   // console.log("helmetContext", Object.values(helmetContext.helmet).map((h) => h.toComponent()));
-  return new Response(htmlStream.pipeThrough(new TransformStream({
-    transform(chunk, controller) {
-      // Giả sử chunk là text
-      const text = new TextDecoder().decode(chunk);
-      const modifiedText = text.replace(/<\/head>/g, `${Object.values(helmetContext.helmet).map((h) => h.toString()).join("")}</head>`); // sửa dữ liệu
-      controller.enqueue(new TextEncoder().encode(modifiedText));
-    }
-  })
-  ), {
+  return new Response(htmlStream
+  //   .pipeThrough(new TransformStream({
+  //   transform(chunk, controller) {
+  //     // Giả sử chunk là text
+  //     const text = new TextDecoder().decode(chunk);
+  //     const modifiedText = text.replace(/<\/head>/g, `${Object.values(helmetContext.helmet).map((h) => h.toString()).join("")}</head>`); // sửa dữ liệu
+  //     controller.enqueue(new TextEncoder().encode(modifiedText));
+  //   }
+  // })
+  // )
+  , {
     headers: {
       "content-type": "text/html",
     },

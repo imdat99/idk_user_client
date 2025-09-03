@@ -1,10 +1,11 @@
 import { useMemo } from 'react';
-import { Outlet, useNavigation } from 'react-router';
+import { Outlet, useNavigation, useRevalidator } from 'react-router';
 
 const RootLayout = () => {
   const navigation = useNavigation();
+  const revalidator = useRevalidator();
   const loading = useMemo(
-    () => navigation.state === 'loading',
+    () => navigation.state === 'loading' || revalidator.state === 'loading',
     [navigation.state],
   );
   return (

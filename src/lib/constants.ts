@@ -33,5 +33,6 @@ export const dashboardPath = {
   payments: '/payments',
   sharing: '/sharing',
   details: 'details',
+  applications: '/applications',
   // personalInfo: '/personal-info',
 };

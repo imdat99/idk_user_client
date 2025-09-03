@@ -4,6 +4,7 @@ import FullyLoading from 'components/FullyLoading';
 import NotfoundPage from 'components/NotfoundPage';
 import RootLayout from 'components/RootLayout';
 import { PolicyPath, authPath, dashboardPath } from 'lib/constants';
+import { runOnClient } from 'lib/utils';
 import { createElement as _c } from 'react';
 import type { RouteObject } from 'react-router';
 const routes: RouteObject[] = [
@@ -38,6 +39,7 @@ const routes: RouteObject[] = [
         lazy: async () => ({
           Component: (await import('./features/Auth')).default,
         }),
+        path: "",
         children: [
           {
             path: authPath.login,
@@ -47,13 +49,17 @@ const routes: RouteObject[] = [
           },
           {
             path: authPath.register,
-            loader: async () => {
+            loader: runOnClient(async () => {
               return new Promise((resolve) => {
                 setTimeout(() => {
-                  resolve(null);
+                  resolve({
+                    data: {
+                      number: 1
+                    }
+                  });
                 }, 3000); // Simulate a delay for loading
               })
-            },
+            }),
             lazy: async () => ({
               Component: (await import('./features/Auth/Register')).default,
             }),

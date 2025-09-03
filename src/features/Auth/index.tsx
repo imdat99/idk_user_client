@@ -5,6 +5,7 @@ import { Link, Outlet } from 'react-router';
 
 const index = () => {
   const { t } = useTranslation('common');
+  console.log("render auth layout")
   return (
     <div className="bg-background flex items-center min-h-svh flex-col">
       <div className="flex-1 items-center flex">

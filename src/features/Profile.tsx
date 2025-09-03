@@ -1,5 +1,4 @@
 import DataCard from 'components/DataCard';
-import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router';
 
@@ -21,7 +20,7 @@ const PersonalInfo = () => {
   const na = useNavigate();
   return (
     <>
-    <Helmet prioritizeSeoTags>
+    <>
       <title>{t('title')}</title>
       <meta name="description" content={t('subtitle')} />
       <link rel="canonical" href="/profile/personal-info" />
@@ -29,7 +28,7 @@ const PersonalInfo = () => {
       <meta property="og:description" content={t('subtitle')} />
       <meta property="og:url" content="/profile/personal-info" />
       <meta property="og:type" content="website" />
-    </Helmet>
+    </>
       <div className="text-center mb-6">
         <h1 className="text-2xl md:text-3xl font-medium mb-4">{t('title')}</h1>
         <p className="text-gray-600 mb-6">{t('subtitle')}</p>
