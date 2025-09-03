@@ -5,20 +5,44 @@ import { pluginBabel } from '@rsbuild/plugin-babel';
 import { pluginReact } from '@rsbuild/plugin-react';
 import { UnoCSSRspackPlugin } from '@unocss/webpack/rspack';
 import { pluginAddHtmlAttributes } from './rsbuild.plugin';
+import {SemiRspackPlugin} from '@douyinfe/semi-rspack-plugin';
+import { pluginSass } from '@rsbuild/plugin-sass';
 export default defineConfig((env) => ({
   plugins: [
     pluginReact(),
-    pluginBabel({
-      include: /\.(?:jsx|tsx)$/,
-      babelLoaderOptions(opts) {
-        opts.plugins?.unshift('babel-plugin-react-compiler');
-      },
-    }),
+    // pluginBabel({
+    //   include: /\.(?:jsx|tsx)$/,
+    //   babelLoaderOptions: {
+    //     plugins: [
+    //       ['babel-plugin-react-compiler', { target: '18' }],
+    //     ],
+    //   },
+      
+    //   // babelLoaderOptions(opts) {
+    //   //   opts.plugins?.unshift(['babel-plugin-react-compiler', {
+    //   //     target: '18'
+    //   //   }]);
+    //   // },
+    // }),
+    pluginSass(),
+
     pluginAddHtmlAttributes(),
   ],
   tools: {
     rspack: {
-      plugins: [UnoCSSRspackPlugin()],
+      plugins: [UnoCSSRspackPlugin(), new SemiRspackPlugin({
+        theme: '@douyinfe/semi-theme-default',
+            variables: {
+              '$font-size-small': '12px',
+        '$font-size-header-4': '28px',
+        '$font-size-regular': '12px',
+        '$color-input_default-bg-active': 'var(--semi-color-bg-0)',
+        '$color-input_default-bg-focus': 'var(--semi-color-bg-0)',
+        '$font-family-regular': `'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI',
+        'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
+        Helvetica, Arial, sans-serif`
+            }
+        })],
     },
   },
   server: {

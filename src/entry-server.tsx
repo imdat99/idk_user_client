@@ -1,5 +1,7 @@
 import type { Rspack, RsbuildDevServer } from "@rsbuild/core";
-import ReactDOMServer from "react-dom/server.edge";
+// import ReactDOMServer from "react-dom/server.edge";
+// @ts-ignore
+import { renderToReadableStream } from "react-dom/server.browser";
 import { tinyassert } from "@hiogawa/utils";
 import {
   createStaticHandler,
@@ -76,10 +78,9 @@ handler.use(async (c) => {
         </Root>
       </I18nextProvider>
   );
-  const htmlStream = await ReactDOMServer.renderToReadableStream(root, {
+  const htmlStream = await renderToReadableStream(root, {
     bootstrapScripts: scripts,
   });
-  // console.log("helmetContext", Object.values(helmetContext.helmet).map((h) => h.toComponent()));
   return new Response(htmlStream
   //   .pipeThrough(new TransformStream({
   //   transform(chunk, controller) {

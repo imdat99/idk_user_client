@@ -1,6 +1,7 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { ChevronRight, HelpCircle, MessageSquare, Search } from 'lucide-react';
+import { Button, DatePicker } from '@douyinfe/semi-ui';
 import { Link } from 'react-router';
 import useBearStore from 'store/user';
 const cards = [
@@ -44,6 +45,13 @@ const Pages = () => {
       <meta name="description" content="Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của bạn" />
       <link rel="canonical" href="/account" />
     </>
+    <div className="btn-margin-right">
+            <Button>Primary Button</Button>
+            <Button type="secondary">Secondary Button</Button>
+            <Button type="tertiary">Tertiary Button</Button>
+            <Button type="warning">Warning Button</Button>
+            <Button type="danger">Danger Button</Button>
+        </div>
       <div className="text-center mb-6">
         <div className="mx-auto md:my-8 bg-purple-700 text-white font-bold text-6xl rounded-full h-24 w-24 flex items-center justify-center">
           D
@@ -57,6 +65,7 @@ const Pages = () => {
         </p>
         <p>{abc.bears}</p>
       </div>
+      <DatePicker onChange={(date, dateString) => console.log(dateString)} style={{ width: 240 }} />
       {/* Search box */}
       <div className="bg-gray-100 rounded-full flex items-center px-4 py-3 mb-6 focus-within:(bg-white! focus_inp focus_inp)">
         <Search className="text-black mr-3" />
