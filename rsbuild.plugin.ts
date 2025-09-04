@@ -16,7 +16,7 @@ export const pluginAddHtmlAttributes = (): RsbuildPlugin => ({
     // });
     api.modifyHTML((html) => {
       // console.log("build html", api.processAssets)
-      return html;
+      return "";
     });
   },
 });

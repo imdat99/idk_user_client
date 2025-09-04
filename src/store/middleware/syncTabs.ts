@@ -27,6 +27,7 @@ export function sync<TState, K extends keyof TState>(
         unserialize = (v) => v,
     }: Partial<Options<TState[K]>> = {}
 ): [() => void, () => void] {
+    if (!isSupported()) return [() => {}, () => {}];
     const channelName = ref + "-" + key.toString();
 
     let channel = new BroadcastChannel(channelName);

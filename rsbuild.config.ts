@@ -71,7 +71,7 @@ export default defineConfig((env) => ({
         bundleAnalyze:
           env.command === 'build'
             ? {
-                generateStatsFile: true,
+                generateStatsFile: false,
               }
             : undefined,
       },
