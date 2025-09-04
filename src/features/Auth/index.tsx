@@ -1,5 +1,6 @@
 import LanguageBtn from 'components/LanguageBtn';
 import { PolicyPath, contactPath } from 'lib/constants';
+import { Helmet } from 'react-helmet-async';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet } from 'react-router';
 
@@ -7,6 +8,12 @@ const index = () => {
   const { t } = useTranslation('common');
   console.log("render auth layout")
   return (
+    <>
+    <Helmet prioritizeSeoTags>
+      <title>{t('title')}</title>
+      <meta name="description" content={t('subtitle')} />
+      <link rel="canonical" href="/auth" />
+    </Helmet>
     <div className="bg-background flex items-center min-h-svh flex-col">
       <div className="flex-1 items-center flex">
         <div className=":uno: bg-white w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6 border border-gray-100">
@@ -34,6 +41,7 @@ const index = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

@@ -4,6 +4,7 @@ import { ChevronRight, HelpCircle, MessageSquare, Search } from 'lucide-react';
 import { Button, DatePicker } from '@douyinfe/semi-ui';
 import { Link } from 'react-router';
 import useBearStore from 'store/user';
+import { Helmet } from 'react-helmet-async';
 const cards = [
   {
     header: 'Quyền riêng tư và cá nhân hóa',
@@ -40,11 +41,11 @@ const Pages = () => {
   
   return (
     <>
-    <>
+    <Helmet prioritizeSeoTags>
       <title>Tài khoản Google</title>
       <meta name="description" content="Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của bạn" />
       <link rel="canonical" href="/account" />
-    </>
+    </Helmet>
     <div className="btn-margin-right">
             <Button>Primary Button</Button>
             <Button type="secondary">Secondary Button</Button>
