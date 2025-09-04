@@ -10,20 +10,20 @@ import { pluginSass } from '@rsbuild/plugin-sass';
 export default defineConfig((env) => ({
   plugins: [
     pluginReact(),
-    // pluginBabel({
-    //   include: /\.(?:jsx|tsx)$/,
-    //   babelLoaderOptions: {
-    //     plugins: [
-    //       ['babel-plugin-react-compiler', { target: '18' }],
-    //     ],
-    //   },
+    pluginBabel({
+      include: /\.(?:jsx|tsx)$/,
+      babelLoaderOptions: {
+        plugins: [
+          ['babel-plugin-react-compiler', { target: '18' }],
+        ],
+      },
       
-    //   // babelLoaderOptions(opts) {
-    //   //   opts.plugins?.unshift(['babel-plugin-react-compiler', {
-    //   //     target: '18'
-    //   //   }]);
-    //   // },
-    // }),
+      // babelLoaderOptions(opts) {
+      //   opts.plugins?.unshift(['babel-plugin-react-compiler', {
+      //     target: '18'
+      //   }]);
+      // },
+    }),
     pluginSass(),
 
     pluginAddHtmlAttributes(),
@@ -33,14 +33,7 @@ export default defineConfig((env) => ({
       plugins: [UnoCSSRspackPlugin(), new SemiRspackPlugin({
         theme: '@douyinfe/semi-theme-default',
             variables: {
-              '$font-size-small': '12px',
-        '$font-size-header-4': '28px',
-        '$font-size-regular': '12px',
-        '$color-input_default-bg-active': 'var(--semi-color-bg-0)',
-        '$color-input_default-bg-focus': 'var(--semi-color-bg-0)',
-        '$font-family-regular': `'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-        'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'Helvetica Neue',
-        Helvetica, Arial, sans-serif`
+              '$font-family-regular': "Google Sans"
             }
         })],
     },
@@ -112,7 +105,7 @@ export default defineConfig((env) => ({
         filename: {
           js: '[name].cjs',
         },
-        minify: false,
+        minify: true,
       },
       source: {
         entry: {

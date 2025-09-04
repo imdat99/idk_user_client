@@ -151,4 +151,8 @@ function Root(props: { styles: string[]; children?: React.ReactNode }) {
     </>
   );
 }
-export default handler;
+export default { 
+  port: 3000, 
+  fetch: handler.fetch,
+  handler 
+} 

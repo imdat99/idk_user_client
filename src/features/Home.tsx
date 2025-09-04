@@ -117,6 +117,7 @@ const Pages = () => {
                 >
                   <img
                     // src={card.img}
+                    src={card.mimg || card.img}
                     srcSet={`${card.mimg || card.img} 700w, ${card.img} 1000w`}
                     alt="Privacy icon"
                     className="m-auto"

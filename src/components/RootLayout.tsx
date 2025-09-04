@@ -1,6 +1,7 @@
+import { LocaleProvider } from '@douyinfe/semi-ui';
 import { useMemo } from 'react';
 import { Outlet, useNavigation, useRevalidator } from 'react-router';
-
+import vi_VN from '@douyinfe/semi-ui/lib/es/locale/source/vi_VN';
 const RootLayout = () => {
   const navigation = useNavigation();
   const revalidator = useRevalidator();
@@ -9,7 +10,7 @@ const RootLayout = () => {
     [navigation.state],
   );
   return (
-    <>
+    <LocaleProvider locale={vi_VN}>
       {loading && (
         <>
           <div className=":uno: fixed top-0 left-0 w-full bg-primary/40 z-50">
@@ -19,7 +20,7 @@ const RootLayout = () => {
         </>
       )}
       <Outlet />
-    </>
+    </LocaleProvider>
   );
 };
 

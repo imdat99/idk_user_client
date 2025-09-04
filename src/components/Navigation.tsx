@@ -1,10 +1,10 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
-import { Blocks, CreditCard, EllipsisVertical, Home, Lock, User } from 'lucide-react';
+import { AlertCircleIcon, Blocks, BoxIcon, CreditCard, EllipsisVertical, ForwardIcon, Home, Lock, RefreshCwIcon, SearchIcon, SettingsIcon, User } from 'lucide-react';
 import { forwardRef } from 'react';
 import { NavLink } from 'react-router';
 import LogoIcon from './Icon/Logo';
-import { Button } from './Button';
+import { Button, Dropdown, HotKeys } from '@douyinfe/semi-ui';
 const menus = [
   {
     icon: Home,
@@ -70,9 +70,23 @@ const Navigation = forwardRef<
               </div>
             </div>
             <div>
-              <Button size='icon' variant='ghost'>
-                <EllipsisVertical className='text-gray-500'/>
-              </Button>
+                <Dropdown
+                trigger='click'
+            position="bottomLeft"
+            render={
+                <Dropdown.Menu>
+                    <Dropdown.Title>Group 2</Dropdown.Title>
+                    <Dropdown.Item type="tertiary" icon={<RefreshCwIcon />}>Tertiary text</Dropdown.Item>
+                    <Dropdown.Item type="warning" icon={<SearchIcon />}>
+                        Warning Text
+                    </Dropdown.Item>
+                    <Dropdown.Item type="danger" icon={<AlertCircleIcon />}>Danger text</Dropdown.Item>
+                </Dropdown.Menu>
+            }
+        >
+            <Button variant='ghost' icon={<EllipsisVertical className='text-gray-500'/>} theme="borderless"/>
+        </Dropdown>
+              
             </div>
           </div>
           <ul className="flex-1 text-sm">

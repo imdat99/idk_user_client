@@ -23,20 +23,11 @@ COPY . .
 RUN npm run build
 
 # Production stage
-FROM nginx:alpine AS production
+FROM oven/bun:1.2.21-alpine AS production
+WORKDIR /app
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/index.bun.ts ./index.bun.ts
 
-# Copy built files từ builder stage
-COPY --from=builder /app/dist /usr/share/nginx/html
+EXPOSE 3000
 
-# Copy nginx config (tùy chọn)
-COPY nginx.conf /etc/nginx/nginx.conf
-
-# Expose port
-EXPOSE 80
-
-# Health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-    CMD curl -f http://localhost/ || exit 1
-
-# Start nginx
-CMD ["nginx", "-g", "daemon off;"]
+CMD [ "bun", "index.bun.ts" ]

@@ -121,6 +121,10 @@ export default defineConfig({
           0% { transform: translateX(-100%); }
           100% { transform: translateX(100%); }
         }
+        html, body {
+          font-family: 'Google Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI' !important;
+          --semi-border-radius-small: 6px!important;
+        }
       `;
       },
     },

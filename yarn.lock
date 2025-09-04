@@ -712,6 +712,11 @@
   resolved "https://registry.yarnpkg.com/@hiogawa/utils/-/utils-1.7.0.tgz#db2686752297ec0b389b2897a95c48ecbc95b687"
   integrity sha512-ghiEFWBR1NENoHn+lSuW7liicTIzVPN+8Srm5UedCTw43gus0mlse6Wp2lz6GmbOXJ/CalMPp/0Tz2X8tajkAg==
 
+"@hono/bun-compress@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@hono/bun-compress/-/bun-compress-0.1.0.tgz#55c77ea7638d08e2e769661f3941925e5edd96c1"
+  integrity sha512-wxy9PdC07Yc81NawIcdIiuGAEeDujwPWd01KdxubXJ33G9vdjUO85ec0UMjH0Cy7+zfNXlcWgJ+zoATjT/IfTg==
+
 "@hono/node-server@^1.19.1":
   version "1.19.1"
   resolved "https://registry.yarnpkg.com/@hono/node-server/-/node-server-1.19.1.tgz#a76833f2c1be627344cc42f6a215aa3e9f8aaab3"
