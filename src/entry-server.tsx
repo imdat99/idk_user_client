@@ -21,7 +21,7 @@ handler.use(async (c) => {
   //   const remixRequest = await createFetchRequest(request);
   const context = await query(request);
   if (context instanceof Response) {
-    throw context;
+    return context;
   }
   const router = createStaticRouter(dataRoutes, context);
   const scripts: string[] = [];

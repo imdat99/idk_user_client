@@ -1,15 +1,16 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { Blocks, CreditCard, EllipsisVertical, Home, Lock, User } from 'lucide-react';
-import { forwardRef } from 'react';
+import { forwardRef, useRef } from 'react';
 import { NavLink } from 'react-router';
 import LogoIcon from './Icon/Logo';
 import { Button } from './Button';
+import { Menu } from 'primereact/menu';
 const menus = [
   {
     icon: Home,
-    title: 'Trang chủ',
-    path: dashboardPath.index,
+    title: 'Tổng quan',
+    path: dashboardPath.overview,
   },
   {
     icon: User,
@@ -47,6 +48,27 @@ const Navigation = forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
 >(({ className, children, ...props }, ref) => {
+  const menuRef = useRef<Menu>(null);
+  const items = [
+        {
+            label: 'Options',
+            items: [
+                {
+                    label: 'Refresh',
+                    icon: 'pi pi-refresh'
+                },
+                {
+                    label: 'Export',
+                    icon: 'pi pi-upload'
+                },
+                {
+                    label: 'Logout',
+                    icon: 'pi pi-sign-out',
+                    className: '[&_*]:!text-red-600',
+                }
+            ]
+        }
+    ];
   return (
     <div ref={ref} className={className} {...props}>
       {/* Mobile navigation */}
@@ -70,7 +92,8 @@ const Navigation = forwardRef<
               </div>
             </div>
             <div>
-              <Button size='icon' variant='ghost'>
+              <Menu model={items} popup ref={menuRef} id="popup_menu_right" />
+              <Button size='icon' variant='ghost' onClick={(event) => menuRef.current?.toggle(event)}>
                 <EllipsisVertical className='text-gray-500'/>
               </Button>
             </div>

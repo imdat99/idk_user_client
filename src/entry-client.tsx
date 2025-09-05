@@ -6,7 +6,9 @@ import { useEnhancedFetch } from 'lib/fetcher';
 import { startTransition } from 'react';
 import { I18nextProvider } from 'react-i18next';
 import { SWRConfig } from 'swr';
+
 import 'uno.css';
+import 'primeicons/primeicons.css';
 render()
   .then((Vnode) => {
     startTransition(() => {

@@ -1,6 +1,11 @@
 import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { ChevronRight, HelpCircle, MessageSquare, Search } from 'lucide-react';
+import { Button } from 'primereact/button';
+import { Sidebar } from 'primereact/sidebar';
+import { SplitButton } from 'primereact/splitbutton';
+import { Toast } from 'primereact/toast';
+import { useRef, useState } from 'react';
 import { Link } from 'react-router';
 import useBearStore from 'store/user';
 const cards = [
@@ -35,15 +40,39 @@ const cards = [
   },
 ];
 const Pages = () => {
+  const [visible, setVisible] = useState(false);
   const abc = useBearStore()
-  
+  const toast = useRef<Toast>(null);
+  const items = [
+    {
+      label: 'Update',
+      icon: 'pi pi-refresh',
+      command: () => {
+        toast.current?.show({ severity: 'success', summary: 'Updated', detail: 'Data Updated' });
+      }
+    },
+    {
+      label: 'Delete',
+      icon: 'pi pi-times',
+      command: () => {
+        toast.current?.show({ severity: 'warn', summary: 'Delete', detail: 'Data Deleted' });
+      }
+    },
+    {
+      label: 'React Website',
+      icon: 'pi pi-external-link',
+      command: () => {
+        window.location.href = 'https://reactjs.org/';
+      }
+    },
+  ];
   return (
     <>
-    <>
-      <title>Tài khoản Google</title>
-      <meta name="description" content="Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của bạn" />
-      <link rel="canonical" href="/account" />
-    </>
+      <>
+        <title>Tài khoản Google</title>
+        <meta name="description" content="Quản lý thông tin, quyền riêng tư và chế độ bảo mật cho tài khoản của bạn" />
+        <link rel="canonical" href="/account" />
+      </>
       <div className="text-center mb-6">
         <div className="mx-auto md:my-8 bg-purple-700 text-white font-bold text-6xl rounded-full h-24 w-24 flex items-center justify-center">
           D
@@ -121,7 +150,22 @@ const Pages = () => {
           </Link>
         ))}
       </div>
-
+        <Toast ref={toast}></Toast>
+      <div>
+        Test Store: {abc.bears} - Increase
+      </div>
+      <SplitButton label="Save" icon="pi pi-plus
+        " onClick={abc.increase} model={items} />
+      <div className="card flex justify-content-center">
+        <Sidebar visible={visible} onHide={() => setVisible(false)}>
+          <h2>Sidebar</h2>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
+          </p>
+        </Sidebar>
+        <Button icon="pi pi-arrow-right" onClick={() => setVisible(true)} />
+      </div>
       {/* Looking for more information */}
       <div className="card p-6 mb-6">
         <h2 className="text-xl font-medium mb-4">

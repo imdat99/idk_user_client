@@ -8,13 +8,18 @@ import {
 } from "unocss";
 export default defineConfig({
   // ...UnoCSS options
+  content: {
+    pipeline: {
+      include: [
+        // the default
+        /\.(vue|svelte|[jt]sx|vine.ts|mdx?|astro|elm|php|phtml|html)($|\?)/,
+        // include js/ts files
+        'src/**/*.{js,ts}',
+      ],
+    },
+  },
   presets: [
     presetAttributify(),
-    presetWind4({
-      preflights: {
-        reset: true,
-      },
-    }),
     presetWebFonts({
       provider: "google",
       fonts: {
@@ -26,6 +31,11 @@ export default defineConfig({
           },
         ],
         body: "Google Sans",
+      },
+    }),
+    presetWind4({
+      preflights: {
+        reset: true,
       },
     }),
     // presetRcSelect({

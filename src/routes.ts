@@ -6,7 +6,7 @@ import RootLayout from 'components/RootLayout';
 import { PolicyPath, authPath, dashboardPath } from 'lib/constants';
 import { runOnClient } from 'lib/utils';
 import { createElement as _c } from 'react';
-import type { RouteObject } from 'react-router';
+import { redirect, type RouteObject } from 'react-router';
 const routes: RouteObject[] = [
   {
     ErrorBoundary: ErrorScreen,
@@ -19,6 +19,10 @@ const routes: RouteObject[] = [
         children: [
           {
             index: true,
+            loader: () => redirect(dashboardPath.overview),
+          },
+          {
+            path: dashboardPath.overview,
             lazy: async () => ({
               Component: (await import('./features/Home')).default,
             }),

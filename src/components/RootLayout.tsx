@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Outlet, useNavigation, useRevalidator } from 'react-router';
-
+import { PrimeReactProvider } from 'primereact/api';
+import Tailwind from './prime/passthrough';
 const RootLayout = () => {
   const navigation = useNavigation();
   const revalidator = useRevalidator();
@@ -9,7 +10,7 @@ const RootLayout = () => {
     [navigation.state],
   );
   return (
-    <>
+    <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
       {loading && (
         <>
           <div className=":uno: fixed top-0 left-0 w-full bg-primary/40 z-50">
@@ -19,7 +20,7 @@ const RootLayout = () => {
         </>
       )}
       <Outlet />
-    </>
+    </PrimeReactProvider>
   );
 };
 
