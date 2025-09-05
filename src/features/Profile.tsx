@@ -34,6 +34,7 @@ const PersonalInfo = () => {
         <h1 className="text-2xl md:text-3xl font-medium mb-4">{t('title')}</h1>
         <p className="text-gray-600 mb-6">{t('subtitle')}</p>
       </div>
+      Chọn
       <div className="p-6 h-1" />
       <div className="bg-white mb-6">
         <div className="flex flex-col md:flex-row items-center p-6">

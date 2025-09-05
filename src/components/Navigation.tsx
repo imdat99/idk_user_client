@@ -8,8 +8,8 @@ import { Button, Dropdown, HotKeys } from '@douyinfe/semi-ui';
 const menus = [
   {
     icon: Home,
-    title: 'Trang chủ',
-    path: dashboardPath.index,
+    title: 'Tổng quan',
+    path: dashboardPath.overview,
   },
   {
     icon: User,

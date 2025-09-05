@@ -24,7 +24,7 @@ handler.use(async (c) => {
   //   const remixRequest = await createFetchRequest(request);
   const context = await query(request);
   if (context instanceof Response) {
-    throw context;
+    return context;
   }
   const router = createStaticRouter(dataRoutes, context);
   const scripts: string[] = [];
@@ -97,7 +97,7 @@ handler.use(async (c) => {
   )
   , {
     headers: {
-      "content-type": "text/html",
+       "Content-Type": "text/html; charset=utf-8",
     },
   });
 });
