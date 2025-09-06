@@ -1,7 +1,9 @@
-import { Button } from 'components/Button';
-import { Input } from 'components/Input';
 import { authPath } from 'lib/constants';
-import { Mail, SendHorizontal } from 'lucide-react';
+import { LoaderCircle, Mail } from 'lucide-react';
+import { Button } from 'primereact/button';
+import { IconField } from 'primereact/iconfield';
+import { InputIcon } from 'primereact/inputicon';
+import { InputText } from 'primereact/inputtext';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router';
@@ -14,7 +16,7 @@ const Forgot = () => {
   const {
     register,
     handleSubmit,
-    formState: { isSubmitting },
+    formState: { isSubmitting, errors },
   } = useForm<FormValues>();
   const onSubmit = (data: FormValues) => {
     return new Promise((resolve, reject) => {
@@ -37,23 +39,26 @@ const Forgot = () => {
         className="w-full flex flex-col max-w-sm items-center space-y-4 [&>div]:flex-1"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <Input
-          type="email"
-          placeholder={t('login.emailPlaceholder')}
-          autoComplete='email'
-          prefix={<Mail className="text-muted-foreground" size={18} />}
-          {...register('email', {
-            required: t('login.emailRequired'),
-            pattern: {
-              value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-              message: t('login.emailInvalid'),
-            },
-          })}
-        />
+        <IconField iconPosition="left" className='w-full'>
+          <InputIcon>
+            <Mail className="text-muted-foreground" size={18} />
+          </InputIcon>
+          <InputText invalid={!!errors.email}
+            {...register('email', {
+              required: t('login.emailRequired'),
+              pattern: {
+                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                message: t('login.emailInvalid'),
+              },
+            })}
+            placeholder={t('login.emailPlaceholder')} className='w-full' />
+        </IconField>
         <Button
+          className='w-full justify-center'
           type="submit"
           title={t('forgot.sendResetLink')}
           loading={isSubmitting}
+          loadingIcon={<LoaderCircle size={14} className="animate-spin mr-1" />}
         >
           {t('common:sendRequest.title')}
         </Button>

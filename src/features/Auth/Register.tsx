@@ -1,16 +1,19 @@
-import { Button } from 'components/Button';
-import { Input } from 'components/Input';
 import { showToast } from 'components/Toast';
 import { authPath } from 'lib/constants';
 import {
   ContactRound,
   Eye,
   EyeOff,
+  LoaderCircle,
   LockKeyhole,
   Mail,
   ShieldCheck,
 } from 'lucide-react';
-import { type MouseEvent, useCallback, useEffect, useInsertionEffect, useMemo, useState } from 'react';
+import { Button } from 'primereact/button';
+import { IconField } from 'primereact/iconfield';
+import { InputIcon } from 'primereact/inputicon';
+import { InputText } from 'primereact/inputtext';
+import { type MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { Link, useLoaderData, useRevalidator } from 'react-router';
@@ -33,7 +36,7 @@ const Register = () => {
   const [sendCodeLoading, setSendCodeLoading] = useState(false);
   const [inpPasswordType, setInpType] = useState('password');
   const [countdown, setCountdown] = useState(0);
-  const { register, handleSubmit, getValues, getFieldState } =
+  const { register, handleSubmit, getValues, getFieldState, formState: { errors, isSubmitting } } =
     useForm<RegisterFormValues>();
   const sendCodeCountdown = useCallback(() => {
     let countdown = 60 * 5; // 5 minutes in milliseconds
@@ -96,20 +99,49 @@ const Register = () => {
           <p className="text-black font-bold">
             {t('register.emailVerification')}
           </p>
-          <Input
-            type="email"
-            prefix={<Mail className="text-muted-foreground" size={18} />}
-            {...register('email', {
-              required: t('login.emailRequired'),
-              pattern: {
-                value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
-                message: t('login.emailInvalid'),
-              },
-            })}
-            placeholder={t('login.emailPlaceholder')}
-          />
+          <IconField iconPosition="left">
+            <InputIcon>
+              <Mail className="text-muted-foreground" size={18} />
+            </InputIcon>
+            <InputText invalid={!!errors.email}
+              {...register('email', {
+                required: t('login.emailRequired'),
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: t('login.emailInvalid'),
+                },
+              })}
+              placeholder={t('login.emailPlaceholder')} className='w-full' />
+          </IconField>
           <div className="flex flex-col gap-1">
-            <Input
+            <IconField>
+              <InputIcon className='left-2 !right-100'>
+                <ShieldCheck className="text-muted-foreground" size={18} />
+              </InputIcon>
+              <div className=':uno: flex flex-col justify-center pr-0 absolute top-0 right-2 h-full' >
+                <Button
+                  className="shadow-none h-7 px-2 bg-primary/80"
+                  size="small"
+                  onClick={sendCode}
+                  loading={sendCodeLoading}
+                  disabled={countdown > 0}
+                >
+                  {countdown ? `${countdown}s` : t('register.sendCode')}
+                </Button>
+              </div>
+              <InputText invalid={!!errors.email}
+                {...register('code', {
+                  required: t('register.codeRequired'),
+                  pattern: {
+                    value: /^[0-9]{6}$/,
+                    message: t('register.codeInvalid'),
+                  },
+                })}
+                // onPressEnter={(e) => e.preventDefault()}
+                placeholder={t('register.codePlaceholder')}
+                className='w-full !px-8' />
+            </IconField>
+            {/* <Input
               onPressEnter={(e) => e.preventDefault()}
               placeholder={t('register.codePlaceholder')}
               autoComplete="off"
@@ -125,17 +157,9 @@ const Register = () => {
                 <ShieldCheck className="text-muted-foreground" size={18} />
               }
               suffix={
-                <Button
-                  className="shadow-none h-7 px-2 bg-primary/80"
-                  size={'sm'}
-                  onClick={sendCode}
-                  loading={sendCodeLoading}
-                  disabled={countdown > 0}
-                >
-                  {countdown ? `${countdown}s` : t('register.sendCode')}
-                </Button>
+                
               }
-            />
+            /> */}
             <div className="text-gray-500 text-sm">
               {t('register.emailTip')}
             </div>
@@ -143,51 +167,43 @@ const Register = () => {
         </div>
         <div className="flex flex-col gap-4">
           <p className="text-black font-bold">{t('register.accountInfo')}</p>
-          <Input
-            type="text"
-            autoComplete="off"
-            placeholder={t('register.fullName')}
-            {...register('fullName', {
-              required: t('register.fullNameRequired'),
-              minLength: {
-                value: 2,
-                message: t('register.fullNameMinLength'),
-              },
-            })}
-            prefix={
+          <IconField iconPosition="left">
+            <InputIcon>
               <ContactRound className="text-muted-foreground" size={18} />
-            }
-          />
-          <Input
-            type={inpPasswordType}
-            autoComplete="off"
-            onPressEnter={(e) => e.preventDefault()}
-            placeholder={t('login.passwordPlaceholder')}
-            {...register('password', {
-              required: t('login.passwordRequired'),
-              minLength: {
-                value: 6,
-                message: t('login.passwordMinLength'),
-              },
-            })}
-            suffix={
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.preventDefault();
-                  setInpType((prev) =>
-                    prev === 'password' ? 'text' : 'password',
-                  );
-                }}
-                className="text-muted-foreground cursor-pointer"
-              >
-                <EyeCom size={18} />
-              </button>
-            }
-            prefix={<LockKeyhole className="text-muted-foreground" size={18} />}
-          />
+            </InputIcon>
+            <InputText invalid={!!errors.email}
+              autoComplete="off"
+              placeholder={t('register.fullName')}
+              {...register('fullName', {
+                required: t('register.fullNameRequired'),
+                minLength: {
+                  value: 2,
+                  message: t('register.fullNameMinLength'),
+                },
+              })}
+              className='w-full' />
+          </IconField>
+          <IconField>
+            <InputIcon className='cursor-pointer select-none' onClick={(e) => {
+              e.preventDefault();
+              setInpType((prev) =>
+                prev === 'password' ? 'text' : 'password',
+              );
+            }}>
+              <EyeCom className="text-muted-foreground" size={18} />
+            </InputIcon>
+            <InputIcon className='left-2 !right-100'>
+              <LockKeyhole className="text-muted-foreground" size={18} />
+            </InputIcon>
+            <InputText {...register('password', { required: 'Password is required' })} type={inpPasswordType} invalid={!!errors.password} placeholder={t('login.passwordPlaceholder')} className='w-full !px-8' />
+          </IconField>
         </div>
-        <Button type="submit" className="w-full py-2 font-medium">
+        <Button
+          className="w-full justify-center"
+          type="submit"
+          loading={isSubmitting}
+          loadingIcon={<LoaderCircle size={14} className="animate-spin mr-1" />}
+        >
           {t('register.signUp')}
         </Button>
       </form>

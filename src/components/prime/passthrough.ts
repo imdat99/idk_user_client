@@ -695,7 +695,7 @@ const Tailwind: PrimeReactPTOptions = {
                     'text-red-500 dark:text-red-400 border border-red-500 dark:border-red-400 hover:bg-red-300/20': props.outlined && props.severity === 'danger' && !props.plain
                 },
                 { 'px-3 py-2 text-sm': props.size === null, 'text-xs py-1 px-2': props.size === 'small', 'text-lg py-3 px-4': props.size === 'large' },
-                { 'flex-column': props.iconPos == 'top' || props.iconPos == 'bottom' },
+                { 'flex-col': props.iconPos == 'top' || props.iconPos == 'bottom' },
                 { 'opacity-60 pointer-events-none cursor-default': context?.disabled }
             )
             }
@@ -795,9 +795,9 @@ const Tailwind: PrimeReactPTOptions = {
         root: ({ props, context }) => ({
             className: classNames(
                 'm-0',
-                'font-sans text-gray-600 dark:text-white/80 bg-white dark:bg-gray-900 border transition-colors duration-200 appearance-none rounded-lg',
+                ':uno: font-sans text-gray-600 dark:text-white/80 bg-white dark:bg-gray-900 border transition-colors duration-200 appearance-none rounded-md',
                 {
-                    'focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[0_0_0_0.2rem_rgba(147,197,253,0.5)]': !context.disabled,
+                    ':uno: focus:outline-none focus:outline-offset-0 focus:shadow-[0_0_0_0.2rem_rgba(191,219,254,1)] dark:focus:shadow-[0_0_0_0.2rem_rgba(147,197,253,0.5)]': !context.disabled,
                     'hover:border-blue-500': !props.invalid && !context.disabled,
                     'opacity-60 select-none pointer-events-none cursor-default': context.disabled,
                     'border-gray-300 dark:border-blue-900/40': !props.invalid,
@@ -805,9 +805,9 @@ const Tailwind: PrimeReactPTOptions = {
                     'border-red-500/50': props.invalid && context.disabled
                 },
                 {
-                    'text-lg px-4 py-4': props.size === 'large',
-                    'text-xs px-2 py-2': props.size === 'small',
-                    'p-3 text-base': !props.size || typeof props.size === 'number'
+                    'text-lg px-3 py-3': props.size === 'large',
+                    'text-xs px-1 py-1': props.size === 'small',
+                    'p-2 text-base': !props.size || typeof props.size === 'number'
                 },
                 {
                     'pl-8': context.iconPosition === 'left',
@@ -945,9 +945,9 @@ const Tailwind: PrimeReactPTOptions = {
                     'border-red-500/50': props.invalid && context.disabled
                 },
                 {
-                    'text-lg px-4 py-4': props.size === 'large',
-                    'text-xs px-2 py-2': props.size === 'small',
-                    'p-3 text-base': !props.size || typeof props.size === 'number'
+                    'text-lg p-3': props.size === 'large',
+                    'text-xs px-1': props.size === 'small',
+                    'p-2 text-base': !props.size || typeof props.size === 'number'
                 },
                 {
                     'pl-8': context.iconPosition === 'left',

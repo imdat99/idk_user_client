@@ -157,7 +157,7 @@ const Pages = () => {
       <SplitButton label="Save" icon="pi pi-plus
         " onClick={abc.increase} model={items} />
       <div className="card flex justify-content-center">
-        <Sidebar visible={visible} onHide={() => setVisible(false)}>
+        <Sidebar blockScroll position="right" visible={visible} onHide={() => setVisible(false)}>
           <h2>Sidebar</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.

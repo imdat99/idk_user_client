@@ -1,15 +1,18 @@
 import LanguageBtn from 'components/LanguageBtn';
 import { PolicyPath, contactPath } from 'lib/constants';
+import { Toast } from 'primereact/toast';
+import { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet } from 'react-router';
 
 const index = () => {
   const { t } = useTranslation('common');
+  const toastRef = useRef<Toast>(null);
   console.log("render auth layout")
   return (
     <div className="bg-background flex items-center min-h-svh flex-col">
       <div className="flex-1 items-center flex">
-        <div className=":uno: bg-white w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6 border border-gray-100">
+        <div className=":uno: w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6">
           <div className="flex">
             <img
               className="mx-auto animate-bounce-in duration-500 h-10 w-10"
@@ -17,7 +20,8 @@ const index = () => {
               alt="logo"
             />
           </div>
-          <Outlet />
+          <Toast ref={toastRef}/>
+          <Outlet context={{ toastRef }}/>
         </div>
       </div>
       <div className="flex justify-between" />
