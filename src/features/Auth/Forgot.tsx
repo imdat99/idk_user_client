@@ -39,7 +39,7 @@ const Forgot = () => {
         className="w-full flex flex-col max-w-sm items-center space-y-4 [&>div]:flex-1"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <IconField iconPosition="left" className='w-full'>
+        <IconField className='w-full'>
           <InputIcon>
             <Mail className="text-muted-foreground" size={18} />
           </InputIcon>

@@ -598,14 +598,14 @@ const Tailwind: PrimeReactPTOptions = {
             className: classNames('w-96', 'opacity-90')
         },
         message: ({ state, index }) => ({
-            className: classNames('my-4 rounded-md w-full', {
+            className: classNames('my-4 rounded-md w-full backdrop-blur-md shadow-lg', {
                 'bg-blue-100 border-solid border-0 border-l-4 border-blue-500 text-blue-700': state.messages[index] && state.messages[index].message.severity == 'info',
                 'bg-green-100 border-solid border-0 border-l-4 border-green-500 text-green-700': state.messages[index] && state.messages[index].message.severity == 'success',
                 'bg-orange-100 border-solid border-0 border-l-4 border-orange-500 text-orange-700': state.messages[index] && state.messages[index].message.severity == 'warn',
                 'bg-red-100 border-solid border-0 border-l-4 border-red-500 text-red-700': state.messages[index] && state.messages[index].message.severity == 'error'
             })
         }),
-        content: 'flex items-center py-5 px-7',
+        content: 'flex items-center py-2 px-3',
         icon: {
             className: classNames('w-6 h-6', 'text-lg mr-2')
         },

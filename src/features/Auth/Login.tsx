@@ -82,7 +82,7 @@ const Login = () => {
           prefix={<Mail className="text-muted-foreground" size={18} />}
           {...register('email', { required: 'Email is required' })}
         /> */}
-        <IconField iconPosition="left">
+        <IconField>
           <InputIcon>
             <Mail className="text-muted-foreground" size={18} />
           </InputIcon>

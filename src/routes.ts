@@ -53,17 +53,6 @@ const routes: RouteObject[] = [
           },
           {
             path: authPath.register,
-            loader: runOnClient(async () => {
-              return new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve({
-                    data: {
-                      number: 1
-                    }
-                  });
-                }, 3000); // Simulate a delay for loading
-              })
-            }),
             lazy: async () => ({
               Component: (await import('./features/Auth/Register')).default,
             }),
