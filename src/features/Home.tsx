@@ -2,6 +2,7 @@ import { dashboardPath } from 'lib/constants';
 import { cn } from 'lib/utils';
 import { ChevronRight, HelpCircle, MessageSquare, Search } from 'lucide-react';
 import { Button } from 'primereact/button';
+import { Dialog } from 'primereact/dialog';
 import { Sidebar } from 'primereact/sidebar';
 import { SplitButton } from 'primereact/splitbutton';
 import { Toast } from 'primereact/toast';
@@ -150,22 +151,31 @@ const Pages = () => {
           </Link>
         ))}
       </div>
-        <Toast ref={toast}></Toast>
+      <Toast ref={toast}></Toast>
       <div>
         Test Store: {abc.bears} - Increase
       </div>
       <SplitButton label="Save" icon="pi pi-plus
         " onClick={abc.increase} model={items} />
       <div className="card flex justify-content-center">
-        <Sidebar blockScroll position="right" visible={visible} onHide={() => setVisible(false)}>
+        {/* <Sidebar blockScroll position="right" visible={visible} onHide={() => setVisible(false)}>
           <h2>Sidebar</h2>
           <p>
             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
             Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
           </p>
-        </Sidebar>
+        </Sidebar> */}
         <Button icon="pi pi-arrow-right" onClick={() => setVisible(true)} />
       </div>
+      <Button label="Show" icon="pi pi-external-link" onClick={() => setVisible(true)} />
+      <Dialog blockScroll header="Header" visible={visible} style={{ width: '50vw' }} onHide={() => { if (!visible) return; setVisible(false); }}>
+        <p className="m-0">
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+          Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+          consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+          Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+        </p>
+      </Dialog>
       {/* Looking for more information */}
       <div className="card p-6 mb-6">
         <h2 className="text-xl font-medium mb-4">

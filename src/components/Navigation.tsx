@@ -4,8 +4,8 @@ import { Blocks, CreditCard, EllipsisVertical, Home, Lock, User } from 'lucide-r
 import { forwardRef, useRef } from 'react';
 import { NavLink } from 'react-router';
 import LogoIcon from './Icon/Logo';
-import { Button } from './Button';
 import { Menu } from 'primereact/menu';
+import { Button } from 'primereact/button';
 const menus = [
   {
     icon: Home,
@@ -28,9 +28,9 @@ const menus = [
     path: dashboardPath.security,
   },
   {
-      icon: LogoIcon,
-      title: "Mọi người và chia sẻ",
-      path: "abc",
+    icon: LogoIcon,
+    title: "Mọi người và chia sẻ",
+    path: "abc",
   },
   {
     icon: CreditCard,
@@ -50,25 +50,25 @@ const Navigation = forwardRef<
 >(({ className, children, ...props }, ref) => {
   const menuRef = useRef<Menu>(null);
   const items = [
+    {
+      label: 'Options',
+      items: [
         {
-            label: 'Options',
-            items: [
-                {
-                    label: 'Refresh',
-                    icon: 'pi pi-refresh'
-                },
-                {
-                    label: 'Export',
-                    icon: 'pi pi-upload'
-                },
-                {
-                    label: 'Logout',
-                    icon: 'pi pi-sign-out',
-                    className: '[&_*]:!text-red-600',
-                }
-            ]
+          label: 'Refresh',
+          icon: 'pi pi-refresh'
+        },
+        {
+          label: 'Export',
+          icon: 'pi pi-upload'
+        },
+        {
+          label: 'Logout',
+          icon: 'pi pi-sign-out',
+          className: '[&_*]:!text-red-600',
         }
-    ];
+      ]
+    }
+  ];
   return (
     <div ref={ref} className={className} {...props}>
       {/* Mobile navigation */}
@@ -93,9 +93,8 @@ const Navigation = forwardRef<
             </div>
             <div>
               <Menu model={items} popup ref={menuRef} id="popup_menu_right" />
-              <Button size='icon' variant='ghost' onClick={(event) => menuRef.current?.toggle(event)}>
-                <EllipsisVertical className='text-gray-500'/>
-              </Button>
+              <Button text onClick={(event) => menuRef.current?.toggle(event)} icon={<EllipsisVertical className='text-gray-500' />} />
+
             </div>
           </div>
           <ul className="flex-1 text-sm">
@@ -118,7 +117,7 @@ const Navigation = forwardRef<
           </ul>
           <div className='text-gray-500 pb-1'>
             <div className="flex group select-none">
-              <LogoIcon className="h-4 my-auto group-hover:animate-spin"/>
+              <LogoIcon className="h-4 my-auto group-hover:animate-spin" />
               <div className="my-auto space-x-1">
                 <b className="text-sm">Tài khoản</b>
                 <i className='text-[11px]'>v1.0.0 &copy; 2024</i>

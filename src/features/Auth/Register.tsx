@@ -1,4 +1,3 @@
-import { showToast } from 'components/Toast';
 import { authPath } from 'lib/constants';
 import {
   ContactRound,
@@ -13,10 +12,11 @@ import { Button } from 'primereact/button';
 import { IconField } from 'primereact/iconfield';
 import { InputIcon } from 'primereact/inputicon';
 import { InputText } from 'primereact/inputtext';
-import { type MouseEvent, useCallback, useEffect, useMemo, useState } from 'react';
+import { type Toast } from 'primereact/toast';
+import { type MouseEvent, RefObject, useCallback, useEffect, useMemo, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { Link, useLoaderData, useRevalidator } from 'react-router';
+import { Link, useLoaderData, useOutletContext, useRevalidator } from 'react-router';
 
 interface RegisterFormValues {
   email: string;
@@ -24,8 +24,12 @@ interface RegisterFormValues {
   fullName: string;
   password: string;
 }
+type ContextType = {
+  toastRef: RefObject<Toast>;
+};
 const Register = () => {
   const { t } = useTranslation('auth');
+  const { toastRef } = useOutletContext<ContextType>();
   const revalidator = useRevalidator();
   const data = useLoaderData();
   useEffect(() => {
@@ -66,10 +70,11 @@ const Register = () => {
       })
         .then((res) => {
           sendCodeCountdown();
-          showToast({
+          toastRef.current?.show({
+            severity: "info",
             // variant: "info",
-            title: t('register.codeSent'),
-            description: t('register.codeSentDescription', { email }),
+            summary: t('register.codeSent'),
+            detail: t('register.codeSentDescription', { email }),
           });
         })
         .finally(() => {

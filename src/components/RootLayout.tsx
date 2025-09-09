@@ -10,7 +10,7 @@ const RootLayout = () => {
     [navigation.state],
   );
   return (
-    <PrimeReactProvider value={{ unstyled: true, pt: Tailwind }}>
+    <PrimeReactProvider value={{ unstyled: true, pt: Tailwind, ripple: true }}>
       {loading && (
         <>
           <div className=":uno: fixed top-0 left-0 w-full bg-primary/40 z-50">
