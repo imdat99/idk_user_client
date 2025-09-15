@@ -1,7 +1,7 @@
 // import { resolve } from 'node:path';
 // import Backend from 'i18next-fs-backend'
 import HttpBackend, { HttpBackendOptions } from 'i18next-http-backend'
-import { unstable_createI18nextMiddleware } from 'remix-i18next/middleware'
+import { createI18nextMiddleware } from './middleware'
 declare let __host__: string
 function getAllCookies(request: Request): Record<string, string> {
     const cookies = request.headers.get('cookie')
@@ -34,7 +34,7 @@ const backendOptions: HttpBackendOptions = {
     },
 }
 export const [i18nextMiddleware, getLocale, getInstance] =
-    unstable_createI18nextMiddleware({
+    createI18nextMiddleware({
         detection: {
             // This is the list of languages your application supports
             supportedLanguages: ['vi', 'en'],

@@ -5,11 +5,11 @@ import {
   createStaticHandler,
   createStaticRouter,
   StaticRouterProvider,
-  type unstable_RouterContextProvider,
+  type RouterContextProvider,
 } from "react-router";
 import routes from "routes";
 import { I18nextProvider, useTranslation } from "react-i18next";
-import { getInstance, i18nextMiddleware } from "i18n.server";
+import { getInstance, i18nextMiddleware } from "Translation/server";
 import { Hono } from "hono";
 
 export const handler = new Hono();
@@ -35,7 +35,7 @@ handler.use(async (c) => {
       styles.push(`/${name}`);
     }
   }
-  const getContext = await new Promise<unstable_RouterContextProvider>(
+  const getContext = await new Promise<RouterContextProvider>(
     (resolve) => {
       // biome-ignore lint/suspicious/noExplicitAny: <explanation>
       const routerContextProvider: any = {
@@ -54,7 +54,7 @@ handler.use(async (c) => {
                 [key]: value,
               });
             },
-          } as unstable_RouterContextProvider,
+          } as RouterContextProvider,
           params: {},
         },
         (() => {

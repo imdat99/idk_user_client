@@ -15,17 +15,17 @@
     "deploy": "wrangler deploy --minify"
   },
   "dependencies": {
-    "@hono/node-server": "^1.19.1",
+    "@hono/node-server": "^1.19.2",
     "@microui-kit/magic-worker": "^0.0.7",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "hono": "^4.9.6",
+    "hono": "^4.9.7",
     "i18next": "^25.5.2",
     "i18next-browser-languagedetector": "^8.2.0",
     "i18next-fs-backend": "^2.6.0",
     "i18next-http-backend": "^3.0.2",
     "idb-keyval": "^6.2.2",
-    "lucide-react": "^0.542.0",
+    "lucide-react": "^0.544.0",
     "primeicons": "^7.0.0",
     "primereact": "^10.9.7",
     "rc-input": "^1.8.0",
@@ -35,7 +35,7 @@
     "react-helmet-async": "^2.0.5",
     "react-hook-form": "^7.62.0",
     "react-i18next": "^15.7.3",
-    "react-router": "^7.8.2",
+    "react-router": "^7.9.1",
     "remix-i18next": "^7.3.0",
     "swr": "^2.3.6",
     "tailwind-merge": "^3.3.1",
@@ -44,21 +44,21 @@
     "zustand": "^5.0.8"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.2.3",
-    "@cloudflare/workers-types": "^4.20250909.0",
+    "@biomejs/biome": "^2.2.4",
+    "@cloudflare/workers-types": "^4.20250913.0",
     "@hiogawa/utils": "^1.7.0",
     "@hiogawa/utils-node": "^0.0.2",
     "@hono/bun-compress": "^0.1.0",
-    "@rsbuild/core": "1.5.4",
+    "@rsbuild/core": "1.5.6",
     "@rsbuild/plugin-babel": "^1.0.6",
     "@rsbuild/plugin-react": "^1.4.0",
-    "@types/node": "^24.3.1",
-    "@types/react": "^19.1.12",
+    "@types/node": "^24.4.0",
+    "@types/react": "^19.1.13",
     "@types/react-dom": "^19.1.9",
     "@unocss/webpack": "^66.5.1",
     "babel-plugin-react-compiler": "^19.1.0-rc.3",
     "typescript": "^5.9.2",
     "unocss": "^66.5.1",
-    "wrangler": "^4.34.0"
+    "wrangler": "^4.37.0"
   }
 }
