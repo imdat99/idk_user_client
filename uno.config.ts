@@ -21,15 +21,17 @@ export default defineConfig({
   presets: [
     presetAttributify(),
     presetWebFonts({
-      provider: "google",
+      provider: "google", 
       fonts: {
         sans: [
           {
             name: "Google Sans",
+            // name: "Be Vietnam Pro",
             weights: ["400", "500", "700"],
             italic: true,
           },
         ],
+        // body: "Be Vietnam Pro",
         body: "Google Sans",
       },
     }),
