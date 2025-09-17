@@ -21,7 +21,7 @@ export default defineConfig({
   presets: [
     presetAttributify(),
     presetWebFonts({
-      provider: "google", 
+      provider: "google",
       fonts: {
         sans: [
           {
@@ -68,7 +68,17 @@ export default defineConfig({
       background: "oklch(0.98 0 0)",
       foreground: "oklch(0.18 0 0)",
       primary: {
-        DEFAULT: "oklch(0.6276 0.2076 264.51)",
+        50: "oklch(0.97 0.02 264.51)",  // rất nhạt
+        100: "oklch(0.90 0.05 264.51)",
+        200: "oklch(0.82 0.10 264.51)",
+        300: "oklch(0.74 0.14 264.51)",
+        400: "oklch(0.68 0.18 264.51)",
+        500: "oklch(0.63 0.21 264.51)",  // gốc bạn đưa
+        600: "oklch(0.56 0.19 264.51)",
+        700: "oklch(0.48 0.16 264.51)",
+        800: "oklch(0.40 0.12 264.51)",
+        900: "oklch(0.30 0.08 264.51)",  // rất đậm
+        DEFAULT: "oklch(0.63 0.21 264.51)",
         foreground: "hsl(210 40% 98%)",
       },
       secondary: {
@@ -114,7 +124,7 @@ export default defineConfig({
       load_ring:
         "w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4",
       card: "bg-white border border-gray-200 rounded-lg",
-      "glass-effect": "backdrop-blur-sm bg-white/10 transition-shadow duration-300 will-change-transform border-1 border-white/20 shadow-2xl hover:shadow-xl",
+      "glass-effect": "backdrop-blur-sm bg-gray/10 transition-shadow duration-300 will-change-transform border-1 border-white/20 shadow-2xl hover:shadow-xl",
       "animate-pulse-slow": "animate-[pulse_5s_cubic-bezier(0.4,0,0.6,1)_infinite]",
     },
   ],

@@ -22,6 +22,12 @@ const routes: RouteObject[] = [
             lazy: async () => ({
               Component: (await import('./features/Home')).default,
             }),
+          },
+          {
+            path: "courses",
+            lazy: async () => ({
+              Component: (await import('./features/Courses')).default,
+            }),
           }
         ]
       },

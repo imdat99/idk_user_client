@@ -12,14 +12,14 @@ const index = () => {
   return (
     <div className="bg-background flex items-center min-h-svh flex-col">
       <div className="flex-1 items-center flex">
-        <div className=":uno: w-[calc(100vw-1rem)] md:w-[500px] max-w-md rounded-2xl p-8 space-y-6">
-          <div className="flex">
+        <div className=":uno: w-[calc(100vw-1rem)] max-w-lg rounded-2xl p-8 space-y-6">
+          <Link to="/" className="flex w-full">
             <img
-              className="mx-auto animate-bounce-in duration-500 h-10 w-10"
-              src="/assets/images/logo.svg"
+              className="mx-auto animate-bounce-in duration-500 h-16"
+              src="/assets/images/file.svg"
               alt="logo"
             />
-          </div>
+          </Link>
           <Toast ref={toastRef}/>
           <Outlet context={{ toastRef }}/>
         </div>

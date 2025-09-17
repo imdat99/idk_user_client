@@ -36,10 +36,10 @@ const Forgot = () => {
         <p className="text-sm text-gray-600">{t('forgot.subtitle')}</p>
       </div>
       <form
-        className="w-full flex flex-col max-w-sm items-center space-y-4 [&>div]:flex-1"
+        className="w-full flex flex-col items-center space-y-4 [&>div]:flex-1"
         onSubmit={handleSubmit(onSubmit)}
       >
-        <IconField className='w-full'>
+        <IconField iconPosition="left" className='w-full'>
           <InputIcon>
             <Mail className="text-muted-foreground" size={18} />
           </InputIcon>

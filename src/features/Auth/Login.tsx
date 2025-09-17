@@ -28,7 +28,7 @@ const Login = () => {
     formState: { isSubmitting, errors },
   } = useForm<FormValues>();
   const onSubmit: SubmitHandler<FormValues> = (data) =>
-    new Promise((resolve, reject) => {
+    new Promise((_resolve, reject) => {
       // Simulate an API call
       setTimeout(() => {
         console.log(data);
@@ -49,7 +49,7 @@ const Login = () => {
         </h2>
         <p className="text-sm text-gray-600">{t('login.subtitle')}</p>
       </div>
-      <div className="flex w-full max-w-sm items-center space-x-2 [&>button]:flex-1">
+      <div className="flex w-full items-center space-x-2 [&>button]:flex-1">
         <Button
           className="w-full justify-center"
           severity="secondary"
@@ -82,7 +82,7 @@ const Login = () => {
           prefix={<Mail className="text-muted-foreground" size={18} />}
           {...register('email', { required: 'Email is required' })}
         /> */}
-        <IconField>
+        <IconField iconPosition="left">
           <InputIcon>
             <Mail className="text-muted-foreground" size={18} />
           </InputIcon>
