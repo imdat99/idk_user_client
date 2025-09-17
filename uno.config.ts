@@ -25,14 +25,14 @@ export default defineConfig({
       fonts: {
         sans: [
           {
-            name: "Google Sans",
-            // name: "Be Vietnam Pro",
+            // name: "Google Sans",
+            name: "Be Vietnam Pro",
             weights: ["400", "500", "700"],
             italic: true,
           },
         ],
-        // body: "Be Vietnam Pro",
-        body: "Google Sans",
+        body: "Be Vietnam Pro",
+        // body: "Google Sans",
       },
     }),
     presetWind4({
@@ -113,16 +113,9 @@ export default defineConfig({
         "flex h-9 w-full rounded-md border border-input bg-transparent p-1 text-base transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:focus_inp focus-within:focus_inp disabled:cursor-not-allowed disabled:opacity-50 md:text-sm ",
       load_ring:
         "w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin mx-auto mb-4",
-      "rc-input": "w-full focus-visible:outline-none p-0 ",
-      "rc-input-out-of-range": "text-red-500",
-      "rc-input-affix-wrapper":
-        "border border-gray-300 rounded-md overflow-hidden",
-      "rc-input-clear-icon":
-        "p-0 text-xs bg-transparent border-0 cursor-pointer",
-      "rc-input-clear-icon-hidden": "hidden",
-      "rc-input-prefix": "px-1 flex items-center",
-      "rc-input-suffix": "px-1 flex items-center",
       card: "bg-white border border-gray-200 rounded-lg",
+      "glass-effect": "backdrop-blur-sm bg-white/10 transition-shadow duration-300 will-change-transform border-1 border-white/20 shadow-2xl hover:shadow-xl",
+      "animate-pulse-slow": "animate-[pulse_5s_cubic-bezier(0.4,0,0.6,1)_infinite]",
     },
   ],
   preflights: [
@@ -136,17 +129,7 @@ export default defineConfig({
       `;
       },
     },
-  ],
-  safelist: [
-    "rc-input",
-    "load_ring",
-    "rc-input-out-of-range",
-    "rc-input-affix-wrapper",
-    "rc-input-clear-icon",
-    "rc-input-clear-icon-hidden",
-    "rc-input-prefix",
-    "rc-input-suffix",
-  ],
+  ]
 });
 /*
 .rc-input-out-of-range {

@@ -2,7 +2,7 @@ import { cn } from 'lib/utils';
 import { ArrowLeft, Grid, Menu } from 'lucide-react';
 import { forwardRef, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router';
-import LogoIcon from './Icon/Logo';
+import LogoIcon from '../Icon/Logo';
 
 const Header = forwardRef<
   HTMLHeadElement,

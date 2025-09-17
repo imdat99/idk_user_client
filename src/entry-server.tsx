@@ -145,7 +145,7 @@ function Root(props: { styles: string[]; children?: React.ReactNode }) {
             <link key={href} rel="stylesheet" href={href} />
           ))}
         </head>
-        <body>{props.children}</body>
+        <body className="font-sans bg-light text-gray-800 antialiased">{props.children}</body>
       </html>
     </>
   );

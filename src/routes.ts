@@ -1,10 +1,10 @@
-import DashboardLayout from 'components/DashboardLayout';
+import DashboardLayout from 'components/Dashboard/DashboardLayout';
 import ErrorScreen from 'components/Error';
 import FullyLoading from 'components/FullyLoading';
+import HomeLayout from 'components/Home/Layout';
 import NotfoundPage from 'components/NotfoundPage';
 import RootLayout from 'components/RootLayout';
 import { PolicyPath, authPath, dashboardPath } from 'lib/constants';
-import { runOnClient } from 'lib/utils';
 import { createElement as _c } from 'react';
 import { redirect, type RouteObject } from 'react-router';
 const routes: RouteObject[] = [
@@ -14,7 +14,19 @@ const routes: RouteObject[] = [
     Component: RootLayout,
     children: [
       {
-        path: '/',
+        path: "",
+        Component: HomeLayout,
+        children: [
+          {
+            index: true,
+            lazy: async () => ({
+              Component: (await import('./features/Home')).default,
+            }),
+          }
+        ]
+      },
+      {
+        path: '',
         Component: DashboardLayout,
         children: [
           {
@@ -24,7 +36,7 @@ const routes: RouteObject[] = [
           {
             path: dashboardPath.overview,
             lazy: async () => ({
-              Component: (await import('./features/Home')).default,
+              Component: (await import('./features/Profile')).default,
             }),
           },
           {

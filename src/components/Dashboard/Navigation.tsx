@@ -3,7 +3,7 @@ import { cn } from 'lib/utils';
 import { Blocks, CreditCard, EllipsisVertical, Home, Lock, User } from 'lucide-react';
 import { forwardRef, useRef } from 'react';
 import { NavLink } from 'react-router';
-import LogoIcon from './Icon/Logo';
+import LogoIcon from '../Icon/Logo';
 import { Menu } from 'primereact/menu';
 import { Button } from 'primereact/button';
 const menus = [
